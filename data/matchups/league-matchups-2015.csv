@@ -1,0 +1,153 @@
+week,week_start,team_1,points_1,team_2,points_2,team_id1,owner1,team_id2,owner2,Consolation,Playoff,Season
+16,2015-12-22,Gurley Bears,104.30,Brees in the Trap,109.20,1,Tim,7,Pat,1,1,2015
+16,2015-12-22,Brees in the Trap,109.20,Gurley Bears,104.30,7,Pat,1,Tim,1,1,2015
+16,2015-12-22,Bragging Wrights,129.26,Slob on my Cobb,67.58,2,Shinn,6,Kevin,1,1,2015
+16,2015-12-22,Slob on my Cobb,67.58,Bragging Wrights,129.26,6,Kevin,2,Shinn,1,1,2015
+16,2015-12-22,Shady Brady,106.64,CharcNado,143.58,3,ryan,4,Greg,0,1,2015
+16,2015-12-22,CharcNado,143.58,Shady Brady,106.64,4,Greg,3,ryan,0,1,2015
+16,2015-12-22,Lock Jaw Blowy,135.60,Brady didn't do it,119.76,5,Peter Billups,9,Jake,0,1,2015
+16,2015-12-22,Brady didn't do it,119.76,Lock Jaw Blowy,135.60,9,Jake,5,Peter Billups,0,1,2015
+1,2015-09-10,Gurley Bears,97.84,Bragging Wrights,95.72,1,Tim,2,Shinn,0,0,2015
+1,2015-09-10,Bragging Wrights,95.72,Gurley Bears,97.84,2,Shinn,1,Tim,0,0,2015
+1,2015-09-10,Shady Brady,147.02,Brady didn't do it,109.34,3,ryan,9,Jake,0,0,2015
+1,2015-09-10,Brady didn't do it,109.34,Shady Brady,147.02,9,Jake,3,ryan,0,0,2015
+1,2015-09-10,CharcNado,82.44,Playoffbound & Brown,135.24,4,Greg,8,Wesley,0,0,2015
+1,2015-09-10,Playoffbound & Brown,135.24,CharcNado,82.44,8,Wesley,4,Greg,0,0,2015
+1,2015-09-10,Lock Jaw Blowy,104.24,Brees in the Trap,125.80,5,Peter Billups,7,Pat,0,0,2015
+1,2015-09-10,Brees in the Trap,125.80,Lock Jaw Blowy,104.24,7,Pat,5,Peter Billups,0,0,2015
+1,2015-09-10,Slob on my Cobb,129.90,Grahamer Nazis,100.86,6,Kevin,10,Jeremy,0,0,2015
+1,2015-09-10,Grahamer Nazis,100.86,Slob on my Cobb,129.90,10,Jeremy,6,Kevin,0,0,2015
+2,2015-09-15,Gurley Bears,79.76,Shady Brady,106.54,1,Tim,3,ryan,0,0,2015
+2,2015-09-15,Shady Brady,106.54,Gurley Bears,79.76,3,ryan,1,Tim,0,0,2015
+2,2015-09-15,Bragging Wrights,78.80,Grahamer Nazis,118.56,2,Shinn,10,Jeremy,0,0,2015
+2,2015-09-15,Grahamer Nazis,118.56,Bragging Wrights,78.80,10,Jeremy,2,Shinn,0,0,2015
+2,2015-09-15,CharcNado,113.16,Brady didn't do it,130.44,4,Greg,9,Jake,0,0,2015
+2,2015-09-15,Brady didn't do it,130.44,CharcNado,113.16,9,Jake,4,Greg,0,0,2015
+2,2015-09-15,Lock Jaw Blowy,137.56,Playoffbound & Brown,96.90,5,Peter Billups,8,Wesley,0,0,2015
+2,2015-09-15,Playoffbound & Brown,96.90,Lock Jaw Blowy,137.56,8,Wesley,5,Peter Billups,0,0,2015
+2,2015-09-15,Slob on my Cobb,84.44,Brees in the Trap,85.10,6,Kevin,7,Pat,0,0,2015
+2,2015-09-15,Brees in the Trap,85.10,Slob on my Cobb,84.44,7,Pat,6,Kevin,0,0,2015
+3,2015-09-22,Gurley Bears,73.08,CharcNado,142.50,1,Tim,4,Greg,0,0,2015
+3,2015-09-22,CharcNado,142.50,Gurley Bears,73.08,4,Greg,1,Tim,0,0,2015
+3,2015-09-22,Bragging Wrights,119.60,Shady Brady,128.02,2,Shinn,3,ryan,0,0,2015
+3,2015-09-22,Shady Brady,128.02,Bragging Wrights,119.60,3,ryan,2,Shinn,0,0,2015
+3,2015-09-22,Lock Jaw Blowy,159.68,Brady didn't do it,93.80,5,Peter Billups,9,Jake,0,0,2015
+3,2015-09-22,Brady didn't do it,93.80,Lock Jaw Blowy,159.68,9,Jake,5,Peter Billups,0,0,2015
+3,2015-09-22,Slob on my Cobb,169.96,Playoffbound & Brown,124.72,6,Kevin,8,Wesley,0,0,2015
+3,2015-09-22,Playoffbound & Brown,124.72,Slob on my Cobb,169.96,8,Wesley,6,Kevin,0,0,2015
+3,2015-09-22,Brees in the Trap,96.14,Grahamer Nazis,167.12,7,Pat,10,Jeremy,0,0,2015
+3,2015-09-22,Grahamer Nazis,167.12,Brees in the Trap,96.14,10,Jeremy,7,Pat,0,0,2015
+4,2015-09-29,Gurley Bears,94.04,Lock Jaw Blowy,46.62,1,Tim,5,Peter Billups,0,0,2015
+4,2015-09-29,Lock Jaw Blowy,46.62,Gurley Bears,94.04,5,Peter Billups,1,Tim,0,0,2015
+4,2015-09-29,Bragging Wrights,100.90,CharcNado,99.36,2,Shinn,4,Greg,0,0,2015
+4,2015-09-29,CharcNado,99.36,Bragging Wrights,100.90,4,Greg,2,Shinn,0,0,2015
+4,2015-09-29,Shady Brady,128.86,Grahamer Nazis,110.96,3,ryan,10,Jeremy,0,0,2015
+4,2015-09-29,Grahamer Nazis,110.96,Shady Brady,128.86,10,Jeremy,3,ryan,0,0,2015
+4,2015-09-29,Slob on my Cobb,131.02,Brady didn't do it,66.28,6,Kevin,9,Jake,0,0,2015
+4,2015-09-29,Brady didn't do it,66.28,Slob on my Cobb,131.02,9,Jake,6,Kevin,0,0,2015
+4,2015-09-29,Brees in the Trap,97.86,Playoffbound & Brown,85.94,7,Pat,8,Wesley,0,0,2015
+4,2015-09-29,Playoffbound & Brown,85.94,Brees in the Trap,97.86,8,Wesley,7,Pat,0,0,2015
+5,2015-10-06,Gurley Bears,140.34,Slob on my Cobb,98.84,1,Tim,6,Kevin,0,0,2015
+5,2015-10-06,Slob on my Cobb,98.84,Gurley Bears,140.34,6,Kevin,1,Tim,0,0,2015
+5,2015-10-06,Bragging Wrights,89.66,Lock Jaw Blowy,114.66,2,Shinn,5,Peter Billups,0,0,2015
+5,2015-10-06,Lock Jaw Blowy,114.66,Bragging Wrights,89.66,5,Peter Billups,2,Shinn,0,0,2015
+5,2015-10-06,Shady Brady,126.40,CharcNado,129.14,3,ryan,4,Greg,0,0,2015
+5,2015-10-06,CharcNado,129.14,Shady Brady,126.40,4,Greg,3,ryan,0,0,2015
+5,2015-10-06,Brees in the Trap,90.40,Brady didn't do it,111.92,7,Pat,9,Jake,0,0,2015
+5,2015-10-06,Brady didn't do it,111.92,Brees in the Trap,90.40,9,Jake,7,Pat,0,0,2015
+5,2015-10-06,Playoffbound & Brown,112.44,Grahamer Nazis,93.54,8,Wesley,10,Jeremy,0,0,2015
+5,2015-10-06,Grahamer Nazis,93.54,Playoffbound & Brown,112.44,10,Jeremy,8,Wesley,0,0,2015
+6,2015-10-13,Gurley Bears,104.84,Brees in the Trap,87.48,1,Tim,7,Pat,0,0,2015
+6,2015-10-13,Brees in the Trap,87.48,Gurley Bears,104.84,7,Pat,1,Tim,0,0,2015
+6,2015-10-13,Bragging Wrights,78.88,Slob on my Cobb,134.60,2,Shinn,6,Kevin,0,0,2015
+6,2015-10-13,Slob on my Cobb,134.60,Bragging Wrights,78.88,6,Kevin,2,Shinn,0,0,2015
+6,2015-10-13,Shady Brady,126.88,Lock Jaw Blowy,107.60,3,ryan,5,Peter Billups,0,0,2015
+6,2015-10-13,Lock Jaw Blowy,107.60,Shady Brady,126.88,5,Peter Billups,3,ryan,0,0,2015
+6,2015-10-13,CharcNado,125.86,Grahamer Nazis,112.20,4,Greg,10,Jeremy,0,0,2015
+6,2015-10-13,Grahamer Nazis,112.20,CharcNado,125.86,10,Jeremy,4,Greg,0,0,2015
+6,2015-10-13,Playoffbound & Brown,126.32,Brady didn't do it,115.64,8,Wesley,9,Jake,0,0,2015
+6,2015-10-13,Brady didn't do it,115.64,Playoffbound & Brown,126.32,9,Jake,8,Wesley,0,0,2015
+7,2015-10-20,Gurley Bears,97.98,Playoffbound & Brown,116.50,1,Tim,8,Wesley,0,0,2015
+7,2015-10-20,Playoffbound & Brown,116.50,Gurley Bears,97.98,8,Wesley,1,Tim,0,0,2015
+7,2015-10-20,Bragging Wrights,126.92,Brees in the Trap,105.00,2,Shinn,7,Pat,0,0,2015
+7,2015-10-20,Brees in the Trap,105.00,Bragging Wrights,126.92,7,Pat,2,Shinn,0,0,2015
+7,2015-10-20,Shady Brady,118.10,Slob on my Cobb,113.74,3,ryan,6,Kevin,0,0,2015
+7,2015-10-20,Slob on my Cobb,113.74,Shady Brady,118.10,6,Kevin,3,ryan,0,0,2015
+7,2015-10-20,CharcNado,137.38,Lock Jaw Blowy,88.04,4,Greg,5,Peter Billups,0,0,2015
+7,2015-10-20,Lock Jaw Blowy,88.04,CharcNado,137.38,5,Peter Billups,4,Greg,0,0,2015
+7,2015-10-20,Brady didn't do it,147.70,Grahamer Nazis,45.40,9,Jake,10,Jeremy,0,0,2015
+7,2015-10-20,Grahamer Nazis,45.40,Brady didn't do it,147.70,10,Jeremy,9,Jake,0,0,2015
+8,2015-10-27,Gurley Bears,64.38,Brady didn't do it,109.30,1,Tim,9,Jake,0,0,2015
+8,2015-10-27,Brady didn't do it,109.30,Gurley Bears,64.38,9,Jake,1,Tim,0,0,2015
+8,2015-10-27,Bragging Wrights,115.84,Playoffbound & Brown,109.84,2,Shinn,8,Wesley,0,0,2015
+8,2015-10-27,Playoffbound & Brown,109.84,Bragging Wrights,115.84,8,Wesley,2,Shinn,0,0,2015
+8,2015-10-27,Shady Brady,132.84,Brees in the Trap,107.70,3,ryan,7,Pat,0,0,2015
+8,2015-10-27,Brees in the Trap,107.70,Shady Brady,132.84,7,Pat,3,ryan,0,0,2015
+8,2015-10-27,CharcNado,128.22,Slob on my Cobb,109.54,4,Greg,6,Kevin,0,0,2015
+8,2015-10-27,Slob on my Cobb,109.54,CharcNado,128.22,6,Kevin,4,Greg,0,0,2015
+8,2015-10-27,Lock Jaw Blowy,133.18,Grahamer Nazis,90.38,5,Peter Billups,10,Jeremy,0,0,2015
+8,2015-10-27,Grahamer Nazis,90.38,Lock Jaw Blowy,133.18,10,Jeremy,5,Peter Billups,0,0,2015
+9,2015-11-03,Gurley Bears,123.46,Grahamer Nazis,157.66,1,Tim,10,Jeremy,0,0,2015
+9,2015-11-03,Grahamer Nazis,157.66,Gurley Bears,123.46,10,Jeremy,1,Tim,0,0,2015
+9,2015-11-03,Bragging Wrights,84.58,Brady didn't do it,117.64,2,Shinn,9,Jake,0,0,2015
+9,2015-11-03,Brady didn't do it,117.64,Bragging Wrights,84.58,9,Jake,2,Shinn,0,0,2015
+9,2015-11-03,Shady Brady,75.66,Playoffbound & Brown,146.66,3,ryan,8,Wesley,0,0,2015
+9,2015-11-03,Playoffbound & Brown,146.66,Shady Brady,75.66,8,Wesley,3,ryan,0,0,2015
+9,2015-11-03,CharcNado,133.98,Brees in the Trap,133.14,4,Greg,7,Pat,0,0,2015
+9,2015-11-03,Brees in the Trap,133.14,CharcNado,133.98,7,Pat,4,Greg,0,0,2015
+9,2015-11-03,Lock Jaw Blowy,116.52,Slob on my Cobb,103.30,5,Peter Billups,6,Kevin,0,0,2015
+9,2015-11-03,Slob on my Cobb,103.30,Lock Jaw Blowy,116.52,6,Kevin,5,Peter Billups,0,0,2015
+10,2015-11-10,Gurley Bears,100.96,Bragging Wrights,115.18,1,Tim,2,Shinn,0,0,2015
+10,2015-11-10,Bragging Wrights,115.18,Gurley Bears,100.96,2,Shinn,1,Tim,0,0,2015
+10,2015-11-10,Shady Brady,93.96,Brady didn't do it,95.82,3,ryan,9,Jake,0,0,2015
+10,2015-11-10,Brady didn't do it,95.82,Shady Brady,93.96,9,Jake,3,ryan,0,0,2015
+10,2015-11-10,CharcNado,133.88,Playoffbound & Brown,132.38,4,Greg,8,Wesley,0,0,2015
+10,2015-11-10,Playoffbound & Brown,132.38,CharcNado,133.88,8,Wesley,4,Greg,0,0,2015
+10,2015-11-10,Lock Jaw Blowy,104.74,Brees in the Trap,89.46,5,Peter Billups,7,Pat,0,0,2015
+10,2015-11-10,Brees in the Trap,89.46,Lock Jaw Blowy,104.74,7,Pat,5,Peter Billups,0,0,2015
+10,2015-11-10,Slob on my Cobb,61.40,Grahamer Nazis,83.02,6,Kevin,10,Jeremy,0,0,2015
+10,2015-11-10,Grahamer Nazis,83.02,Slob on my Cobb,61.40,10,Jeremy,6,Kevin,0,0,2015
+11,2015-11-17,Gurley Bears,82.48,Shady Brady,110.18,1,Tim,3,ryan,0,0,2015
+11,2015-11-17,Shady Brady,110.18,Gurley Bears,82.48,3,ryan,1,Tim,0,0,2015
+11,2015-11-17,Bragging Wrights,91.26,Grahamer Nazis,69.78,2,Shinn,10,Jeremy,0,0,2015
+11,2015-11-17,Grahamer Nazis,69.78,Bragging Wrights,91.26,10,Jeremy,2,Shinn,0,0,2015
+11,2015-11-17,CharcNado,132.24,Brady didn't do it,81.98,4,Greg,9,Jake,0,0,2015
+11,2015-11-17,Brady didn't do it,81.98,CharcNado,132.24,9,Jake,4,Greg,0,0,2015
+11,2015-11-17,Lock Jaw Blowy,110.50,Playoffbound & Brown,72.58,5,Peter Billups,8,Wesley,0,0,2015
+11,2015-11-17,Playoffbound & Brown,72.58,Lock Jaw Blowy,110.50,8,Wesley,5,Peter Billups,0,0,2015
+11,2015-11-17,Slob on my Cobb,58.72,Brees in the Trap,73.38,6,Kevin,7,Pat,0,0,2015
+11,2015-11-17,Brees in the Trap,73.38,Slob on my Cobb,58.72,7,Pat,6,Kevin,0,0,2015
+12,2015-11-24,Gurley Bears,95.44,CharcNado,135.92,1,Tim,4,Greg,0,0,2015
+12,2015-11-24,CharcNado,135.92,Gurley Bears,95.44,4,Greg,1,Tim,0,0,2015
+12,2015-11-24,Bragging Wrights,119.60,Shady Brady,104.90,2,Shinn,3,ryan,0,0,2015
+12,2015-11-24,Shady Brady,104.90,Bragging Wrights,119.60,3,ryan,2,Shinn,0,0,2015
+12,2015-11-24,Lock Jaw Blowy,86.20,Brady didn't do it,102.06,5,Peter Billups,9,Jake,0,0,2015
+12,2015-11-24,Brady didn't do it,102.06,Lock Jaw Blowy,86.20,9,Jake,5,Peter Billups,0,0,2015
+12,2015-11-24,Slob on my Cobb,107.90,Playoffbound & Brown,150.28,6,Kevin,8,Wesley,0,0,2015
+12,2015-11-24,Playoffbound & Brown,150.28,Slob on my Cobb,107.90,8,Wesley,6,Kevin,0,0,2015
+12,2015-11-24,Brees in the Trap,76.52,Grahamer Nazis,107.08,7,Pat,10,Jeremy,0,0,2015
+12,2015-11-24,Grahamer Nazis,107.08,Brees in the Trap,76.52,10,Jeremy,7,Pat,0,0,2015
+13,2015-12-01,Gurley Bears,123.56,Lock Jaw Blowy,113.46,1,Tim,5,Peter Billups,0,0,2015
+13,2015-12-01,Lock Jaw Blowy,113.46,Gurley Bears,123.56,5,Peter Billups,1,Tim,0,0,2015
+13,2015-12-01,Bragging Wrights,89.32,CharcNado,115.84,2,Shinn,4,Greg,0,0,2015
+13,2015-12-01,CharcNado,115.84,Bragging Wrights,89.32,4,Greg,2,Shinn,0,0,2015
+13,2015-12-01,Shady Brady,136.08,Grahamer Nazis,150.52,3,ryan,10,Jeremy,0,0,2015
+13,2015-12-01,Grahamer Nazis,150.52,Shady Brady,136.08,10,Jeremy,3,ryan,0,0,2015
+13,2015-12-01,Slob on my Cobb,102.98,Brady didn't do it,133.68,6,Kevin,9,Jake,0,0,2015
+13,2015-12-01,Brady didn't do it,133.68,Slob on my Cobb,102.98,9,Jake,6,Kevin,0,0,2015
+13,2015-12-01,Brees in the Trap,78.58,Playoffbound & Brown,131.34,7,Pat,8,Wesley,0,0,2015
+13,2015-12-01,Playoffbound & Brown,131.34,Brees in the Trap,78.58,8,Wesley,7,Pat,0,0,2015
+14,2015-12-08,Lock Jaw Blowy,121.82,Playoffbound & Brown,89.56,5,Peter Billups,8,Wesley,0,1,2015
+14,2015-12-08,Playoffbound & Brown,89.56,Lock Jaw Blowy,121.82,8,Wesley,5,Peter Billups,0,1,2015
+14,2015-12-08,Brady didn't do it,140.00,Grahamer Nazis,88.62,9,Jake,10,Jeremy,0,1,2015
+14,2015-12-08,Grahamer Nazis,88.62,Brady didn't do it,140.00,10,Jeremy,9,Jake,0,1,2015
+15,2015-12-15,Gurley Bears,95.90,Slob on my Cobb,113.04,1,Tim,6,Kevin,1,1,2015
+15,2015-12-15,Slob on my Cobb,113.04,Gurley Bears,95.90,6,Kevin,1,Tim,1,1,2015
+15,2015-12-15,Bragging Wrights,135.84,Brees in the Trap,113.56,2,Shinn,7,Pat,1,1,2015
+15,2015-12-15,Brees in the Trap,113.56,Bragging Wrights,135.84,7,Pat,2,Shinn,1,1,2015
+15,2015-12-15,Shady Brady,121.88,Brady didn't do it,94.36,3,ryan,9,Jake,0,1,2015
+15,2015-12-15,Brady didn't do it,94.36,Shady Brady,121.88,9,Jake,3,ryan,0,1,2015
+15,2015-12-15,CharcNado,148.60,Lock Jaw Blowy,127.50,4,Greg,5,Peter Billups,0,1,2015
+15,2015-12-15,Lock Jaw Blowy,127.50,CharcNado,148.60,5,Peter Billups,4,Greg,0,1,2015
+15,2015-12-15,Playoffbound & Brown,112.66,Grahamer Nazis,93.36,8,Wesley,10,Jeremy,0,1,2015
+15,2015-12-15,Grahamer Nazis,93.36,Playoffbound & Brown,112.66,10,Jeremy,8,Wesley,0,1,2015

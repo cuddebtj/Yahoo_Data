@@ -1,0 +1,185 @@
+week,week_start,team_1,points_1,team_2,points_2,team_id1,owner1,team_id2,owner2,Consolation,Playoff,Season
+16,2013-12-17,Jake's Team,71.10,Talk Dirty to Me,98.88,1,--hidden--,11,--hidden--,1,1,2013
+16,2013-12-17,Talk Dirty to Me,98.88,Jake's Team,71.10,11,--hidden--,1,--hidden--,1,1,2013
+16,2013-12-17,Riley KKKooper,71.34,Dirty Duke Dawgs,105.34,2,--hidden--,8,--hidden--,0,1,2013
+16,2013-12-17,Dirty Duke Dawgs,105.34,Riley KKKooper,71.34,8,--hidden--,2,--hidden--,0,1,2013
+16,2013-12-17,Shinnanigons,109.54,Vagina Slappers,123.08,4,--hidden--,5,--hidden--,0,1,2013
+16,2013-12-17,Vagina Slappers,123.08,Shinnanigons,109.54,5,--hidden--,4,--hidden--,0,1,2013
+16,2013-12-17,Jacquizz on yo face,88.28,Free Mustache Rides,101.94,10,--hidden--,12,--hidden--,1,1,2013
+16,2013-12-17,Free Mustache Rides,101.94,Jacquizz on yo face,88.28,12,--hidden--,10,--hidden--,1,1,2013
+1,2013-09-05,Jake's Team,75.88,Riley KKKooper,105.12,1,--hidden--,2,--hidden--,0,0,2013
+1,2013-09-05,Riley KKKooper,105.12,Jake's Team,75.88,2,--hidden--,1,--hidden--,0,0,2013
+1,2013-09-05,Ridley Me This,83.72,Talk Dirty to Me,133.80,3,--hidden--,11,--hidden--,0,0,2013
+1,2013-09-05,Talk Dirty to Me,133.80,Ridley Me This,83.72,11,--hidden--,3,--hidden--,0,0,2013
+1,2013-09-05,Shinnanigons,95.82,Jacquizz on yo face,98.36,4,--hidden--,10,--hidden--,0,0,2013
+1,2013-09-05,Jacquizz on yo face,98.36,Shinnanigons,95.82,10,--hidden--,4,--hidden--,0,0,2013
+1,2013-09-05,Vagina Slappers,169.68,Cleveland Steamers,116.18,5,--hidden--,9,--hidden--,0,0,2013
+1,2013-09-05,Cleveland Steamers,116.18,Vagina Slappers,169.68,9,--hidden--,5,--hidden--,0,0,2013
+1,2013-09-05,Brian Dawson's Team,120.90,Dirty Duke Dawgs,91.96,6,--hidden--,8,--hidden--,0,0,2013
+1,2013-09-05,Dirty Duke Dawgs,91.96,Brian Dawson's Team,120.90,8,--hidden--,6,--hidden--,0,0,2013
+1,2013-09-05,Johnson and Johnson,104.68,Free Mustache Rides,87.92,7,--hidden--,12,--hidden--,0,0,2013
+1,2013-09-05,Free Mustache Rides,87.92,Johnson and Johnson,104.68,12,--hidden--,7,--hidden--,0,0,2013
+2,2013-09-10,Jake's Team,77.38,Ridley Me This,94.30,1,--hidden--,3,--hidden--,0,0,2013
+2,2013-09-10,Ridley Me This,94.30,Jake's Team,77.38,3,--hidden--,1,--hidden--,0,0,2013
+2,2013-09-10,Riley KKKooper,100.24,Free Mustache Rides,114.50,2,--hidden--,12,--hidden--,0,0,2013
+2,2013-09-10,Free Mustache Rides,114.50,Riley KKKooper,100.24,12,--hidden--,2,--hidden--,0,0,2013
+2,2013-09-10,Shinnanigons,74.92,Talk Dirty to Me,98.38,4,--hidden--,11,--hidden--,0,0,2013
+2,2013-09-10,Talk Dirty to Me,98.38,Shinnanigons,74.92,11,--hidden--,4,--hidden--,0,0,2013
+2,2013-09-10,Vagina Slappers,88.58,Jacquizz on yo face,124.96,5,--hidden--,10,--hidden--,0,0,2013
+2,2013-09-10,Jacquizz on yo face,124.96,Vagina Slappers,88.58,10,--hidden--,5,--hidden--,0,0,2013
+2,2013-09-10,Brian Dawson's Team,98.48,Cleveland Steamers,134.12,6,--hidden--,9,--hidden--,0,0,2013
+2,2013-09-10,Cleveland Steamers,134.12,Brian Dawson's Team,98.48,9,--hidden--,6,--hidden--,0,0,2013
+2,2013-09-10,Johnson and Johnson,69.92,Dirty Duke Dawgs,142.90,7,--hidden--,8,--hidden--,0,0,2013
+2,2013-09-10,Dirty Duke Dawgs,142.90,Johnson and Johnson,69.92,8,--hidden--,7,--hidden--,0,0,2013
+3,2013-09-17,Jake's Team,119.68,Shinnanigons,111.60,1,--hidden--,4,--hidden--,0,0,2013
+3,2013-09-17,Shinnanigons,111.60,Jake's Team,119.68,4,--hidden--,1,--hidden--,0,0,2013
+3,2013-09-17,Riley KKKooper,88.26,Ridley Me This,80.00,2,--hidden--,3,--hidden--,0,0,2013
+3,2013-09-17,Ridley Me This,80.00,Riley KKKooper,88.26,3,--hidden--,2,--hidden--,0,0,2013
+3,2013-09-17,Vagina Slappers,100.96,Talk Dirty to Me,96.40,5,--hidden--,11,--hidden--,0,0,2013
+3,2013-09-17,Talk Dirty to Me,96.40,Vagina Slappers,100.96,11,--hidden--,5,--hidden--,0,0,2013
+3,2013-09-17,Brian Dawson's Team,104.38,Jacquizz on yo face,78.14,6,--hidden--,10,--hidden--,0,0,2013
+3,2013-09-17,Jacquizz on yo face,78.14,Brian Dawson's Team,104.38,10,--hidden--,6,--hidden--,0,0,2013
+3,2013-09-17,Johnson and Johnson,63.20,Cleveland Steamers,73.04,7,--hidden--,9,--hidden--,0,0,2013
+3,2013-09-17,Cleveland Steamers,73.04,Johnson and Johnson,63.20,9,--hidden--,7,--hidden--,0,0,2013
+3,2013-09-17,Dirty Duke Dawgs,74.44,Free Mustache Rides,52.76,8,--hidden--,12,--hidden--,0,0,2013
+3,2013-09-17,Free Mustache Rides,52.76,Dirty Duke Dawgs,74.44,12,--hidden--,8,--hidden--,0,0,2013
+4,2013-09-24,Jake's Team,84.02,Vagina Slappers,118.28,1,--hidden--,5,--hidden--,0,0,2013
+4,2013-09-24,Vagina Slappers,118.28,Jake's Team,84.02,5,--hidden--,1,--hidden--,0,0,2013
+4,2013-09-24,Riley KKKooper,105.78,Shinnanigons,104.64,2,--hidden--,4,--hidden--,0,0,2013
+4,2013-09-24,Shinnanigons,104.64,Riley KKKooper,105.78,4,--hidden--,2,--hidden--,0,0,2013
+4,2013-09-24,Ridley Me This,91.24,Free Mustache Rides,85.60,3,--hidden--,12,--hidden--,0,0,2013
+4,2013-09-24,Free Mustache Rides,85.60,Ridley Me This,91.24,12,--hidden--,3,--hidden--,0,0,2013
+4,2013-09-24,Brian Dawson's Team,86.72,Talk Dirty to Me,104.78,6,--hidden--,11,--hidden--,0,0,2013
+4,2013-09-24,Talk Dirty to Me,104.78,Brian Dawson's Team,86.72,11,--hidden--,6,--hidden--,0,0,2013
+4,2013-09-24,Johnson and Johnson,68.28,Jacquizz on yo face,80.44,7,--hidden--,10,--hidden--,0,0,2013
+4,2013-09-24,Jacquizz on yo face,80.44,Johnson and Johnson,68.28,10,--hidden--,7,--hidden--,0,0,2013
+4,2013-09-24,Dirty Duke Dawgs,133.08,Cleveland Steamers,83.18,8,--hidden--,9,--hidden--,0,0,2013
+4,2013-09-24,Cleveland Steamers,83.18,Dirty Duke Dawgs,133.08,9,--hidden--,8,--hidden--,0,0,2013
+5,2013-10-01,Jake's Team,70.02,Brian Dawson's Team,69.50,1,--hidden--,6,--hidden--,0,0,2013
+5,2013-10-01,Brian Dawson's Team,69.50,Jake's Team,70.02,6,--hidden--,1,--hidden--,0,0,2013
+5,2013-10-01,Riley KKKooper,106.94,Vagina Slappers,122.16,2,--hidden--,5,--hidden--,0,0,2013
+5,2013-10-01,Vagina Slappers,122.16,Riley KKKooper,106.94,5,--hidden--,2,--hidden--,0,0,2013
+5,2013-10-01,Ridley Me This,83.18,Shinnanigons,125.34,3,--hidden--,4,--hidden--,0,0,2013
+5,2013-10-01,Shinnanigons,125.34,Ridley Me This,83.18,4,--hidden--,3,--hidden--,0,0,2013
+5,2013-10-01,Johnson and Johnson,103.68,Talk Dirty to Me,90.26,7,--hidden--,11,--hidden--,0,0,2013
+5,2013-10-01,Talk Dirty to Me,90.26,Johnson and Johnson,103.68,11,--hidden--,7,--hidden--,0,0,2013
+5,2013-10-01,Dirty Duke Dawgs,116.58,Jacquizz on yo face,109.66,8,--hidden--,10,--hidden--,0,0,2013
+5,2013-10-01,Jacquizz on yo face,109.66,Dirty Duke Dawgs,116.58,10,--hidden--,8,--hidden--,0,0,2013
+5,2013-10-01,Cleveland Steamers,65.52,Free Mustache Rides,120.96,9,--hidden--,12,--hidden--,0,0,2013
+5,2013-10-01,Free Mustache Rides,120.96,Cleveland Steamers,65.52,12,--hidden--,9,--hidden--,0,0,2013
+6,2013-10-08,Jake's Team,49.14,Johnson and Johnson,87.22,1,--hidden--,7,--hidden--,0,0,2013
+6,2013-10-08,Johnson and Johnson,87.22,Jake's Team,49.14,7,--hidden--,1,--hidden--,0,0,2013
+6,2013-10-08,Riley KKKooper,127.68,Brian Dawson's Team,74.38,2,--hidden--,6,--hidden--,0,0,2013
+6,2013-10-08,Brian Dawson's Team,74.38,Riley KKKooper,127.68,6,--hidden--,2,--hidden--,0,0,2013
+6,2013-10-08,Ridley Me This,68.76,Vagina Slappers,71.90,3,--hidden--,5,--hidden--,0,0,2013
+6,2013-10-08,Vagina Slappers,71.90,Ridley Me This,68.76,5,--hidden--,3,--hidden--,0,0,2013
+6,2013-10-08,Shinnanigons,80.60,Free Mustache Rides,81.30,4,--hidden--,12,--hidden--,0,0,2013
+6,2013-10-08,Free Mustache Rides,81.30,Shinnanigons,80.60,12,--hidden--,4,--hidden--,0,0,2013
+6,2013-10-08,Dirty Duke Dawgs,102.64,Talk Dirty to Me,80.16,8,--hidden--,11,--hidden--,0,0,2013
+6,2013-10-08,Talk Dirty to Me,80.16,Dirty Duke Dawgs,102.64,11,--hidden--,8,--hidden--,0,0,2013
+6,2013-10-08,Cleveland Steamers,84.48,Jacquizz on yo face,80.28,9,--hidden--,10,--hidden--,0,0,2013
+6,2013-10-08,Jacquizz on yo face,80.28,Cleveland Steamers,84.48,10,--hidden--,9,--hidden--,0,0,2013
+7,2013-10-15,Jake's Team,36.80,Dirty Duke Dawgs,96.32,1,--hidden--,8,--hidden--,0,0,2013
+7,2013-10-15,Dirty Duke Dawgs,96.32,Jake's Team,36.80,8,--hidden--,1,--hidden--,0,0,2013
+7,2013-10-15,Riley KKKooper,109.40,Johnson and Johnson,83.98,2,--hidden--,7,--hidden--,0,0,2013
+7,2013-10-15,Johnson and Johnson,83.98,Riley KKKooper,109.40,7,--hidden--,2,--hidden--,0,0,2013
+7,2013-10-15,Ridley Me This,44.12,Brian Dawson's Team,77.40,3,--hidden--,6,--hidden--,0,0,2013
+7,2013-10-15,Brian Dawson's Team,77.40,Ridley Me This,44.12,6,--hidden--,3,--hidden--,0,0,2013
+7,2013-10-15,Shinnanigons,103.38,Vagina Slappers,86.84,4,--hidden--,5,--hidden--,0,0,2013
+7,2013-10-15,Vagina Slappers,86.84,Shinnanigons,103.38,5,--hidden--,4,--hidden--,0,0,2013
+7,2013-10-15,Cleveland Steamers,69.06,Talk Dirty to Me,96.20,9,--hidden--,11,--hidden--,0,0,2013
+7,2013-10-15,Talk Dirty to Me,96.20,Cleveland Steamers,69.06,11,--hidden--,9,--hidden--,0,0,2013
+7,2013-10-15,Jacquizz on yo face,102.72,Free Mustache Rides,103.76,10,--hidden--,12,--hidden--,0,0,2013
+7,2013-10-15,Free Mustache Rides,103.76,Jacquizz on yo face,102.72,12,--hidden--,10,--hidden--,0,0,2013
+8,2013-10-22,Jake's Team,96.38,Cleveland Steamers,91.46,1,--hidden--,9,--hidden--,0,0,2013
+8,2013-10-22,Cleveland Steamers,91.46,Jake's Team,96.38,9,--hidden--,1,--hidden--,0,0,2013
+8,2013-10-22,Riley KKKooper,76.92,Dirty Duke Dawgs,106.48,2,--hidden--,8,--hidden--,0,0,2013
+8,2013-10-22,Dirty Duke Dawgs,106.48,Riley KKKooper,76.92,8,--hidden--,2,--hidden--,0,0,2013
+8,2013-10-22,Ridley Me This,76.94,Johnson and Johnson,70.42,3,--hidden--,7,--hidden--,0,0,2013
+8,2013-10-22,Johnson and Johnson,70.42,Ridley Me This,76.94,7,--hidden--,3,--hidden--,0,0,2013
+8,2013-10-22,Shinnanigons,76.74,Brian Dawson's Team,71.66,4,--hidden--,6,--hidden--,0,0,2013
+8,2013-10-22,Brian Dawson's Team,71.66,Shinnanigons,76.74,6,--hidden--,4,--hidden--,0,0,2013
+8,2013-10-22,Vagina Slappers,118.76,Free Mustache Rides,75.00,5,--hidden--,12,--hidden--,0,0,2013
+8,2013-10-22,Free Mustache Rides,75.00,Vagina Slappers,118.76,12,--hidden--,5,--hidden--,0,0,2013
+8,2013-10-22,Jacquizz on yo face,120.94,Talk Dirty to Me,90.34,10,--hidden--,11,--hidden--,0,0,2013
+8,2013-10-22,Talk Dirty to Me,90.34,Jacquizz on yo face,120.94,11,--hidden--,10,--hidden--,0,0,2013
+9,2013-10-29,Jake's Team,103.88,Jacquizz on yo face,80.60,1,--hidden--,10,--hidden--,0,0,2013
+9,2013-10-29,Jacquizz on yo face,80.60,Jake's Team,103.88,10,--hidden--,1,--hidden--,0,0,2013
+9,2013-10-29,Riley KKKooper,97.32,Cleveland Steamers,88.90,2,--hidden--,9,--hidden--,0,0,2013
+9,2013-10-29,Cleveland Steamers,88.90,Riley KKKooper,97.32,9,--hidden--,2,--hidden--,0,0,2013
+9,2013-10-29,Ridley Me This,112.08,Dirty Duke Dawgs,94.74,3,--hidden--,8,--hidden--,0,0,2013
+9,2013-10-29,Dirty Duke Dawgs,94.74,Ridley Me This,112.08,8,--hidden--,3,--hidden--,0,0,2013
+9,2013-10-29,Shinnanigons,109.78,Johnson and Johnson,147.04,4,--hidden--,7,--hidden--,0,0,2013
+9,2013-10-29,Johnson and Johnson,147.04,Shinnanigons,109.78,7,--hidden--,4,--hidden--,0,0,2013
+9,2013-10-29,Vagina Slappers,76.16,Brian Dawson's Team,75.88,5,--hidden--,6,--hidden--,0,0,2013
+9,2013-10-29,Brian Dawson's Team,75.88,Vagina Slappers,76.16,6,--hidden--,5,--hidden--,0,0,2013
+9,2013-10-29,Talk Dirty to Me,67.90,Free Mustache Rides,67.58,11,--hidden--,12,--hidden--,0,0,2013
+9,2013-10-29,Free Mustache Rides,67.58,Talk Dirty to Me,67.90,12,--hidden--,11,--hidden--,0,0,2013
+10,2013-11-05,Jake's Team,90.78,Talk Dirty to Me,100.76,1,--hidden--,11,--hidden--,0,0,2013
+10,2013-11-05,Talk Dirty to Me,100.76,Jake's Team,90.78,11,--hidden--,1,--hidden--,0,0,2013
+10,2013-11-05,Riley KKKooper,114.42,Jacquizz on yo face,58.96,2,--hidden--,10,--hidden--,0,0,2013
+10,2013-11-05,Jacquizz on yo face,58.96,Riley KKKooper,114.42,10,--hidden--,2,--hidden--,0,0,2013
+10,2013-11-05,Ridley Me This,53.80,Cleveland Steamers,106.86,3,--hidden--,9,--hidden--,0,0,2013
+10,2013-11-05,Cleveland Steamers,106.86,Ridley Me This,53.80,9,--hidden--,3,--hidden--,0,0,2013
+10,2013-11-05,Shinnanigons,74.92,Dirty Duke Dawgs,84.94,4,--hidden--,8,--hidden--,0,0,2013
+10,2013-11-05,Dirty Duke Dawgs,84.94,Shinnanigons,74.92,8,--hidden--,4,--hidden--,0,0,2013
+10,2013-11-05,Vagina Slappers,95.50,Johnson and Johnson,83.26,5,--hidden--,7,--hidden--,0,0,2013
+10,2013-11-05,Johnson and Johnson,83.26,Vagina Slappers,95.50,7,--hidden--,5,--hidden--,0,0,2013
+10,2013-11-05,Brian Dawson's Team,74.88,Free Mustache Rides,100.92,6,--hidden--,12,--hidden--,0,0,2013
+10,2013-11-05,Free Mustache Rides,100.92,Brian Dawson's Team,74.88,12,--hidden--,6,--hidden--,0,0,2013
+11,2013-11-12,Jake's Team,112.40,Free Mustache Rides,83.92,1,--hidden--,12,--hidden--,0,0,2013
+11,2013-11-12,Free Mustache Rides,83.92,Jake's Team,112.40,12,--hidden--,1,--hidden--,0,0,2013
+11,2013-11-12,Riley KKKooper,102.58,Talk Dirty to Me,100.28,2,--hidden--,11,--hidden--,0,0,2013
+11,2013-11-12,Talk Dirty to Me,100.28,Riley KKKooper,102.58,11,--hidden--,2,--hidden--,0,0,2013
+11,2013-11-12,Ridley Me This,68.44,Jacquizz on yo face,101.26,3,--hidden--,10,--hidden--,0,0,2013
+11,2013-11-12,Jacquizz on yo face,101.26,Ridley Me This,68.44,10,--hidden--,3,--hidden--,0,0,2013
+11,2013-11-12,Shinnanigons,124.90,Cleveland Steamers,95.90,4,--hidden--,9,--hidden--,0,0,2013
+11,2013-11-12,Cleveland Steamers,95.90,Shinnanigons,124.90,9,--hidden--,4,--hidden--,0,0,2013
+11,2013-11-12,Vagina Slappers,107.00,Dirty Duke Dawgs,74.66,5,--hidden--,8,--hidden--,0,0,2013
+11,2013-11-12,Dirty Duke Dawgs,74.66,Vagina Slappers,107.00,8,--hidden--,5,--hidden--,0,0,2013
+11,2013-11-12,Brian Dawson's Team,101.82,Johnson and Johnson,96.28,6,--hidden--,7,--hidden--,0,0,2013
+11,2013-11-12,Johnson and Johnson,96.28,Brian Dawson's Team,101.82,7,--hidden--,6,--hidden--,0,0,2013
+12,2013-11-19,Jake's Team,83.42,Riley KKKooper,72.52,1,--hidden--,2,--hidden--,0,0,2013
+12,2013-11-19,Riley KKKooper,72.52,Jake's Team,83.42,2,--hidden--,1,--hidden--,0,0,2013
+12,2013-11-19,Ridley Me This,98.06,Talk Dirty to Me,97.78,3,--hidden--,11,--hidden--,0,0,2013
+12,2013-11-19,Talk Dirty to Me,97.78,Ridley Me This,98.06,11,--hidden--,3,--hidden--,0,0,2013
+12,2013-11-19,Shinnanigons,104.66,Jacquizz on yo face,73.78,4,--hidden--,10,--hidden--,0,0,2013
+12,2013-11-19,Jacquizz on yo face,73.78,Shinnanigons,104.66,10,--hidden--,4,--hidden--,0,0,2013
+12,2013-11-19,Vagina Slappers,84.58,Cleveland Steamers,77.56,5,--hidden--,9,--hidden--,0,0,2013
+12,2013-11-19,Cleveland Steamers,77.56,Vagina Slappers,84.58,9,--hidden--,5,--hidden--,0,0,2013
+12,2013-11-19,Brian Dawson's Team,69.80,Dirty Duke Dawgs,122.62,6,--hidden--,8,--hidden--,0,0,2013
+12,2013-11-19,Dirty Duke Dawgs,122.62,Brian Dawson's Team,69.80,8,--hidden--,6,--hidden--,0,0,2013
+12,2013-11-19,Johnson and Johnson,78.48,Free Mustache Rides,103.18,7,--hidden--,12,--hidden--,0,0,2013
+12,2013-11-19,Free Mustache Rides,103.18,Johnson and Johnson,78.48,12,--hidden--,7,--hidden--,0,0,2013
+13,2013-11-26,Jake's Team,97.58,Ridley Me This,96.04,1,--hidden--,3,--hidden--,0,0,2013
+13,2013-11-26,Ridley Me This,96.04,Jake's Team,97.58,3,--hidden--,1,--hidden--,0,0,2013
+13,2013-11-26,Riley KKKooper,72.30,Free Mustache Rides,62.58,2,--hidden--,12,--hidden--,0,0,2013
+13,2013-11-26,Free Mustache Rides,62.58,Riley KKKooper,72.30,12,--hidden--,2,--hidden--,0,0,2013
+13,2013-11-26,Shinnanigons,143.20,Talk Dirty to Me,105.48,4,--hidden--,11,--hidden--,0,0,2013
+13,2013-11-26,Talk Dirty to Me,105.48,Shinnanigons,143.20,11,--hidden--,4,--hidden--,0,0,2013
+13,2013-11-26,Vagina Slappers,97.60,Jacquizz on yo face,109.94,5,--hidden--,10,--hidden--,0,0,2013
+13,2013-11-26,Jacquizz on yo face,109.94,Vagina Slappers,97.60,10,--hidden--,5,--hidden--,0,0,2013
+13,2013-11-26,Brian Dawson's Team,75.52,Cleveland Steamers,87.24,6,--hidden--,9,--hidden--,0,0,2013
+13,2013-11-26,Cleveland Steamers,87.24,Brian Dawson's Team,75.52,9,--hidden--,6,--hidden--,0,0,2013
+13,2013-11-26,Johnson and Johnson,101.10,Dirty Duke Dawgs,118.08,7,--hidden--,8,--hidden--,0,0,2013
+13,2013-11-26,Dirty Duke Dawgs,118.08,Johnson and Johnson,101.10,8,--hidden--,7,--hidden--,0,0,2013
+14,2013-12-03,Jake's Team,68.76,Shinnanigons,140.66,1,--hidden--,4,--hidden--,0,0,2013
+14,2013-12-03,Shinnanigons,140.66,Jake's Team,68.76,4,--hidden--,1,--hidden--,0,0,2013
+14,2013-12-03,Riley KKKooper,114.44,Ridley Me This,102.32,2,--hidden--,3,--hidden--,0,0,2013
+14,2013-12-03,Ridley Me This,102.32,Riley KKKooper,114.44,3,--hidden--,2,--hidden--,0,0,2013
+14,2013-12-03,Vagina Slappers,66.26,Talk Dirty to Me,86.76,5,--hidden--,11,--hidden--,0,0,2013
+14,2013-12-03,Talk Dirty to Me,86.76,Vagina Slappers,66.26,11,--hidden--,5,--hidden--,0,0,2013
+14,2013-12-03,Brian Dawson's Team,102.88,Jacquizz on yo face,92.94,6,--hidden--,10,--hidden--,0,0,2013
+14,2013-12-03,Jacquizz on yo face,92.94,Brian Dawson's Team,102.88,10,--hidden--,6,--hidden--,0,0,2013
+14,2013-12-03,Johnson and Johnson,63.54,Cleveland Steamers,74.80,7,--hidden--,9,--hidden--,0,0,2013
+14,2013-12-03,Cleveland Steamers,74.80,Johnson and Johnson,63.54,9,--hidden--,7,--hidden--,0,0,2013
+14,2013-12-03,Dirty Duke Dawgs,89.76,Free Mustache Rides,89.96,8,--hidden--,12,--hidden--,0,0,2013
+14,2013-12-03,Free Mustache Rides,89.96,Dirty Duke Dawgs,89.76,12,--hidden--,8,--hidden--,0,0,2013
+15,2013-12-10,Jake's Team,100.12,Free Mustache Rides,128.24,1,--hidden--,12,--hidden--,1,1,2013
+15,2013-12-10,Free Mustache Rides,128.24,Jake's Team,100.12,12,--hidden--,1,--hidden--,1,1,2013
+15,2013-12-10,Riley KKKooper,123.00,Vagina Slappers,96.82,2,--hidden--,5,--hidden--,0,1,2013
+15,2013-12-10,Vagina Slappers,96.82,Riley KKKooper,123.00,5,--hidden--,2,--hidden--,0,1,2013
+15,2013-12-10,Shinnanigons,96.22,Dirty Duke Dawgs,119.30,4,--hidden--,8,--hidden--,0,1,2013
+15,2013-12-10,Dirty Duke Dawgs,119.30,Shinnanigons,96.22,8,--hidden--,4,--hidden--,0,1,2013
+15,2013-12-10,Jacquizz on yo face,106.20,Talk Dirty to Me,99.84,10,--hidden--,11,--hidden--,1,1,2013
+15,2013-12-10,Talk Dirty to Me,99.84,Jacquizz on yo face,106.20,11,--hidden--,10,--hidden--,1,1,2013

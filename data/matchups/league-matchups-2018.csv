@@ -1,0 +1,153 @@
+week,week_start,team_1,points_1,team_2,points_2,team_id1,owner1,team_id2,owner2,Consolation,Playoff,Season
+16,2018-12-18,Rolls-Royce,145.38,My Ball Zack Ertz,87.94,2,ryan,3,Chris,1,1,2018
+16,2018-12-18,My Ball Zack Ertz,87.94,Rolls-Royce,145.38,3,Chris,2,ryan,1,1,2018
+16,2018-12-18,Deckers Barn animals,107.44,Jonesin' for the W,127.82,4,Kevin,10,Jeremy,1,1,2018
+16,2018-12-18,Jonesin' for the W,127.82,Deckers Barn animals,107.44,10,Jeremy,4,Kevin,1,1,2018
+16,2018-12-18,TY for the Goodwin,107.32,Krispy Kareem,121.74,6,Wesley,7,Greg,0,1,2018
+16,2018-12-18,Krispy Kareem,121.74,TY for the Goodwin,107.32,7,Greg,6,Wesley,0,1,2018
+16,2018-12-18,Push Ups in Prison,138.80,Easy Breesy,115.14,8,Pat,9,Peter Billups,0,1,2018
+16,2018-12-18,Easy Breesy,115.14,Push Ups in Prison,138.80,9,Peter Billups,8,Pat,0,1,2018
+1,2018-09-06,Turn ur head & Goff,105.44,Rolls-Royce,117.74,1,Tim,2,ryan,0,0,2018
+1,2018-09-06,Rolls-Royce,117.74,Turn ur head & Goff,105.44,2,ryan,1,Tim,0,0,2018
+1,2018-09-06,My Ball Zack Ertz,136.38,Easy Breesy,94.56,3,Chris,9,Peter Billups,0,0,2018
+1,2018-09-06,Easy Breesy,94.56,My Ball Zack Ertz,136.38,9,Peter Billups,3,Chris,0,0,2018
+1,2018-09-06,Deckers Barn animals,132.22,Push Ups in Prison,105.50,4,Kevin,8,Pat,0,0,2018
+1,2018-09-06,Push Ups in Prison,105.50,Deckers Barn animals,132.22,8,Pat,4,Kevin,0,0,2018
+1,2018-09-06,JMU Duke (Johnson)'s,152.06,Krispy Kareem,101.76,5,Shinn,7,Greg,0,0,2018
+1,2018-09-06,Krispy Kareem,101.76,JMU Duke (Johnson)'s,152.06,7,Greg,5,Shinn,0,0,2018
+1,2018-09-06,TY for the Goodwin,136.96,Jonesin' for the W,124.84,6,Wesley,10,Jeremy,0,0,2018
+1,2018-09-06,Jonesin' for the W,124.84,TY for the Goodwin,136.96,10,Jeremy,6,Wesley,0,0,2018
+2,2018-09-11,Turn ur head & Goff,139.50,My Ball Zack Ertz,117.36,1,Tim,3,Chris,0,0,2018
+2,2018-09-11,My Ball Zack Ertz,117.36,Turn ur head & Goff,139.50,3,Chris,1,Tim,0,0,2018
+2,2018-09-11,Rolls-Royce,129.34,Jonesin' for the W,104.10,2,ryan,10,Jeremy,0,0,2018
+2,2018-09-11,Jonesin' for the W,104.10,Rolls-Royce,129.34,10,Jeremy,2,ryan,0,0,2018
+2,2018-09-11,Deckers Barn animals,94.24,Easy Breesy,150.82,4,Kevin,9,Peter Billups,0,0,2018
+2,2018-09-11,Easy Breesy,150.82,Deckers Barn animals,94.24,9,Peter Billups,4,Kevin,0,0,2018
+2,2018-09-11,JMU Duke (Johnson)'s,87.06,Push Ups in Prison,109.58,5,Shinn,8,Pat,0,0,2018
+2,2018-09-11,Push Ups in Prison,109.58,JMU Duke (Johnson)'s,87.06,8,Pat,5,Shinn,0,0,2018
+2,2018-09-11,TY for the Goodwin,128.50,Krispy Kareem,104.44,6,Wesley,7,Greg,0,0,2018
+2,2018-09-11,Krispy Kareem,104.44,TY for the Goodwin,128.50,7,Greg,6,Wesley,0,0,2018
+3,2018-09-18,Turn ur head & Goff,132.00,Deckers Barn animals,133.08,1,Tim,4,Kevin,0,0,2018
+3,2018-09-18,Deckers Barn animals,133.08,Turn ur head & Goff,132.00,4,Kevin,1,Tim,0,0,2018
+3,2018-09-18,Rolls-Royce,99.40,My Ball Zack Ertz,101.22,2,ryan,3,Chris,0,0,2018
+3,2018-09-18,My Ball Zack Ertz,101.22,Rolls-Royce,99.40,3,Chris,2,ryan,0,0,2018
+3,2018-09-18,JMU Duke (Johnson)'s,88.64,Easy Breesy,106.94,5,Shinn,9,Peter Billups,0,0,2018
+3,2018-09-18,Easy Breesy,106.94,JMU Duke (Johnson)'s,88.64,9,Peter Billups,5,Shinn,0,0,2018
+3,2018-09-18,TY for the Goodwin,95.44,Push Ups in Prison,107.52,6,Wesley,8,Pat,0,0,2018
+3,2018-09-18,Push Ups in Prison,107.52,TY for the Goodwin,95.44,8,Pat,6,Wesley,0,0,2018
+3,2018-09-18,Krispy Kareem,116.34,Jonesin' for the W,104.56,7,Greg,10,Jeremy,0,0,2018
+3,2018-09-18,Jonesin' for the W,104.56,Krispy Kareem,116.34,10,Jeremy,7,Greg,0,0,2018
+4,2018-09-25,Turn ur head & Goff,151.30,JMU Duke (Johnson)'s,116.16,1,Tim,5,Shinn,0,0,2018
+4,2018-09-25,JMU Duke (Johnson)'s,116.16,Turn ur head & Goff,151.30,5,Shinn,1,Tim,0,0,2018
+4,2018-09-25,Rolls-Royce,153.52,Deckers Barn animals,122.08,2,ryan,4,Kevin,0,0,2018
+4,2018-09-25,Deckers Barn animals,122.08,Rolls-Royce,153.52,4,Kevin,2,ryan,0,0,2018
+4,2018-09-25,My Ball Zack Ertz,109.36,Jonesin' for the W,112.16,3,Chris,10,Jeremy,0,0,2018
+4,2018-09-25,Jonesin' for the W,112.16,My Ball Zack Ertz,109.36,10,Jeremy,3,Chris,0,0,2018
+4,2018-09-25,TY for the Goodwin,142.62,Easy Breesy,140.98,6,Wesley,9,Peter Billups,0,0,2018
+4,2018-09-25,Easy Breesy,140.98,TY for the Goodwin,142.62,9,Peter Billups,6,Wesley,0,0,2018
+4,2018-09-25,Krispy Kareem,121.70,Push Ups in Prison,85.86,7,Greg,8,Pat,0,0,2018
+4,2018-09-25,Push Ups in Prison,85.86,Krispy Kareem,121.70,8,Pat,7,Greg,0,0,2018
+5,2018-10-02,Turn ur head & Goff,95.14,TY for the Goodwin,125.54,1,Tim,6,Wesley,0,0,2018
+5,2018-10-02,TY for the Goodwin,125.54,Turn ur head & Goff,95.14,6,Wesley,1,Tim,0,0,2018
+5,2018-10-02,Rolls-Royce,107.98,JMU Duke (Johnson)'s,108.00,2,ryan,5,Shinn,0,0,2018
+5,2018-10-02,JMU Duke (Johnson)'s,108.00,Rolls-Royce,107.98,5,Shinn,2,ryan,0,0,2018
+5,2018-10-02,My Ball Zack Ertz,138.12,Deckers Barn animals,133.22,3,Chris,4,Kevin,0,0,2018
+5,2018-10-02,Deckers Barn animals,133.22,My Ball Zack Ertz,138.12,4,Kevin,3,Chris,0,0,2018
+5,2018-10-02,Krispy Kareem,113.16,Easy Breesy,113.52,7,Greg,9,Peter Billups,0,0,2018
+5,2018-10-02,Easy Breesy,113.52,Krispy Kareem,113.16,9,Peter Billups,7,Greg,0,0,2018
+5,2018-10-02,Push Ups in Prison,119.20,Jonesin' for the W,105.22,8,Pat,10,Jeremy,0,0,2018
+5,2018-10-02,Jonesin' for the W,105.22,Push Ups in Prison,119.20,10,Jeremy,8,Pat,0,0,2018
+6,2018-10-09,Turn ur head & Goff,117.48,Krispy Kareem,126.68,1,Tim,7,Greg,0,0,2018
+6,2018-10-09,Krispy Kareem,126.68,Turn ur head & Goff,117.48,7,Greg,1,Tim,0,0,2018
+6,2018-10-09,Rolls-Royce,105.80,TY for the Goodwin,99.22,2,ryan,6,Wesley,0,0,2018
+6,2018-10-09,TY for the Goodwin,99.22,Rolls-Royce,105.80,6,Wesley,2,ryan,0,0,2018
+6,2018-10-09,My Ball Zack Ertz,118.00,JMU Duke (Johnson)'s,135.10,3,Chris,5,Shinn,0,0,2018
+6,2018-10-09,JMU Duke (Johnson)'s,135.10,My Ball Zack Ertz,118.00,5,Shinn,3,Chris,0,0,2018
+6,2018-10-09,Deckers Barn animals,146.88,Jonesin' for the W,148.38,4,Kevin,10,Jeremy,0,0,2018
+6,2018-10-09,Jonesin' for the W,148.38,Deckers Barn animals,146.88,10,Jeremy,4,Kevin,0,0,2018
+6,2018-10-09,Push Ups in Prison,121.56,Easy Breesy,124.20,8,Pat,9,Peter Billups,0,0,2018
+6,2018-10-09,Easy Breesy,124.20,Push Ups in Prison,121.56,9,Peter Billups,8,Pat,0,0,2018
+7,2018-10-16,Turn ur head & Goff,140.88,Push Ups in Prison,111.94,1,Tim,8,Pat,0,0,2018
+7,2018-10-16,Push Ups in Prison,111.94,Turn ur head & Goff,140.88,8,Pat,1,Tim,0,0,2018
+7,2018-10-16,Rolls-Royce,111.30,Krispy Kareem,149.06,2,ryan,7,Greg,0,0,2018
+7,2018-10-16,Krispy Kareem,149.06,Rolls-Royce,111.30,7,Greg,2,ryan,0,0,2018
+7,2018-10-16,My Ball Zack Ertz,110.28,TY for the Goodwin,116.84,3,Chris,6,Wesley,0,0,2018
+7,2018-10-16,TY for the Goodwin,116.84,My Ball Zack Ertz,110.28,6,Wesley,3,Chris,0,0,2018
+7,2018-10-16,Deckers Barn animals,119.76,JMU Duke (Johnson)'s,147.22,4,Kevin,5,Shinn,0,0,2018
+7,2018-10-16,JMU Duke (Johnson)'s,147.22,Deckers Barn animals,119.76,5,Shinn,4,Kevin,0,0,2018
+7,2018-10-16,Easy Breesy,128.98,Jonesin' for the W,108.82,9,Peter Billups,10,Jeremy,0,0,2018
+7,2018-10-16,Jonesin' for the W,108.82,Easy Breesy,128.98,10,Jeremy,9,Peter Billups,0,0,2018
+8,2018-10-23,Turn ur head & Goff,144.40,Easy Breesy,90.90,1,Tim,9,Peter Billups,0,0,2018
+8,2018-10-23,Easy Breesy,90.90,Turn ur head & Goff,144.40,9,Peter Billups,1,Tim,0,0,2018
+8,2018-10-23,Rolls-Royce,120.14,Push Ups in Prison,127.36,2,ryan,8,Pat,0,0,2018
+8,2018-10-23,Push Ups in Prison,127.36,Rolls-Royce,120.14,8,Pat,2,ryan,0,0,2018
+8,2018-10-23,My Ball Zack Ertz,122.46,Krispy Kareem,104.50,3,Chris,7,Greg,0,0,2018
+8,2018-10-23,Krispy Kareem,104.50,My Ball Zack Ertz,122.46,7,Greg,3,Chris,0,0,2018
+8,2018-10-23,Deckers Barn animals,123.42,TY for the Goodwin,101.28,4,Kevin,6,Wesley,0,0,2018
+8,2018-10-23,TY for the Goodwin,101.28,Deckers Barn animals,123.42,6,Wesley,4,Kevin,0,0,2018
+8,2018-10-23,JMU Duke (Johnson)'s,155.50,Jonesin' for the W,124.32,5,Shinn,10,Jeremy,0,0,2018
+8,2018-10-23,Jonesin' for the W,124.32,JMU Duke (Johnson)'s,155.50,10,Jeremy,5,Shinn,0,0,2018
+9,2018-10-30,Turn ur head & Goff,133.92,Jonesin' for the W,126.50,1,Tim,10,Jeremy,0,0,2018
+9,2018-10-30,Jonesin' for the W,126.50,Turn ur head & Goff,133.92,10,Jeremy,1,Tim,0,0,2018
+9,2018-10-30,Rolls-Royce,145.06,Easy Breesy,139.44,2,ryan,9,Peter Billups,0,0,2018
+9,2018-10-30,Easy Breesy,139.44,Rolls-Royce,145.06,9,Peter Billups,2,ryan,0,0,2018
+9,2018-10-30,My Ball Zack Ertz,78.96,Push Ups in Prison,82.50,3,Chris,8,Pat,0,0,2018
+9,2018-10-30,Push Ups in Prison,82.50,My Ball Zack Ertz,78.96,8,Pat,3,Chris,0,0,2018
+9,2018-10-30,Deckers Barn animals,84.68,Krispy Kareem,119.70,4,Kevin,7,Greg,0,0,2018
+9,2018-10-30,Krispy Kareem,119.70,Deckers Barn animals,84.68,7,Greg,4,Kevin,0,0,2018
+9,2018-10-30,JMU Duke (Johnson)'s,133.40,TY for the Goodwin,98.56,5,Shinn,6,Wesley,0,0,2018
+9,2018-10-30,TY for the Goodwin,98.56,JMU Duke (Johnson)'s,133.40,6,Wesley,5,Shinn,0,0,2018
+10,2018-11-06,Turn ur head & Goff,129.16,Rolls-Royce,109.96,1,Tim,2,ryan,0,0,2018
+10,2018-11-06,Rolls-Royce,109.96,Turn ur head & Goff,129.16,2,ryan,1,Tim,0,0,2018
+10,2018-11-06,My Ball Zack Ertz,122.26,Easy Breesy,156.50,3,Chris,9,Peter Billups,0,0,2018
+10,2018-11-06,Easy Breesy,156.50,My Ball Zack Ertz,122.26,9,Peter Billups,3,Chris,0,0,2018
+10,2018-11-06,Deckers Barn animals,87.12,Push Ups in Prison,116.02,4,Kevin,8,Pat,0,0,2018
+10,2018-11-06,Push Ups in Prison,116.02,Deckers Barn animals,87.12,8,Pat,4,Kevin,0,0,2018
+10,2018-11-06,JMU Duke (Johnson)'s,123.30,Krispy Kareem,123.82,5,Shinn,7,Greg,0,0,2018
+10,2018-11-06,Krispy Kareem,123.82,JMU Duke (Johnson)'s,123.30,7,Greg,5,Shinn,0,0,2018
+10,2018-11-06,TY for the Goodwin,134.02,Jonesin' for the W,73.46,6,Wesley,10,Jeremy,0,0,2018
+10,2018-11-06,Jonesin' for the W,73.46,TY for the Goodwin,134.02,10,Jeremy,6,Wesley,0,0,2018
+11,2018-11-13,Turn ur head & Goff,157.52,My Ball Zack Ertz,72.10,1,Tim,3,Chris,0,0,2018
+11,2018-11-13,My Ball Zack Ertz,72.10,Turn ur head & Goff,157.52,3,Chris,1,Tim,0,0,2018
+11,2018-11-13,Rolls-Royce,83.14,Jonesin' for the W,118.92,2,ryan,10,Jeremy,0,0,2018
+11,2018-11-13,Jonesin' for the W,118.92,Rolls-Royce,83.14,10,Jeremy,2,ryan,0,0,2018
+11,2018-11-13,Deckers Barn animals,129.20,Easy Breesy,137.52,4,Kevin,9,Peter Billups,0,0,2018
+11,2018-11-13,Easy Breesy,137.52,Deckers Barn animals,129.20,9,Peter Billups,4,Kevin,0,0,2018
+11,2018-11-13,JMU Duke (Johnson)'s,107.04,Push Ups in Prison,111.96,5,Shinn,8,Pat,0,0,2018
+11,2018-11-13,Push Ups in Prison,111.96,JMU Duke (Johnson)'s,107.04,8,Pat,5,Shinn,0,0,2018
+11,2018-11-13,TY for the Goodwin,167.08,Krispy Kareem,111.92,6,Wesley,7,Greg,0,0,2018
+11,2018-11-13,Krispy Kareem,111.92,TY for the Goodwin,167.08,7,Greg,6,Wesley,0,0,2018
+12,2018-11-20,Turn ur head & Goff,135.12,Deckers Barn animals,123.56,1,Tim,4,Kevin,0,0,2018
+12,2018-11-20,Deckers Barn animals,123.56,Turn ur head & Goff,135.12,4,Kevin,1,Tim,0,0,2018
+12,2018-11-20,Rolls-Royce,58.62,My Ball Zack Ertz,116.52,2,ryan,3,Chris,0,0,2018
+12,2018-11-20,My Ball Zack Ertz,116.52,Rolls-Royce,58.62,3,Chris,2,ryan,0,0,2018
+12,2018-11-20,JMU Duke (Johnson)'s,126.18,Easy Breesy,164.24,5,Shinn,9,Peter Billups,0,0,2018
+12,2018-11-20,Easy Breesy,164.24,JMU Duke (Johnson)'s,126.18,9,Peter Billups,5,Shinn,0,0,2018
+12,2018-11-20,TY for the Goodwin,94.08,Push Ups in Prison,109.48,6,Wesley,8,Pat,0,0,2018
+12,2018-11-20,Push Ups in Prison,109.48,TY for the Goodwin,94.08,8,Pat,6,Wesley,0,0,2018
+12,2018-11-20,Krispy Kareem,132.06,Jonesin' for the W,95.44,7,Greg,10,Jeremy,0,0,2018
+12,2018-11-20,Jonesin' for the W,95.44,Krispy Kareem,132.06,10,Jeremy,7,Greg,0,0,2018
+13,2018-11-27,Turn ur head & Goff,110.38,JMU Duke (Johnson)'s,157.46,1,Tim,5,Shinn,0,0,2018
+13,2018-11-27,JMU Duke (Johnson)'s,157.46,Turn ur head & Goff,110.38,5,Shinn,1,Tim,0,0,2018
+13,2018-11-27,Rolls-Royce,76.02,Deckers Barn animals,95.10,2,ryan,4,Kevin,0,0,2018
+13,2018-11-27,Deckers Barn animals,95.10,Rolls-Royce,76.02,4,Kevin,2,ryan,0,0,2018
+13,2018-11-27,My Ball Zack Ertz,85.94,Jonesin' for the W,113.30,3,Chris,10,Jeremy,0,0,2018
+13,2018-11-27,Jonesin' for the W,113.30,My Ball Zack Ertz,85.94,10,Jeremy,3,Chris,0,0,2018
+13,2018-11-27,TY for the Goodwin,72.64,Easy Breesy,95.58,6,Wesley,9,Peter Billups,0,0,2018
+13,2018-11-27,Easy Breesy,95.58,TY for the Goodwin,72.64,9,Peter Billups,6,Wesley,0,0,2018
+13,2018-11-27,Krispy Kareem,76.56,Push Ups in Prison,183.88,7,Greg,8,Pat,0,0,2018
+13,2018-11-27,Push Ups in Prison,183.88,Krispy Kareem,76.56,8,Pat,7,Greg,0,0,2018
+14,2018-12-04,Turn ur head & Goff,112.52,Krispy Kareem,126.90,1,Tim,7,Greg,0,1,2018
+14,2018-12-04,Krispy Kareem,126.90,Turn ur head & Goff,112.52,7,Greg,1,Tim,0,1,2018
+14,2018-12-04,JMU Duke (Johnson)'s,80.84,TY for the Goodwin,112.42,5,Shinn,6,Wesley,0,1,2018
+14,2018-12-04,TY for the Goodwin,112.42,JMU Duke (Johnson)'s,80.84,6,Wesley,5,Shinn,0,1,2018
+15,2018-12-11,Turn ur head & Goff,84.52,JMU Duke (Johnson)'s,113.36,1,Tim,5,Shinn,0,1,2018
+15,2018-12-11,JMU Duke (Johnson)'s,113.36,Turn ur head & Goff,84.52,5,Shinn,1,Tim,0,1,2018
+15,2018-12-11,Rolls-Royce,107.26,Deckers Barn animals,73.84,2,ryan,4,Kevin,1,1,2018
+15,2018-12-11,Deckers Barn animals,73.84,Rolls-Royce,107.26,4,Kevin,2,ryan,1,1,2018
+15,2018-12-11,My Ball Zack Ertz,122.40,Jonesin' for the W,111.92,3,Chris,10,Jeremy,1,1,2018
+15,2018-12-11,Jonesin' for the W,111.92,My Ball Zack Ertz,122.40,10,Jeremy,3,Chris,1,1,2018
+15,2018-12-11,TY for the Goodwin,96.50,Easy Breesy,87.52,6,Wesley,9,Peter Billups,0,1,2018
+15,2018-12-11,Easy Breesy,87.52,TY for the Goodwin,96.50,9,Peter Billups,6,Wesley,0,1,2018
+15,2018-12-11,Krispy Kareem,101.42,Push Ups in Prison,98.90,7,Greg,8,Pat,0,1,2018
+15,2018-12-11,Push Ups in Prison,98.90,Krispy Kareem,101.42,8,Pat,7,Greg,0,1,2018
