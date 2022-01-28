@@ -90,7 +90,7 @@ def yahoo_update():
     spread.df_to_sheet(weeks_df, index=False, headers=False, start=(2,2), replace=False, fill_value="")
 
     with open(path +"/cronoutput.txt", "a") as f:
-        f.write("Done: " + datetime.now().strftime("%d/%m/%Y %H:%M:%S") + "\n")
+        f.write("Done: Regular season update on " + datetime.now().strftime("%d/%m/%Y %H:%M:%S") + "\n")
 
     print(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
     

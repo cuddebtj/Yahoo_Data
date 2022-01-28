@@ -78,20 +78,25 @@ def yahoo_update():
         week_df["name"] = team_ids["name"][int(id_)-1]
         week_stats = pd.concat([week_stats, week_df])
     week_stats.reset_index(drop=True, inplace=True)
-    week_stats["GType"] = ""
+    week_stats["GType"] = "-"
     week_stats["key"] = ""
-    week_stats = week_stats[["key", "week", "GType", "name", "total"]]
+    week_stats["TeamB"] = "-"
+    week_stats["ScoreB"] = "-"
+    week_stats = week_stats[["key", "week", "GType", "name", "total", "TeamB", "ScoreB"]]
     week_stats.rename(columns={"week": "Week", "name": "TeamA", "total": "ScoreA"}, inplace=True)
     week_stats.replace(to_replace=["Wesley", "ryan", "Peter Billups"], value=["Wes", "Ryan", "Pete"], regex=True, inplace=True)
 
     spread = Spread("MoM 2021 Schedule", sheet="Schedule")
     old_df = spread.sheet_to_df()
+    old_df["Week"] = old_df["Week"].astype(int)
+    old_df = old_df[old_df["Week"] < week_stats["Week"][0]]
     new_df = pd.concat([old_df, week_stats])
+    new_df.reset_index(drop=True, inplace=True)
     new_df.drop(["key"], axis=1, inplace=True)
     spread.df_to_sheet(new_df, index=False, headers=False, start=(2,2), replace=False, fill_value="")
 
     with open(path +"/cronoutput.txt", "a") as f:
-        f.write("Done: " + datetime.now().strftime("%d/%m/%Y %H:%M:%S") + "\n")
+        f.write("Done: Post season update on " + datetime.now().strftime("%d/%m/%Y %H:%M:%S") + "\n")
 
     print(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
     
