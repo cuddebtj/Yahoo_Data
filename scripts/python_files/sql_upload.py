@@ -6,8 +6,9 @@ from sqlalchemy.engine import URL
 from dotenv import load_dotenv
 
 
-
-def table_upload_sql(dataframe, table_name, if_exists="append", index=False, data_schema, chunksize):
+def table_upload_sql(
+    dataframe, table_name, data_schema, chunksize, if_exists="append", index=False
+):
     """
     Easy upload for tables to SQL Server
     """
@@ -27,23 +28,32 @@ def table_upload_sql(dataframe, table_name, if_exists="append", index=False, dat
         + sql_database
         + ";UID="
         + sql_username
-        + ';PWD='
+        + ";PWD="
         + sql_password
-        + ";Trusted_Connection=yes;"    
+        + ";Trusted_Connection=yes;"
     )
 
     try:
 
-        connection_url = URL.create("mssql+pyodbc", query={"odbc_connect": connection_string})
+        connection_url = URL.create(
+            "mssql+pyodbc", query={"odbc_connect": connection_string}
+        )
         engine = create_engine(connection_url)
         conn = engine.connect()
 
-        dataframe.to_sql(table_name, engine=engine, if_exists=if_exists, index=index, schema=data_schema, chunksize=chunksize)
+        dataframe.to_sql(
+            table_name,
+            engine=engine,
+            if_exists=if_exists,
+            index=index,
+            schema=data_schema,
+            chunksize=chunksize,
+        )
 
         conn.close()
 
         print(f"{table_name} successfully updated or added to SQL server.")
 
     except Exception as e:
-        
+
         print(f"{table_name} was not created.\n{e}")
