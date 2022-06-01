@@ -47,8 +47,8 @@ try:
         browser_callback=True,
     )
 
-except Exception as e:
-    print(e)
+except Exception as yahoo_query_e:
+    print(yahoo_query_e)
 
 
 def yahoo_update_post_season():
