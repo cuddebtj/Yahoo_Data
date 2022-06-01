@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-PATH = Path.cwd().parents[1]
+PATH = Path.cwd().parents[0]
 
 
 def get_season():
@@ -72,12 +72,12 @@ def sql_upload_table(
     """
     Easy upload for tables to SQL Server
     """
-    load_dotenv()
+
     sql_driver = os.getenv("sql_driver")
     sql_server = os.getenv("sql_server")
     sql_database = os.getenv("sql_database")
     sql_username = os.getenv("sql_username")
-    sql_password = os.getnenv("sql_password")
+    sql_password = os.getenv("sql_password")
 
     connection_string = (
         "DRIVER={"
@@ -103,7 +103,7 @@ def sql_upload_table(
 
         dataframe.to_sql(
             table_name,
-            engine=engine,
+            con=engine,
             if_exists=if_exists,
             index=index,
             schema=data_schema,
