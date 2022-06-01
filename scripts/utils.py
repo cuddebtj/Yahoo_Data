@@ -66,7 +66,7 @@ def google_sheet_upload(new_df):
         print(e)
 
 
-def table_upload_sql(
+def sql_upload_table(
     dataframe, table_name, data_schema, chunksize, if_exists="append", index=False
 ):
     """
