@@ -32,10 +32,18 @@ def table_upload_sql(dataframe, table_name, if_exists="append", index=False, dat
         + ";Trusted_Connection=yes;"    
     )
 
-    connection_url = URL.create("mssql+pyodbc", query={"odbc_connect": connection_string})
-    engine = create_engine(connection_url)
-    conn = engine.connect()
+    try:
 
-    dataframe.to_sql(table_name, engine=engine, if_exists=if_exists, index=index, schema=data_schema, chunksize=chunksize)
+        connection_url = URL.create("mssql+pyodbc", query={"odbc_connect": connection_string})
+        engine = create_engine(connection_url)
+        conn = engine.connect()
 
-    conn.close()
+        dataframe.to_sql(table_name, engine=engine, if_exists=if_exists, index=index, schema=data_schema, chunksize=chunksize)
+
+        conn.close()
+
+        print(f"{table_name} successfully updated or added to SQL server.")
+
+    except Exception as e:
+        
+        print(f"{table_name} was not created.\n{e}")
