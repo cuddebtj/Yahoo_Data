@@ -116,3 +116,45 @@ def sql_upload_table(
 
     except Exception as e:
         print(f"{table_name} was not created.\n{e}")
+
+
+def sql_grab_table(table_name):
+    """
+    Easy grab table from SQL Server
+    """
+    sql_driver = os.getenv("sql_driver")
+    sql_server = os.getenv("sql_server")
+    sql_database = os.getenv("sql_database")
+    sql_username = os.getenv("sql_username")
+    sql_password = os.getenv("sql_password")
+    connection_string = (
+        "DRIVER={"
+        + sql_driver
+        + "};SERVER="
+        + sql_server
+        + ";DATABASE="
+        + sql_database
+        + ";UID="
+        + sql_username
+        + ";PWD="
+        + sql_password
+        + ";Trusted_Connection=yes;"
+    )
+
+    try:
+        connection_url = URL.create(
+            "mssql+pyodbc", query={"odbc_connect": connection_string}
+        )
+        engine = create_engine(connection_url)
+        conn = engine.connect()
+
+        df = pd.read_sql_table(table_name, con=conn)
+
+        conn.close()
+
+        print(f"{table_name} successfully pulled from SQL server.")
+
+        return df
+
+    except Exception as e:
+        print(f"{table_name} was not successfully pulled from SQL server.\n{e}")
