@@ -3,9 +3,10 @@ import pyodbc
 import os
 from gspread_pandas import Spread
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime as dt
 from dateutil.relativedelta import relativedelta
 from sqlalchemy import create_engine
+from sqlalchemy.types import NVARCHAR, DateTime, Float, INT
 from sqlalchemy.engine import URL
 from dotenv import load_dotenv
 
@@ -19,8 +20,8 @@ def get_season():
     Calculate the season the NFL Fantasy Season is in
     If season has hit August first, it will still be previous season
     """
-    date = datetime.today()
-    nfl_start = datetime(date.year, 8, 1)
+    date = dt.today()
+    nfl_start = dt(date.year, 8, 1)
     nfl_end = nfl_start + relativedelta(years=1)
     if nfl_start <= date <= nfl_end:
         season = int(nfl_start.year)
@@ -93,6 +94,25 @@ def sql_upload_table(
         + ";Trusted_Connection=yes;"
     )
 
+    def sqlcol(dfparam):
+        dtypedict = {}
+        for i, j in zip(dfparam.columns, dfparam.dtypes):
+            if "object" in str(j):
+                dtypedict.update({i: NVARCHAR(length=255)})
+
+            if "datetime" in str(j):
+                dtypedict.update({i: DateTime()})
+
+            if "float" in str(j):
+                dtypedict.update({i: Float(precision=2, asdecimal=True)})
+
+            if "int" in str(j):
+                dtypedict.update({i: INT()})
+
+        return dtypedict
+
+    dtype_outputs = sqlcol(dataframe)
+
     try:
 
         connection_url = URL.create(
@@ -108,6 +128,7 @@ def sql_upload_table(
             index=index,
             schema=data_schema,
             chunksize=chunksize,
+            dtype=dtype_outputs,
         )
 
         conn.close()
