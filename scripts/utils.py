@@ -4,7 +4,6 @@ import os
 from gspread_pandas import Spread
 from pathlib import Path
 from datetime import datetime as dt
-from dateutil.relativedelta import relativedelta
 from sqlalchemy import create_engine
 from sqlalchemy.types import NVARCHAR, DateTime, Float, INT
 from sqlalchemy.engine import URL
@@ -14,37 +13,20 @@ load_dotenv()
 
 PATH = Path.cwd().parents[0]
 
-
 def get_season():
     """
     Calculate the season the NFL Fantasy Season is in
     If season has hit August first, it will still be previous season
     """
     date = dt.today()
-    nfl_start = dt(date.year, 8, 1)
-    nfl_end = nfl_start + relativedelta(years=1)
+    nfl_start = dt(date.year, 9, 1)
+    nfl_end = dt(date.year+1, 2, 28)
     if nfl_start <= date <= nfl_end:
         season = int(nfl_start.year)
     else:
         season = int(nfl_start.year) - 1
 
-    return "2021"  # str(season)
-
-
-def league_season_info():
-    """
-    Function to call assests files for Yahoo API Query
-    """
-    try:
-        nfl_dates_df = pd.read_csv(
-            PATH / "assests" / "nfl-weeks.csv", parse_dates=["Start_Date", "End_Date"]
-        )
-        league_id_df = pd.read_csv(PATH / "assests" / "ID.csv", dtype=str)
-
-        return nfl_dates_df, league_id_df
-
-    except Exception as e:
-        print(e)
+    return str(season)
 
 
 def google_sheet_upload(new_df):
@@ -179,3 +161,29 @@ def sql_grab_table(table_name):
 
     except Exception as e:
         print(f"{table_name} was not successfully pulled from SQL server.\n{e}")
+
+
+def league_season_info(first='Yes'):
+    """
+    Function to call assests files for Yahoo API Query
+    """
+    if 'NO' in str(first).upper():
+        try:
+            nfl_weeks = sql_grab_table('NFLWeeks')
+            league_id = sql_grab_table('GameKeys')
+
+            return nfl_weeks, league_id
+        except Exception as e:
+            print(e)
+
+    elif 'YES' not in str(first).upper():
+        try:
+            nfl_dates_df = pd.read_csv(
+                PATH / "assests" / "nfl-weeks.csv", parse_dates=["Start_Date", "End_Date"]
+            )
+            league_id_df = pd.read_csv(PATH / "assests" / "ID.csv", dtype=str)
+
+            return nfl_dates_df, league_id_df
+
+        except Exception as e:
+            print(e)
