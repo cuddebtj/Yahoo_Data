@@ -8,10 +8,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.types import NVARCHAR, DateTime, Float, INT
 from sqlalchemy.engine import URL
 from dotenv import load_dotenv
+import logging
+
+logger = logging.getLogger("sqlalchemy")
+logger.setLevel(logging.ERROR)
 
 load_dotenv()
 
 PATH = Path.cwd().parents[0]
+
 
 def get_season():
     """
@@ -20,13 +25,13 @@ def get_season():
     """
     date = dt.today()
     nfl_start = dt(date.year, 9, 1)
-    nfl_end = dt(date.year+1, 2, 28)
+    nfl_end = dt(date.year + 1, 2, 28)
     if nfl_start <= date <= nfl_end:
         season = int(nfl_start.year)
     else:
         season = int(nfl_start.year) - 1
 
-    return str(season)
+    return season
 
 
 def google_sheet_upload(new_df):
@@ -121,69 +126,76 @@ def sql_upload_table(
         print(f"{table_name} was not created.\n{e}")
 
 
-def sql_grab_table(table_name):
+def sql_grab_table(sql_string):
     """
     Easy grab table from SQL Server
     """
-    sql_driver = os.getenv("sql_driver")
-    sql_server = os.getenv("sql_server")
-    sql_database = os.getenv("sql_database")
-    sql_username = os.getenv("sql_username")
-    sql_password = os.getenv("sql_password")
-    connection_string = (
-        "DRIVER={"
-        + sql_driver
-        + "};SERVER="
-        + sql_server
-        + ";DATABASE="
-        + sql_database
-        + ";UID="
-        + sql_username
-        + ";PWD="
-        + sql_password
-        + ";Trusted_Connection=yes;"
-    )
+    if not sql_string:
+        print('Please entry either a table name or query to pull data from sql.')
 
-    try:
-        connection_url = URL.create(
-            "mssql+pyodbc", query={"odbc_connect": connection_string}
+    else:
+        sql_driver = os.getenv("sql_driver")
+        sql_server = os.getenv("sql_server")
+        sql_database = os.getenv("sql_database")
+        sql_username = os.getenv("sql_username")
+        sql_password = os.getenv("sql_password")
+        connection_string = (
+            "DRIVER={"
+            + sql_driver
+            + "};SERVER="
+            + sql_server
+            + ";DATABASE="
+            + sql_database
+            + ";UID="
+            + sql_username
+            + ";PWD="
+            + sql_password
+            + ";Trusted_Connection=yes;"
         )
-        engine = create_engine(connection_url)
-        conn = engine.connect()
 
-        df = pd.read_sql_table(table_name, con=conn)
+        try:
+            connection_url = URL.create(
+                "mssql+pyodbc", query={"odbc_connect": connection_string}
+            )
+            engine = create_engine(connection_url)
+            conn = engine.connect()
 
-        conn.close()
+            df = pd.read_sql(sql_string, con=conn)
 
-        print(f"{table_name} successfully pulled from SQL server.")
+            conn.close()
 
-        return df
+            print(f"{sql_string} successfully pulled from SQL server.")
 
-    except Exception as e:
-        print(f"{table_name} was not successfully pulled from SQL server.\n{e}")
+            return df
+
+        except Exception as e:
+            print(f"{sql_string} was not successfully pulled from SQL server.\n{e}")
 
 
-def league_season_info(first='Yes'):
+
+def nfl_weeks_pull():
     """
     Function to call assests files for Yahoo API Query
     """
-    if 'NO' in str(first).upper():
-        try:
-            nfl_weeks = sql_grab_table('NFLWeeks')
-            league_id = sql_grab_table('GameKeys')
+    try:
+        nfl_weeks = sql_grab_table("NFLWeeks")
+        return nfl_weeks
+    except Exception as e:
+        print(e)
 
-            return nfl_weeks, league_id
-        except Exception as e:
-            print(e)
 
-    elif 'YES' not in str(first).upper():
-        try:
-            nfl_dates_df = pd.read_csv(
-                PATH / "assests" / "nfl-weeks.csv", parse_dates=["Start_Date", "End_Date"]
-            )
-            league_id_df = pd.read_csv(PATH / "assests" / "ID.csv", dtype=str)
+def game_keys_pull(first="yes"):
+    """
+    Function to call game_keys
+    """
+    try:
+        if "YES" == str(first).upper():
+            game_keys = pd.read_csv(PATH / "assests" / "ID.csv")
+            return game_keys
 
-            return nfl_dates_df, league_id_df
+        elif "NO" == str(first).upper():
+            game_keys = sql_grab_table("GameKeys")
+            return game_keys
 
-        except Exception as e:
-            print(e)
+    except Exception as e:
+        print(e)
