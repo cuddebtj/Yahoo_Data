@@ -546,28 +546,37 @@ class league_season_data(object):
     def team_roster_by_week(self, first_time="no", nfl_week=None):
 
         team_ids = sql_grab_table("Teams")
-        team_ids = list(team_ids['team_id'][(team_ids['game_id'] == str(self.game_id)) & (team_ids['league_id'] == str(self.league_id))])
+        team_ids = list(
+            team_ids["team_id"][
+                (team_ids["game_id"] == str(self.game_id))
+                & (team_ids["league_id"] == str(self.league_id))
+            ]
+        )
 
         team_week_rosters = pd.DataFrame()
         for team in team_ids:
             try:
-                response = complex_json_handler(self.yahoo_query.get_team_roster_by_week(str(team), nfl_week))
+                response = complex_json_handler(
+                    self.yahoo_query.get_team_roster_by_week(str(team), nfl_week)
+                )
 
             except Exception as e:
                 if "token expired" in str(e):
                     self.yahoo_query._authenticate()
 
                 else:
-                    print(f'Error, sleeping for 30 min before retrying.\n{e}')
+                    print(f"Error, sleeping for 30 min before retrying.\n{e}")
                     time.sleep(1800)
                     self.yahoo_query._authenticate()
-                    
-                response = complex_json_handler(self.yahoo_query.get_team_roster_by_week(str(team), nfl_week))
+
+                response = complex_json_handler(
+                    self.yahoo_query.get_team_roster_by_week(str(team), nfl_week)
+                )
 
             team_roster = pd.DataFrame()
             time.sleep(2)
 
-            for r in response['players']:
+            for r in response["players"]:
                 row = pd.json_normalize(complex_json_handler(r["player"]))
                 team_roster = pd.concat([team_roster, row])
                 team_roster["team_id"] = team
@@ -577,7 +586,9 @@ class league_season_data(object):
 
         team_week_rosters["game_id"] = self.game_id
         team_week_rosters["league_id"] = self.league_id
-        team_week_rosters["eligible_positions"] = [", ".join(map(str, l)) for l in team_week_rosters["eligible_positions"]]
+        team_week_rosters["eligible_positions"] = [
+            ", ".join(map(str, l)) for l in team_week_rosters["eligible_positions"]
+        ]
         team_week_rosters.drop_duplicates(ignore_index=True, inplace=True)
 
         if str(first_time).upper() == "YES":
@@ -606,7 +617,9 @@ class league_season_data(object):
         if nfl_week == None:
             print("Please include nfl_week in class creation")
         else:
-            players = sql_grab_table(f"SELECT player_key FROM MenOfMadison.dbo.Players WHERE game_id = {self.game_id} AND league_id = {self.league_id}")
+            players = sql_grab_table(
+                f"SELECT player_key FROM MenOfMadison.dbo.Players WHERE game_id = {self.game_id} AND league_id = {self.league_id}"
+            )
             player_keys = list(players["player_key"])
             player_stats = pd.DataFrame()
             for k in player_keys:

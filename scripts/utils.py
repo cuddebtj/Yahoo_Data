@@ -131,7 +131,7 @@ def sql_grab_table(sql_string):
     Easy grab table from SQL Server
     """
     if not sql_string:
-        print('Please entry either a table name or query to pull data from sql.')
+        print("Please entry either a table name or query to pull data from sql.")
 
     else:
         sql_driver = os.getenv("sql_driver")
@@ -170,7 +170,6 @@ def sql_grab_table(sql_string):
 
         except Exception as e:
             print(f"{sql_string} was not successfully pulled from SQL server.\n{e}")
-
 
 
 def nfl_weeks_pull():
