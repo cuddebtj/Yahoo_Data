@@ -1,0 +1,12 @@
+code,game_id,game_key,is_game_over,is_offseason,is_registration_over,name,season,type,url,league_ID
+nfl,273,273,1,1,1,Football,2012,full,https://football.fantasysports.yahoo.com/2012/f1,777818
+nfl,314,314,1,1,1,Football,2013,full,https://football.fantasysports.yahoo.com/2013/f1,731544
+nfl,331,331,1,1,1,Football,2014,full,https://football.fantasysports.yahoo.com/2014/f1,793441
+nfl,348,348,1,1,1,Football,2015,full,https://football.fantasysports.yahoo.com/2015/f1,570821
+nfl,359,359,1,1,1,Football,2016,full,https://football.fantasysports.yahoo.com/2016/f1,185373
+nfl,371,371,1,1,1,Football,2017,full,https://football.fantasysports.yahoo.com/2017/f1,525547
+nfl,380,380,1,1,1,Football,2018,full,https://football.fantasysports.yahoo.com/2018/f1,236583
+nfl,390,390,1,1,1,Football,2019,full,https://football.fantasysports.yahoo.com/2019/f1,215172
+nfl,399,399,1,1,1,Football,2020,full,https://football.fantasysports.yahoo.com/2020/f1,12514
+nfl,406,406,1,1,1,Football,2021,full,https://football.fantasysports.yahoo.com/2021/f1,103661
+nfl,414,414,0,0,0,Football,2022,full,https://football.fantasysports.yahoo.com/f1,77446

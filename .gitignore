@@ -130,7 +130,3 @@ private.json
 
 # Pyre type checker
 .pyre/
-
-
-# Unneded files
-*.csv
