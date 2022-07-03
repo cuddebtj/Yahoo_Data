@@ -1,7 +1,7 @@
 import pandas as pd
-import pyodbc
+# import pyodbc
 import os
-from gspread_pandas import Spread
+# from gspread_pandas import Spread
 from pathlib import Path
 from datetime import datetime as dt
 from sqlalchemy import create_engine
@@ -34,24 +34,24 @@ def get_season():
     return season
 
 
-def google_sheet_upload(new_df):
-    """
-    Get data already in google sheet and combine it with the new data
-    Re-load it to google sheet
-    """
-    try:
-        spread = Spread("Historical Data", sheet="Data")
-        old_df = spread.sheet_to_df()
-        old_df["Week"] = old_df["Week"].astype(int)
-        df = pd.concat([old_df, new_df])
-        df.reset_index(drop=True, inplace=True)
-        df.drop(["key"], axis=1, inplace=True)
-        df.drop_duplicates(inplace=True)
-        spread.df_to_sheet(
-            df, index=False, headers=False, start=(2, 2), replace=False, fill_value=""
-        )
-    except Exception as e:
-        print(e)
+# def google_sheet_upload(new_df):
+#     """
+#     Get data already in google sheet and combine it with the new data
+#     Re-load it to google sheet
+#     """
+#     try:
+#         spread = Spread("Historical Data", sheet="Data")
+#         old_df = spread.sheet_to_df()
+#         old_df["Week"] = old_df["Week"].astype(int)
+#         df = pd.concat([old_df, new_df])
+#         df.reset_index(drop=True, inplace=True)
+#         df.drop(["key"], axis=1, inplace=True)
+#         df.drop_duplicates(inplace=True)
+#         spread.df_to_sheet(
+#             df, index=False, headers=False, start=(2, 2), replace=False, fill_value=""
+#         )
+#     except Exception as e:
+#         print(e)
 
 
 def sql_upload_table(
