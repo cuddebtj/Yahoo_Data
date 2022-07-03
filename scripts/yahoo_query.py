@@ -641,7 +641,7 @@ class league_season_data(object):
                     r1 = self.yahoo_query.get_player_stats_by_week(k, nfl_week)
                     r2 = self.yahoo_query.get_player_percent_owned_by_week(k, nfl_week)
 
-                time.sleep(2.4)
+                time.sleep(5)
                 data = complex_json_handler(r1)
                 player = pd.json_normalize(data)
                 stats = data["player_stats"]["stats"]
