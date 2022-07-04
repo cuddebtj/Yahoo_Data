@@ -11,6 +11,9 @@ class DatabaseCursor(object):
     def __init__(self, credential_file, **kwargs):
         """
         Import database credentials
+
+        credential_file = path to private yaml file
+        kwargs = {options: "-c search_path=dev"}
         """
 
         self.kwargs = kwargs
@@ -29,14 +32,11 @@ class DatabaseCursor(object):
 
         try:
             self.conn_string = f"postgresql+psycopg2://{self.credentials['psql_username']}:{self.credentials['psql_password']}@localhost/{self.credentials['psql_database']}"
-
-            conn_args_dict = {}
-            for key, value in self.kwargs.items():
-                conn_args_dict[key] = value
-
-            self.engine = create_engine(self.conn_string, connect_args=conn_args_dict)
+            self.engine = create_engine(self.conn_string, connect_args=self.kwargs)
             self.conn = self.engine.raw_connection()
             self.cur = self.conn.cursor()
+
+            return self.cur
 
         except (Exception, psycopg2.OperationalError) as error:
             print(error)
@@ -44,13 +44,12 @@ class DatabaseCursor(object):
     def __exit__(self, exc_result):
         """
         Close connection and cursor
+
+        exc_results = bool
         """
 
         if exc_result == True:
-            self.cur.commit()
-
-        else:
-            self.cur.rollback()
+            self.conn.commit()
 
         self.cur.close()
         self.conn.close()
@@ -61,6 +60,7 @@ class DatabaseCursor(object):
         about the tables and schemas within
         """
         try:
+            cursor = self.__enter__()
             with self.conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute(
                     """
@@ -86,13 +86,14 @@ class DatabaseCursor(object):
 
         schema = "test"
         """
+        cursor = self.__enter__()
 
         sql_query = sql.SQL("CREATE SCHEMA IF NOT EXISTS {schema};").format(
             schema=sql.Identifier(schema)
         )
 
         try:
-            self.cur.execute(sql_query)
+            cursor.execute(sql_query)
             self.__exit__(exc_result=True)
             print(f"{schema} schema created within MenOfMadison.")
 
@@ -106,13 +107,14 @@ class DatabaseCursor(object):
 
         schema = "test"
         """
+        cursor = self.__enter__()
 
         sql_query = sql.SQL("DROP SCHEMA IF EXISTS {schema};").format(
             schema=sql.Identifier(schema)
         )
 
         try:
-            self.cur.execute(sql_query)
+            cursor.execute(sql_query)
             self.__exit__(exc_result=True)
             print(f"{schema} schema dropped within MenOfMadison.")
 
@@ -127,13 +129,14 @@ class DatabaseCursor(object):
         schema = "public"
         table = "test"
         """
+        cursor = self.__enter__()
 
         sql_query = sql.SQL("DROP TABLE IF EXISTS {schema}.{table};").format(
             schema=sql.Identifier(schema), table=sql.Identifier(table)
         )
 
         try:
-            self.cur.execute(sql_query)
+            cursor.execute(sql_query)
             self.__exit__(exc_result=True)
             print(f"{table} table dropped within MenOfMadison.{schema}")
 
@@ -141,7 +144,7 @@ class DatabaseCursor(object):
             self.__exit__(exc_result=False)
             print(f"Error: {error}")
 
-    def copy_table_to_postgres(self, df, table):
+    def copy_table_to_postgres_new(self, df, table, first_time="NO"):
         """
         Copy table to postgres from a pandas dataframe
         in memory using StringIO
@@ -149,11 +152,22 @@ class DatabaseCursor(object):
         https://stackoverflow.com/questions/23103962/how-to-write-dataframe-to-postgres-table
 
         table = "test"
+        df = pd.DataFrame()
+        first_time = "NO"
         """
+        cursor = self.__enter__()
 
-        df.head(0).to_sql(
-            "test", self.engine, if_exists="replace", index=False, schema="dev"
-        )
+        if str(first_time).upper() == "YES":
+            if "prod" in str(self.kwargs):
+                df.head(0).to_sql(
+                    table, self.engine, if_exists="replace", index=False, schema="prod"
+                )
+
+            else:
+                df.head(0).to_sql(
+                    table, self.engine, if_exists="replace", index=False, schema="dev"
+                )
+
         buffer = StringIO()
         df.to_csv(buffer, index=False, header=False)
         buffer.seek(0)
@@ -164,7 +178,7 @@ class DatabaseCursor(object):
             ).format(
                 table=sql.Identifier(table),
             )
-            self.cur.copy_expert(query, buffer)
+            cursor.copy_expert(query, buffer)
             self.__exit__(exc_result=True)
             print(f"Upload successful: {table}")
 
@@ -178,15 +192,17 @@ class DatabaseCursor(object):
         Pandas dataframe
         https://towardsdatascience.com/optimizing-pandas-read-sql-for-postgres-f31cd7f707ab
 
-        query = "select * from players.test"
+        query = "select * from dev.test"
         """
+        cursor = self.__enter__()
+
         sql_query = "COPY ({query}) TO STDOUT WITH CSV {head}".format(
             query=query, head="HEADER"
         )
         buffer = StringIO()
 
         try:
-            self.cur.copy_expert(sql_query, buffer)
+            cursor.copy_expert(sql_query, buffer)
             buffer.seek(0)
             df = pd.read_csv(buffer)
             self.__exit__(exc_result=True)
