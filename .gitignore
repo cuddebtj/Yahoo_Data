@@ -127,6 +127,7 @@ my_env
 dmypy.json
 token.json
 private.json
+private.yaml
 
 # Pyre type checker
 .pyre/
