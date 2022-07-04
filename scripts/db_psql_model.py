@@ -1,5 +1,6 @@
 import psycopg2
 import yaml
+import pandas as pd
 from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
 from sqlalchemy import create_engine
