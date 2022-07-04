@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import logging
 import time
+from psycopg2 import sql
 from pathlib import Path
 from yfpy import YahooFantasySportsQuery
 from yfpy.utils import complex_json_handler, unpack_data
@@ -10,6 +11,7 @@ from yfpy import get_logger
 from db_psql_model import DatabaseCursor
 
 PATH = Path.cwd().parents[0]
+PATH = PATH / "Yahoo_Data"
 
 class league_season_data(object):
 
@@ -53,27 +55,31 @@ class league_season_data(object):
             browser_callback=self._browser_callback,
         )
 
-        
-
     def metadata(self, first_time="no"):
         """
         Pull League Metadata
         """
 
-        db_cursor = DatabaseCursor(PATH/'private.yaml', options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
         response = complex_json_handler(self.yahoo_query.get_league_metadata())
         league_metadata = pd.json_normalize(response)
         league_metadata["game_id"] = self.game_id
 
         if str(first_time).upper() == "YES":
             league_metadata.drop_duplicates(ignore_index=True, inplace=True)
-            db_cursor.copy_table_to_postgres_new(league_metadata, "leaguemetadata", first_time="yes")
+            db_cursor.copy_table_to_postgres_new(
+                league_metadata, "leaguemetadata", first_time="yes"
+            )
 
         elif str(first_time).upper() == "NO":
-            psql_league_meta = db_cursor.copy_data_from_postgres("SELECT * FROM dev.leaguemetadata")
+            psql_league_meta = db_cursor.copy_data_from_postgres(
+                "SELECT * FROM dev.leaguemetadata"
+            )
             league_metadata = pd.concat([psql_league_meta, league_metadata])
             league_metadata.drop_duplicates(ignore_index=True, inplace=True)
-            db_cursor.copy_table_to_postgres_new(league_metadata, "leaguemetadata", first_time="no")
+            db_cursor.copy_table_to_postgres_new(
+                league_metadata, "leaguemetadata", first_time="no"
+            )
 
         return league_metadata
 
@@ -82,7 +88,7 @@ class league_season_data(object):
         Get Roster Positions, Stat Categories, and League Settigns
         """
 
-        db_cursor = DatabaseCursor(PATH/'private.yaml', options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
         response = complex_json_handler(self.yahoo_query.get_league_settings())
 
         league_settings = pd.json_normalize(response)
@@ -94,8 +100,24 @@ class league_season_data(object):
 
         league_settings["game_id"] = self.game_id
         league_settings["league_id"] = self.league_id
-        league_settings.drop_duplicates(ignore_index=True, inplace=True)
 
+        if str(first_time).upper() == "YES":
+            league_settings.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                league_settings, "leaguesettings", first_time="yes"
+            )
+
+        elif str(first_time).upper() == "NO":
+            psql_league_settings = db_cursor.copy_data_from_postgres(
+                "SELECT * FROM dev.leaguesettings"
+            )
+            league_settings = pd.concat([psql_league_settings, league_settings])
+            league_settings.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                league_settings, "leaguesettings", first_time="no"
+            )
+
+        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
         roster_positions = pd.DataFrame()
         for r in response["roster_positions"]:
             row = pd.json_normalize(complex_json_handler(r["roster_position"]))
@@ -103,8 +125,24 @@ class league_season_data(object):
 
         roster_positions["game_id"] = self.game_id
         roster_positions["league_id"] = self.league_id
-        roster_positions.drop_duplicates(ignore_index=True, inplace=True)
 
+        if str(first_time).upper() == "YES":
+            roster_positions.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                roster_positions, "rosterpositions", first_time="yes"
+            )
+
+        elif str(first_time).upper() == "NO":
+            psql_roster_positions = db_cursor.copy_data_from_postgres(
+                "SELECT * FROM dev.rosterpositions"
+            )
+            roster_positions = pd.concat([psql_roster_positions, roster_positions])
+            roster_positions.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                roster_positions, "rosterpositions", first_time="no"
+            )
+
+        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
         stat_categories = pd.DataFrame()
         for r in response["stat_categories"]["stats"]:
             row = pd.json_normalize(complex_json_handler(r["stat"]))
@@ -146,72 +184,27 @@ class league_season_data(object):
         stat_categories = stat_categories.merge(
             stat_modifiers, how="outer", on="stat_id"
         )
-        stat_categories.drop_duplicates(ignore_index=True, inplace=True)
-
         if str(first_time).upper() == "YES":
-            sql_upload_table(
-                dataframe=league_settings,
-                table_name="LeagueSettings",
-                data_schema="dbo",
-                chunksize=500,
-                if_exists="replace",
-                index=False,
+            stat_categories.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                stat_categories, "rosterpositions", first_time="yes"
             )
-            db_cursor.copy_table_to_postgres_new(league_settings, "leaguesettings", first_time="no")
-
-            sql_upload_table(
-                dataframe=roster_positions,
-                table_name="RosterPositions",
-                data_schema="dbo",
-                chunksize=500,
-                if_exists="replace",
-                index=False,
-            )
-            db_cursor.copy_table_to_postgres_new(roster_positions, "rosterpositions", first_time="no")
-
-            sql_upload_table(
-                dataframe=stat_categories,
-                table_name="StatCategories",
-                data_schema="dbo",
-                chunksize=500,
-                if_exists="replace",
-                index=False,
-            )
-            db_cursor.copy_table_to_postgres_new(stat_categories, "statcategories", first_time="no")
 
         elif str(first_time).upper() == "NO":
-            sql_upload_table(
-                dataframe=league_settings,
-                table_name="LeagueSettings",
-                data_schema="dbo",
-                chunksize=500,
-                if_exists="append",
-                index=False,
+            psql_stat_categories = db_cursor.copy_data_from_postgres(
+                "SELECT * FROM dev.statcategories"
             )
-
-            sql_upload_table(
-                dataframe=roster_positions,
-                table_name="RosterPositions",
-                data_schema="dbo",
-                chunksize=500,
-                if_exists="append",
-                index=False,
-            )
-
-            sql_upload_table(
-                dataframe=stat_categories,
-                table_name="StatCategories",
-                data_schema="dbo",
-                chunksize=500,
-                if_exists="append",
-                index=False,
+            stat_categories = pd.concat([psql_stat_categories, stat_categories])
+            stat_categories.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                stat_categories, "statcategories", first_time="no"
             )
 
         return league_settings, roster_positions, stat_categories
 
     def players_list(self, first_time="no"):
 
-        db_cursor = DatabaseCursor(PATH/'private.yaml', options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
         players = pd.DataFrame()
         try:
             response = self.yahoo_query.get_league_players()
@@ -273,43 +266,47 @@ class league_season_data(object):
         players["game_id"] = self.game_id
         players["league_id"] = self.league_id
 
-        players.drop_duplicates(
-            subset=[
-                "display_position",
-                "editorial_player_key",
-                "editorial_team_key",
-                "player_id",
-                "player_key",
-            ],
-            ignore_index=True,
-            inplace=True,
-        )
         if str(first_time).upper() == "YES":
-            sql_upload_table(
-                dataframe=players,
-                table_name="Players",
-                data_schema="dbo",
-                chunksize=500,
-                if_exists="replace",
-                index=False,
+            players.drop_duplicates(
+                subset=[
+                    "display_position",
+                    "editorial_player_key",
+                    "editorial_team_key",
+                    "player_id",
+                    "player_key",
+                ],
+                ignore_index=True,
+                inplace=True,
             )
-            db_cursor.copy_table_to_postgres_new(players, "playerlist", first_time="no")
+            db_cursor.copy_table_to_postgres_new(
+                players, "draftresults", first_time="yes"
+            )
 
         elif str(first_time).upper() == "NO":
-            sql_upload_table(
-                dataframe=players,
-                table_name="Players",
-                data_schema="dbo",
-                chunksize=500,
-                if_exists="append",
-                index=False,
+            psql_players = db_cursor.copy_data_from_postgres(
+                "SELECT * FROM dev.draftresults"
+            )
+            players = pd.concat([psql_players, players])
+            psql_players.drop_duplicates(
+                subset=[
+                    "display_position",
+                    "editorial_player_key",
+                    "editorial_team_key",
+                    "player_id",
+                    "player_key",
+                ],
+                ignore_index=True,
+                inplace=True,
+            )
+            db_cursor.copy_table_to_postgres_new(
+                players, "draftresults", first_time="no"
             )
 
         return players
 
     def draft_results(self, first_time="no"):
 
-        db_cursor = DatabaseCursor(PATH/'private.yaml', options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
         response = self.yahoo_query.get_league_draft_results()
         draft_results = pd.DataFrame()
         for r in response:
@@ -318,34 +315,28 @@ class league_season_data(object):
 
         draft_results["game_id"] = self.game_id
         draft_results["league_id"] = self.league_id
-        draft_results.drop_duplicates(ignore_index=True, inplace=True)
 
         if str(first_time).upper() == "YES":
-            sql_upload_table(
-                dataframe=draft_results,
-                table_name="DraftResults",
-                data_schema="dbo",
-                chunksize=500,
-                if_exists="replace",
-                index=False,
+            draft_results.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                draft_results, "draftresults", first_time="yes"
             )
-            db_cursor.copy_table_to_postgres_new(draft_results, "draftresults", first_time="no")
 
         elif str(first_time).upper() == "NO":
-            sql_upload_table(
-                dataframe=draft_results,
-                table_name="DraftResults",
-                data_schema="dbo",
-                chunksize=500,
-                if_exists="append",
-                index=False,
+            psql_draft_results = db_cursor.copy_data_from_postgres(
+                "SELECT * FROM dev.draftresults"
+            )
+            draft_results = pd.concat([psql_draft_results, draft_results])
+            draft_results.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                draft_results, "draftresults", first_time="no"
             )
 
         return draft_results
 
     def matchups_by_week(self, first_time="no", nfl_week=None):
 
-        db_cursor = DatabaseCursor(PATH/'private.yaml', options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
         if nfl_week == None:
             print("Please include nfl_week in class creation")
         else:
@@ -443,34 +434,28 @@ class league_season_data(object):
 
             matchups["game_id"] = self.game_id
             matchups["league_id"] = self.league_id
-            matchups.drop_duplicates(inplace=True, ignore_index=True)
 
-            if str(first_time).upper() == "YES":
-                sql_upload_table(
-                    dataframe=matchups,
-                    table_name="Matchups",
-                    data_schema="dbo",
-                    chunksize=500,
-                    if_exists="replace",
-                    index=False,
-                )
-                db_cursor.copy_table_to_postgres_new(matchups, "weeklyleaguematchups", first_time="no")
+        if str(first_time).upper() == "YES":
+            matchups.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                matchups, "weeklyleaguematchups", first_time="yes"
+            )
 
-            elif str(first_time).upper() == "NO":
-                sql_upload_table(
-                    dataframe=matchups,
-                    table_name="Matchups",
-                    data_schema="dbo",
-                    chunksize=500,
-                    if_exists="append",
-                    index=False,
-                )
+        elif str(first_time).upper() == "NO":
+            psql_matchups = db_cursor.copy_data_from_postgres(
+                "SELECT * FROM dev.weeklyleaguematchups"
+            )
+            matchups = pd.concat([psql_matchups, matchups])
+            matchups.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                matchups, "weeklyleaguematchups", first_time="no"
+            )
 
             return matchups
 
     def teams_and_standings(self, first_time="no"):
 
-        db_cursor = DatabaseCursor(PATH/'private.yaml', options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
         response = self.yahoo_query.get_league_standings()
         teams = complex_json_handler(response)
         teams_standings = pd.DataFrame()
@@ -533,38 +518,34 @@ class league_season_data(object):
         teams_standings.drop_duplicates(ignore_index=True, inplace=True)
 
         if str(first_time).upper() == "YES":
-            sql_upload_table(
-                dataframe=teams_standings,
-                table_name="Teams",
-                data_schema="dbo",
-                chunksize=500,
-                if_exists="replace",
-                index=False,
+            teams_standings.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                teams_standings, "leagueteams", first_time="yes"
             )
-            db_cursor.copy_table_to_postgres_new(teams_standings, "leagueteams", first_time="no")
 
         elif str(first_time).upper() == "NO":
-            sql_upload_table(
-                dataframe=teams_standings,
-                table_name="Teams",
-                data_schema="dbo",
-                chunksize=500,
-                if_exists="append",
-                index=False,
+            psql_teams_standings = db_cursor.copy_data_from_postgres(
+                "SELECT * FROM dev.leagueteams"
+            )
+            teams_standings = pd.concat([psql_teams_standings, teams_standings])
+            teams_standings.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                teams_standings, "leagueteams", first_time="no"
             )
 
         return teams_standings
 
     def team_roster_by_week(self, first_time="no", nfl_week=None):
 
-        db_cursor = DatabaseCursor(PATH/'private.yaml', options="-c search_path=dev")
-        team_ids = sql_grab_table("Teams")
-        team_ids = list(
-            team_ids["team_id"][
-                (team_ids["game_id"] == str(self.game_id))
-                & (team_ids["league_id"] == str(self.league_id))
-            ]
+        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
+        sql_query = sql.SQL(
+            "SELECT team_id FROM dev.leagueteams WHERE game_id = {game_id} AND league_id = {league_id}"
+        ).format(
+            game_id=sql.Identifier(self.game_id),
+            league_id=sql.Identifier(self.league_id),
         )
+        team_ids = db_cursor.copy_table_to_postgres_new(sql_query)
+        team_ids = list(team_ids["team_id"])
 
         team_week_rosters = pd.DataFrame()
         for team in team_ids:
@@ -602,123 +583,123 @@ class league_season_data(object):
         team_week_rosters["eligible_positions"] = [
             ", ".join(map(str, l)) for l in team_week_rosters["eligible_positions"]
         ]
-        team_week_rosters.drop_duplicates(ignore_index=True, inplace=True)
+
+        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
 
         if str(first_time).upper() == "YES":
-            sql_upload_table(
-                dataframe=team_week_rosters,
-                table_name="TeamRosters",
-                data_schema="dbo",
-                chunksize=500,
-                if_exists="replace",
-                index=False,
+            team_week_rosters.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                team_week_rosters, "weeklyteamroster", first_time="yes"
             )
-            db_cursor.copy_table_to_postgres_new(team_week_rosters, "weeklyteamroster", first_time="no")
 
         elif str(first_time).upper() == "NO":
-            sql_upload_table(
-                dataframe=team_week_rosters,
-                table_name="TeamRosters",
-                data_schema="dbo",
-                chunksize=500,
-                if_exists="append",
-                index=False,
+            psql_team_week_rosters = db_cursor.copy_data_from_postgres(
+                "SELECT * FROM dev.weeklyteamroster"
+            )
+            team_week_rosters = pd.concat([psql_team_week_rosters, team_week_rosters])
+            team_week_rosters.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                team_week_rosters, "weeklyteamroster", first_time="no"
             )
 
         return team_week_rosters
 
-    def player_stats_by_week(self, first_time="no", nfl_week=None):
+    # def player_stats_by_week(self, first_time="no", nfl_week=None):
 
-        db_cursor = DatabaseCursor(PATH/'private.yaml', options="-c search_path=dev")
-        if nfl_week == None:
-            print("Please include nfl_week in class creation")
-        else:
-            players = sql_grab_table(
-                f"SELECT player_key FROM MenOfMadison.dbo.Players WHERE game_id = {self.game_id} AND league_id = {self.league_id}"
-            )
-            player_keys = list(players["player_key"])
-            player_stats = pd.DataFrame()
-            for k in player_keys:
-                try:
-                    r1 = self.yahoo_query.get_player_stats_by_week(k, nfl_week)
-                    r2 = self.yahoo_query.get_player_percent_owned_by_week(k, nfl_week)
+    #     db_cursor = DatabaseCursor(PATH/'private.yaml', options="-c search_path=dev")
+    #     if nfl_week == None:
+    #         print("Please include nfl_week in class creation")
+    #     else:
+    #         players = sql_grab_table(
+    #             f"SELECT player_key FROM MenOfMadison.dbo.Players WHERE game_id = {self.game_id} AND league_id = {self.league_id}"
+    #         )
+    #         player_keys = list(players["player_key"])
+    #         player_stats = pd.DataFrame()
+    #         for k in player_keys:
+    #             try:
+    #                 r1 = self.yahoo_query.get_player_stats_by_week(k, nfl_week)
+    #                 r2 = self.yahoo_query.get_player_percent_owned_by_week(k, nfl_week)
 
-                except Exception as e:
-                    if "token_expired" in str(e):
-                        print(e)
-                        self.yahoo_query._authenticate()
-                    else:
-                        print(
-                            f"Error with player stats at player_key {k} and week {nfl_week}.\n{e}\nRetrying in 30 minutes."
-                        )
-                        time.sleep(1800)
-                        self.yahoo_query._authenticate()
+    #             except Exception as e:
+    #                 if "token_expired" in str(e):
+    #                     print(e)
+    #                     self.yahoo_query._authenticate()
+    #                 else:
+    #                     print(
+    #                         f"Error with player stats at player_key {k} and week {nfl_week}.\n{e}\nRetrying in 30 minutes."
+    #                     )
+    #                     time.sleep(1800)
+    #                     self.yahoo_query._authenticate()
 
-                    r1 = self.yahoo_query.get_player_stats_by_week(k, nfl_week)
-                    r2 = self.yahoo_query.get_player_percent_owned_by_week(k, nfl_week)
+    #                 r1 = self.yahoo_query.get_player_stats_by_week(k, nfl_week)
+    #                 r2 = self.yahoo_query.get_player_percent_owned_by_week(k, nfl_week)
 
-                time.sleep(5)
-                data = complex_json_handler(r1)
-                player = pd.json_normalize(data)
-                stats = data["player_stats"]["stats"]
-                player_stat_week = pd.DataFrame()
+    #             time.sleep(5)
+    #             data = complex_json_handler(r1)
+    #             player = pd.json_normalize(data)
+    #             stats = data["player_stats"]["stats"]
+    #             player_stat_week = pd.DataFrame()
 
-                for r in stats:
-                    stat = pd.json_normalize(complex_json_handler(r["stat"]))
-                    stat["player_key"] = player["player_key"]
-                    stat["week"] = player["player_stats.week"]
-                    stat["total_points_week"] = player["player_points.total"]
-                    player_stat_week = pd.concat([player_stat_week, stat])
+    #             for r in stats:
+    #                 stat = pd.json_normalize(complex_json_handler(r["stat"]))
+    #                 stat["player_key"] = player["player_key"]
+    #                 stat["week"] = player["player_stats.week"]
+    #                 stat["total_points_week"] = player["player_points.total"]
+    #                 player_stat_week = pd.concat([player_stat_week, stat])
 
-                ownership = pd.json_normalize(complex_json_handler(r2))
-                if "percent_owned.value" not in ownership.columns:
-                    ownership["percent_owned.value"] = 0
+    #             ownership = pd.json_normalize(complex_json_handler(r2))
+    #             if "percent_owned.value" not in ownership.columns:
+    #                 ownership["percent_owned.value"] = 0
 
-                ownership = ownership[
-                    ["player_key", "percent_owned.value", "percent_owned.delta"]
-                ]
+    #             ownership = ownership[
+    #                 ["player_key", "percent_owned.value", "percent_owned.delta"]
+    #             ]
 
-                player_stat_week = player_stat_week.merge(
-                    ownership,
-                    how="outer",
-                    left_on="player_key",
-                    right_on="player_key",
-                )
+    #             player_stat_week = player_stat_week.merge(
+    #                 ownership,
+    #                 how="outer",
+    #                 left_on="player_key",
+    #                 right_on="player_key",
+    #             )
 
-            player_stats = pd.concat([player_stats, player_stat_week])
+    #         player_stats = pd.concat([player_stats, player_stat_week])
 
-            player_stats["game_id"] = self.game_id
-            player_stats["league_id"] = self.leauge_id
-            player_stats.drop_duplicates(ignore_index=True, inplace=True)
+    #         player_stats["game_id"] = self.game_id
+    #         player_stats["league_id"] = self.leauge_id
+    #         player_stats.drop_duplicates(ignore_index=True, inplace=True)
 
-            if str(first_time).upper() == "YES":
-                sql_upload_table(
-                    dataframe=player_stats,
-                    table_name="PlayerStats",
-                    data_schema="dbo",
-                    chunksize=500,
-                    if_exists="replace",
-                    index=False,
-                )
-                db_cursor.copy_table_to_postgres_new(player_stats, "weeklyplayerstats", first_time="no")
+    #         if str(first_time).upper() == "YES":
+    #             sql_upload_table(
+    #                 dataframe=player_stats,
+    #                 table_name="PlayerStats",
+    #                 data_schema="dbo",
+    #                 chunksize=500,
+    #                 if_exists="replace",
+    #                 index=False,
+    #             )
+    #             db_cursor.copy_table_to_postgres_new(player_stats, "weeklyplayerstats", first_time="no")
 
-            elif str(first_time).upper() == "NO":
-                sql_upload_table(
-                    dataframe=player_stats,
-                    table_name="PlayerStats",
-                    data_schema="dbo",
-                    chunksize=500,
-                    if_exists="append",
-                    index=False,
-                )
+    #         elif str(first_time).upper() == "NO":
+    #             sql_upload_table(
+    #                 dataframe=player_stats,
+    #                 table_name="PlayerStats",
+    #                 data_schema="dbo",
+    #                 chunksize=500,
+    #                 if_exists="append",
+    #                 index=False,
+    #             )
 
-            return player_stats
+    #         return player_stats
 
     def all_game_keys(self):
 
-        db_cursor = DatabaseCursor(PATH/'private.yaml', options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=prod")
         response = unpack_data(self.yahoo_query.get_all_yahoo_fantasy_game_keys())
-        league_keys = pd.read_csv("../assests/ID.csv")
+        try:
+            league_keys = pd.read_csv("../assests/game_keys.csv")
+        except:
+            league_keys = pd.DataFrame({"game_id": np.nan, "season": np.nan})
+
         game_keys = pd.DataFrame()
         for r in response:
             row = pd.DataFrame(complex_json_handler(r["game"]), index=[0])
@@ -732,24 +713,18 @@ class league_season_data(object):
             left_on=["game_id", "season"],
             right_on=["game_id", "season"],
         )
-        game_keys.drop_duplicates(ignore_index=True, inplace=True)
 
-        sql_upload_table(
-            dataframe=game_keys,
-            table_name="GameKeys",
-            data_schema="dbo",
-            chunksize=500,
-            if_exists="replace",
-            index=False,
-        )
-        db_cursor.copy_table_to_postgres_new(game_keys, "gamekeys", first_time="no")
+        game_keys.drop_duplicates(ignore_index=True, inplace=True)
+        db_cursor.copy_table_to_postgres_new(game_keys, "gamekeys", first_time="yes")
 
         return game_keys
 
     def all_nfl_weeks(self):
 
-        db_cursor = DatabaseCursor(PATH/'private.yaml', options="-c search_path=dev")
-        game_keys = sql_grab_table("GameKeys")
+        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=prod")
+        game_keys = db_cursor.copy_table_to_postgres_new(
+            "SELECT game_id FROM prod.gamekeys"
+        )
         game_id = list(game_keys["game_id"])
         weeks = pd.DataFrame()
         for g in game_id:
@@ -760,16 +735,9 @@ class league_season_data(object):
                 weeks = pd.concat([weeks, row])
 
         weeks.rename(columns={"display_name": "week"}, inplace=True)
-        weeks.drop_duplicates(ignore_index=True, inplace=True)
 
-        sql_upload_table(
-            dataframe=weeks,
-            table_name="NFLWeeks",
-            data_schema="dbo",
-            chunksize=500,
-            if_exists="replace",
-            index=False,
-        )
-        db_cursor.copy_table_to_postgres_new(weeks, "nflweeks", first_time="no")
+        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=prod")
+        weeks.drop_duplicates(ignore_index=True, inplace=True)
+        db_cursor.copy_table_to_postgres_new(weeks, "nflweeks", first_time="yes")
 
         return weeks
