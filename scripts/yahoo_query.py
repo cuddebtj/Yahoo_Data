@@ -696,7 +696,7 @@ class league_season_data(object):
         db_cursor = DatabaseCursor(PATH, options="-c search_path=prod")
         response = unpack_data(self.yahoo_query.get_all_yahoo_fantasy_game_keys())
         try:
-            league_keys = pd.read_csv(PATH.parent / 'assests' / 'game_keys.csv')
+            league_keys = pd.read_csv(PATH.parent / "assests" / "game_keys.csv")
         except:
             league_keys = pd.DataFrame({"game_id": np.nan, "season": np.nan})
 

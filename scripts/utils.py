@@ -52,9 +52,7 @@ def game_keys_pull(first="yes"):
             return game_keys
 
         elif "NO" == str(first).upper():
-            db_cursor = DatabaseCursor(
-                PATH, options="-c search_path=prod"
-            )
+            db_cursor = DatabaseCursor(PATH, options="-c search_path=prod")
             game_keys = db_cursor.copy_data_from_postgres("SELECT * FROM prod.gamekeys")
             return game_keys
 
