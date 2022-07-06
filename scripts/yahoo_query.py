@@ -64,19 +64,14 @@ class league_season_data(object):
         response = complex_json_handler(self.yahoo_query.get_league_metadata())
         league_metadata = pd.json_normalize(response)
         league_metadata["game_id"] = self.game_id
+        league_metadata.drop_duplicates(ignore_index=True, inplace=True)
 
         if str(first_time).upper() == "YES":
-            league_metadata.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
                 league_metadata, "leaguemetadata", first_time="yes"
             )
 
         elif str(first_time).upper() == "NO":
-            psql_league_meta = db_cursor.copy_data_from_postgres(
-                "SELECT * FROM dev.leaguemetadata"
-            )
-            league_metadata = pd.concat([psql_league_meta, league_metadata])
-            league_metadata.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
                 league_metadata, "leaguemetadata", first_time="no"
             )
@@ -100,19 +95,14 @@ class league_season_data(object):
 
         league_settings["game_id"] = self.game_id
         league_settings["league_id"] = self.league_id
+        league_settings.drop_duplicates(ignore_index=True, inplace=True)
 
         if str(first_time).upper() == "YES":
-            league_settings.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
                 league_settings, "leaguesettings", first_time="yes"
             )
 
         elif str(first_time).upper() == "NO":
-            psql_league_settings = db_cursor.copy_data_from_postgres(
-                "SELECT * FROM dev.leaguesettings"
-            )
-            league_settings = pd.concat([psql_league_settings, league_settings])
-            league_settings.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
                 league_settings, "leaguesettings", first_time="no"
             )
@@ -125,19 +115,14 @@ class league_season_data(object):
 
         roster_positions["game_id"] = self.game_id
         roster_positions["league_id"] = self.league_id
+        roster_positions.drop_duplicates(ignore_index=True, inplace=True)
 
         if str(first_time).upper() == "YES":
-            roster_positions.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
                 roster_positions, "rosterpositions", first_time="yes"
             )
 
         elif str(first_time).upper() == "NO":
-            psql_roster_positions = db_cursor.copy_data_from_postgres(
-                "SELECT * FROM dev.rosterpositions"
-            )
-            roster_positions = pd.concat([psql_roster_positions, roster_positions])
-            roster_positions.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
                 roster_positions, "rosterpositions", first_time="no"
             )
@@ -184,18 +169,14 @@ class league_season_data(object):
         stat_categories = stat_categories.merge(
             stat_modifiers, how="outer", on="stat_id"
         )
+        stat_categories.drop_duplicates(ignore_index=True, inplace=True)
+
         if str(first_time).upper() == "YES":
-            stat_categories.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
                 stat_categories, "rosterpositions", first_time="yes"
             )
 
         elif str(first_time).upper() == "NO":
-            psql_stat_categories = db_cursor.copy_data_from_postgres(
-                "SELECT * FROM dev.statcategories"
-            )
-            stat_categories = pd.concat([psql_stat_categories, stat_categories])
-            stat_categories.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
                 stat_categories, "statcategories", first_time="no"
             )
@@ -265,39 +246,24 @@ class league_season_data(object):
         ]
         players["game_id"] = self.game_id
         players["league_id"] = self.league_id
+        players.drop_duplicates(
+            subset=[
+                "display_position",
+                "editorial_player_key",
+                "editorial_team_key",
+                "player_id",
+                "player_key",
+            ],
+            ignore_index=True,
+            inplace=True,
+        )
 
         if str(first_time).upper() == "YES":
-            players.drop_duplicates(
-                subset=[
-                    "display_position",
-                    "editorial_player_key",
-                    "editorial_team_key",
-                    "player_id",
-                    "player_key",
-                ],
-                ignore_index=True,
-                inplace=True,
-            )
             db_cursor.copy_table_to_postgres_new(
                 players, "draftresults", first_time="yes"
             )
 
         elif str(first_time).upper() == "NO":
-            psql_players = db_cursor.copy_data_from_postgres(
-                "SELECT * FROM dev.draftresults"
-            )
-            players = pd.concat([psql_players, players])
-            psql_players.drop_duplicates(
-                subset=[
-                    "display_position",
-                    "editorial_player_key",
-                    "editorial_team_key",
-                    "player_id",
-                    "player_key",
-                ],
-                ignore_index=True,
-                inplace=True,
-            )
             db_cursor.copy_table_to_postgres_new(
                 players, "draftresults", first_time="no"
             )
@@ -315,19 +281,14 @@ class league_season_data(object):
 
         draft_results["game_id"] = self.game_id
         draft_results["league_id"] = self.league_id
+        draft_results.drop_duplicates(ignore_index=True, inplace=True)
 
         if str(first_time).upper() == "YES":
-            draft_results.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
                 draft_results, "draftresults", first_time="yes"
             )
 
         elif str(first_time).upper() == "NO":
-            psql_draft_results = db_cursor.copy_data_from_postgres(
-                "SELECT * FROM dev.draftresults"
-            )
-            draft_results = pd.concat([psql_draft_results, draft_results])
-            draft_results.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
                 draft_results, "draftresults", first_time="no"
             )
@@ -443,7 +404,7 @@ class league_season_data(object):
 
         elif str(first_time).upper() == "NO":
             psql_matchups = db_cursor.copy_data_from_postgres(
-                "SELECT * FROM dev.weeklyleaguematchups"
+                f"SELECT * FROM dev.weeklyleaguematchups WHERE game_id != {self.game_id}"
             )
             matchups = pd.concat([psql_matchups, matchups])
             matchups.drop_duplicates(ignore_index=True, inplace=True)
@@ -525,7 +486,7 @@ class league_season_data(object):
 
         elif str(first_time).upper() == "NO":
             psql_teams_standings = db_cursor.copy_data_from_postgres(
-                "SELECT * FROM dev.leagueteams"
+                f"SELECT * FROM dev.leagueteams WHERE game_id != {self.game_id}"
             )
             teams_standings = pd.concat([psql_teams_standings, teams_standings])
             teams_standings.drop_duplicates(ignore_index=True, inplace=True)
@@ -594,7 +555,7 @@ class league_season_data(object):
 
         elif str(first_time).upper() == "NO":
             psql_team_week_rosters = db_cursor.copy_data_from_postgres(
-                "SELECT * FROM dev.weeklyteamroster"
+                f"SELECT * FROM dev.weeklyteamroster WHERE game_id != {self.game_id}"
             )
             team_week_rosters = pd.concat([psql_team_week_rosters, team_week_rosters])
             team_week_rosters.drop_duplicates(ignore_index=True, inplace=True)
