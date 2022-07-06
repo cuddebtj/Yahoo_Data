@@ -6,8 +6,8 @@ from datetime import datetime as dt
 
 from db_psql_model import DatabaseCursor
 
-PATH = Path.cwd().parents[0]
-PATH = PATH / "Yahoo_Data"
+PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
+
 
 def get_season():
     """
@@ -32,10 +32,10 @@ def nfl_weeks_pull():
     """
 
     try:
-        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=prod")
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=prod")
         nfl_weeks = db_cursor.copy_data_from_postgres("SELECT * FROM prod.nflweeks")
-        nfl_weeks['end'] = pd.to_datetime(nfl_weeks['end'])
-        nfl_weeks['start'] = pd.to_datetime(nfl_weeks['start'])
+        nfl_weeks["end"] = pd.to_datetime(nfl_weeks["end"])
+        nfl_weeks["start"] = pd.to_datetime(nfl_weeks["start"])
         return nfl_weeks
 
     except Exception as e:
@@ -48,14 +48,14 @@ def game_keys_pull(first="yes"):
     """
     try:
         if "YES" == str(first).upper():
-            game_keys = pd.read_csv(PATH / "assests" / "game_keys.csv")
+            game_keys = pd.read_csv(PATH.parent / "assests" / "game_keys.csv")
             return game_keys
 
         elif "NO" == str(first).upper():
-            db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=prod")
-            game_keys = db_cursor.copy_data_from_postgres(
-                "SELECT * FROM prod.gamekeys"
+            db_cursor = DatabaseCursor(
+                PATH, options="-c search_path=prod"
             )
+            game_keys = db_cursor.copy_data_from_postgres("SELECT * FROM prod.gamekeys")
             return game_keys
 
     except Exception as e:

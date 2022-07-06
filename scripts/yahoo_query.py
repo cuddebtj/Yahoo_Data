@@ -10,8 +10,8 @@ from yfpy import get_logger
 
 from db_psql_model import DatabaseCursor
 
-PATH = Path.cwd().parents[0]
-PATH = PATH / "Yahoo_Data"
+PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
+
 
 class league_season_data(object):
 
@@ -60,7 +60,7 @@ class league_season_data(object):
         Pull League Metadata
         """
 
-        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
         response = complex_json_handler(self.yahoo_query.get_league_metadata())
         league_metadata = pd.json_normalize(response)
         league_metadata["game_id"] = self.game_id
@@ -88,7 +88,7 @@ class league_season_data(object):
         Get Roster Positions, Stat Categories, and League Settigns
         """
 
-        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
         response = complex_json_handler(self.yahoo_query.get_league_settings())
 
         league_settings = pd.json_normalize(response)
@@ -117,7 +117,7 @@ class league_season_data(object):
                 league_settings, "leaguesettings", first_time="no"
             )
 
-        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
         roster_positions = pd.DataFrame()
         for r in response["roster_positions"]:
             row = pd.json_normalize(complex_json_handler(r["roster_position"]))
@@ -142,7 +142,7 @@ class league_season_data(object):
                 roster_positions, "rosterpositions", first_time="no"
             )
 
-        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
         stat_categories = pd.DataFrame()
         for r in response["stat_categories"]["stats"]:
             row = pd.json_normalize(complex_json_handler(r["stat"]))
@@ -204,7 +204,7 @@ class league_season_data(object):
 
     def players_list(self, first_time="no"):
 
-        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
         players = pd.DataFrame()
         try:
             response = self.yahoo_query.get_league_players()
@@ -306,7 +306,7 @@ class league_season_data(object):
 
     def draft_results(self, first_time="no"):
 
-        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
         response = self.yahoo_query.get_league_draft_results()
         draft_results = pd.DataFrame()
         for r in response:
@@ -336,7 +336,7 @@ class league_season_data(object):
 
     def matchups_by_week(self, first_time="no", nfl_week=None):
 
-        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
         if nfl_week == None:
             print("Please include nfl_week in class creation")
         else:
@@ -455,7 +455,7 @@ class league_season_data(object):
 
     def teams_and_standings(self, first_time="no"):
 
-        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
         response = self.yahoo_query.get_league_standings()
         teams = complex_json_handler(response)
         teams_standings = pd.DataFrame()
@@ -537,7 +537,7 @@ class league_season_data(object):
 
     def team_roster_by_week(self, first_time="no", nfl_week=None):
 
-        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
         sql_query = sql.SQL(
             "SELECT team_id FROM dev.leagueteams WHERE game_id = {game_id} AND league_id = {league_id}"
         ).format(
@@ -584,7 +584,7 @@ class league_season_data(object):
             ", ".join(map(str, l)) for l in team_week_rosters["eligible_positions"]
         ]
 
-        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=dev")
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
 
         if str(first_time).upper() == "YES":
             team_week_rosters.drop_duplicates(ignore_index=True, inplace=True)
@@ -606,7 +606,7 @@ class league_season_data(object):
 
     # def player_stats_by_week(self, first_time="no", nfl_week=None):
 
-    #     db_cursor = DatabaseCursor(PATH/'private.yaml', options="-c search_path=dev")
+    #     db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
     #     if nfl_week == None:
     #         print("Please include nfl_week in class creation")
     #     else:
@@ -693,10 +693,10 @@ class league_season_data(object):
 
     def all_game_keys(self):
 
-        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=prod")
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=prod")
         response = unpack_data(self.yahoo_query.get_all_yahoo_fantasy_game_keys())
         try:
-            league_keys = pd.read_csv("../assests/game_keys.csv")
+            league_keys = pd.read_csv(PATH.parent / 'assests' / 'game_keys.csv')
         except:
             league_keys = pd.DataFrame({"game_id": np.nan, "season": np.nan})
 
@@ -721,7 +721,7 @@ class league_season_data(object):
 
     def all_nfl_weeks(self):
 
-        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=prod")
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=prod")
         game_keys = db_cursor.copy_table_to_postgres_new(
             "SELECT game_id FROM prod.gamekeys"
         )
@@ -736,7 +736,7 @@ class league_season_data(object):
 
         weeks.rename(columns={"display_name": "week"}, inplace=True)
 
-        db_cursor = DatabaseCursor(PATH / "private.yaml", options="-c search_path=prod")
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=prod")
         weeks.drop_duplicates(ignore_index=True, inplace=True)
         db_cursor.copy_table_to_postgres_new(weeks, "nflweeks", first_time="yes")
 
