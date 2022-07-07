@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import logging
 import time
+import yaml
 from psycopg2 import sql
 from pathlib import Path
 from yfpy import YahooFantasySportsQuery
@@ -11,6 +12,7 @@ from yfpy import get_logger
 from db_psql_model import DatabaseCursor
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
+TEAMS_FILE = list(Path().cwd().parent.glob("**/teams.yaml"))[0]
 
 
 class league_season_data(object):
@@ -476,7 +478,31 @@ class league_season_data(object):
 
         teams_standings["game_id"] = self.game_id
         teams_standings["league_id"] = self.league_id
-        teams_standings.drop_duplicates(ignore_index=True, inplace=True)
+
+        with open(TEAMS_FILE, "r") as file:
+            c_teams = yaml.load(file, Loader=yaml.FullLoader)
+            corrected_teams = pd.DataFrame()
+
+        for team in c_teams["name"]:
+            team = pd.DataFrame(team)
+            corrected_teams = pd.concat([corrected_teams, team])
+
+        correct_teams = pd.melt(corrected_teams, var_name="nickname", value_name="name")
+        correct_teams = correct_teams[~correct_teams["name"].isna()]
+        teams_standings = teams_standings.merge(
+            correct_teams,
+            how="left",
+            left_on="name",
+            right_on="name",
+            suffixes=("_drop", ""),
+        )
+        teams_standings["nickname"] = teams_standings["nickname"].fillna(
+            teams_standings["nickname_drop"]
+        )
+        teams_standings = teams_standings[
+            teams_standings.columns.drop(list(teams_standings.filter(regex="_drop")))
+        ]
+        teams_standings = teams_standings[teams_standings["nickname"] != "--hidden--"]
 
         if str(first_time).upper() == "YES":
             teams_standings.drop_duplicates(ignore_index=True, inplace=True)

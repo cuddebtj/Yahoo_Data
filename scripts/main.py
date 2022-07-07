@@ -69,10 +69,7 @@ if TODAY == np.datetime64(f"{YEAR}-08-31"):
 
 if (
     TODAY
-    == NFL_WEEKS["end"][
-        (NFL_WEEKS["week"] == 15)
-        & (NFL_WEEKS["game_id"] == GAME_ID)
-    ]
+    == NFL_WEEKS["end"][(NFL_WEEKS["week"] == 15) & (NFL_WEEKS["game_id"] == GAME_ID)]
 ):
     teams = league.teams_and_standings(first_time="no")
 
