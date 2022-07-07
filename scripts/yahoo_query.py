@@ -405,9 +405,10 @@ class league_season_data(object):
             )
 
         elif str(first_time).upper() == "NO":
-            psql_matchups = db_cursor.copy_data_from_postgres(
-                f"SELECT * FROM dev.weeklyleaguematchups WHERE game_id != {self.game_id}"
-            )
+            query = sql.SQL(
+                "SELECT * FROM dev.weeklyleaguematchups WHERE game_id != {game_id}"
+            ).format(game_id=sql.Identifier(self.game_id))
+            psql_matchups = db_cursor.copy_data_from_postgres(query)
             matchups = pd.concat([psql_matchups, matchups])
             matchups.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
@@ -476,6 +477,9 @@ class league_season_data(object):
         if "draft_position" in teams_standings.columns:
             teams_standings.drop(columns="draft_position", inplace=True)
 
+        if "draft_grade" not in teams_standings.columns:
+            teams_standings["draft_grade"] = "na"
+
         teams_standings["game_id"] = self.game_id
         teams_standings["league_id"] = self.league_id
 
@@ -511,11 +515,13 @@ class league_season_data(object):
             )
 
         elif str(first_time).upper() == "NO":
-            psql_teams_standings = db_cursor.copy_data_from_postgres(
-                f"SELECT * FROM dev.leagueteams WHERE game_id != {self.game_id}"
-            )
+            query = sql.SQL(
+                "SELECT * FROM dev.leagueteams WHERE game_id != {game_id}"
+            ).format(game_id=sql.Identifier(self.game_id))
+            psql_teams_standings = db_cursor.copy_data_from_postgres(query)
             teams_standings = pd.concat([psql_teams_standings, teams_standings])
             teams_standings.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
             db_cursor.copy_table_to_postgres_new(
                 teams_standings, "leagueteams", first_time="no"
             )
@@ -580,9 +586,10 @@ class league_season_data(object):
             )
 
         elif str(first_time).upper() == "NO":
-            psql_team_week_rosters = db_cursor.copy_data_from_postgres(
-                f"SELECT * FROM dev.weeklyteamroster WHERE game_id != {self.game_id}"
-            )
+            query = sql.SQL(
+                "SELECT * FROM dev.weeklyteamroster WHERE game_id != {game_id}"
+            ).format(game_id=sql.Identifier(self.game_id))
+            psql_team_week_rosters = db_cursor.copy_data_from_postgres(query)
             team_week_rosters = pd.concat([psql_team_week_rosters, team_week_rosters])
             team_week_rosters.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
