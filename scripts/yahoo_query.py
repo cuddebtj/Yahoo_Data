@@ -405,9 +405,7 @@ class league_season_data(object):
             )
 
         elif str(first_time).upper() == "NO":
-            query = sql.SQL(
-                "SELECT * FROM dev.weeklyleaguematchups WHERE game_id != {game_id}"
-            ).format(game_id=sql.Identifier(self.game_id))
+            query = f"SELECT * FROM dev.weeklyleaguematchups WHERE game_id != '{self.game_id}'"
             psql_matchups = db_cursor.copy_data_from_postgres(query)
             matchups = pd.concat([psql_matchups, matchups])
             matchups.drop_duplicates(ignore_index=True, inplace=True)
@@ -419,7 +417,6 @@ class league_season_data(object):
 
     def teams_and_standings(self, first_time="no"):
 
-        db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
         response = self.yahoo_query.get_league_standings()
         teams = complex_json_handler(response)
         teams_standings = pd.DataFrame()
@@ -480,6 +477,9 @@ class league_season_data(object):
         if "draft_grade" not in teams_standings.columns:
             teams_standings["draft_grade"] = "na"
 
+        if "faab_balance" not in teams_standings.columns:
+            teams_standings["faab_balance"] = ''
+
         teams_standings["game_id"] = self.game_id
         teams_standings["league_id"] = self.league_id
 
@@ -509,20 +509,22 @@ class league_season_data(object):
         teams_standings = teams_standings[teams_standings["nickname"] != "--hidden--"]
 
         if str(first_time).upper() == "YES":
+            teams_standings = teams_standings.astype(str)
             teams_standings.drop_duplicates(ignore_index=True, inplace=True)
-            db_cursor.copy_table_to_postgres_new(
+            teams_standings.sort_index(axis=1, inplace=True)
+            DatabaseCursor(PATH, options="-c search_path=dev").copy_table_to_postgres_new(
                 teams_standings, "leagueteams", first_time="yes"
             )
 
         elif str(first_time).upper() == "NO":
-            query = sql.SQL(
-                "SELECT * FROM dev.leagueteams WHERE game_id != {game_id}"
-            ).format(game_id=sql.Identifier(self.game_id))
-            psql_teams_standings = db_cursor.copy_data_from_postgres(query)
+            query = f"SELECT * FROM dev.leagueteams WHERE game_id != '{self.game_id}'"
+            psql_teams_standings = DatabaseCursor(PATH, options="-c search_path=dev").copy_data_from_postgres(query)
+            psql_teams_standings.sort_index(axis=1, inplace=True)
             teams_standings = pd.concat([psql_teams_standings, teams_standings])
+            teams_standings = teams_standings.astype(str)
             teams_standings.drop_duplicates(ignore_index=True, inplace=True)
-            db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
-            db_cursor.copy_table_to_postgres_new(
+            teams_standings.sort_index(axis=1, inplace=True)
+            DatabaseCursor(PATH, options="-c search_path=dev").copy_table_to_postgres_new(
                 teams_standings, "leagueteams", first_time="no"
             )
 
@@ -531,13 +533,8 @@ class league_season_data(object):
     def team_roster_by_week(self, first_time="no", nfl_week=None):
 
         db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
-        sql_query = sql.SQL(
-            "SELECT team_id FROM dev.leagueteams WHERE game_id = {game_id} AND league_id = {league_id}"
-        ).format(
-            game_id=sql.Identifier(self.game_id),
-            league_id=sql.Identifier(self.league_id),
-        )
-        team_ids = db_cursor.copy_table_to_postgres_new(sql_query)
+        sql_query = f"SELECT team_id FROM dev.leagueteams WHERE game_id = '{self.game_id}'"
+        team_ids = db_cursor.copy_data_from_postgres(sql_query)
         team_ids = list(team_ids["team_id"])
 
         team_week_rosters = pd.DataFrame()
@@ -586,9 +583,7 @@ class league_season_data(object):
             )
 
         elif str(first_time).upper() == "NO":
-            query = sql.SQL(
-                "SELECT * FROM dev.weeklyteamroster WHERE game_id != {game_id}"
-            ).format(game_id=sql.Identifier(self.game_id))
+            query = f"SELECT * FROM dev.weeklyteamroster WHERE game_id != '{self.game_id}'"
             psql_team_week_rosters = db_cursor.copy_data_from_postgres(query)
             team_week_rosters = pd.concat([psql_team_week_rosters, team_week_rosters])
             team_week_rosters.drop_duplicates(ignore_index=True, inplace=True)
@@ -605,7 +600,7 @@ class league_season_data(object):
     #         print("Please include nfl_week in class creation")
     #     else:
     #         players = sql_grab_table(
-    #             f"SELECT player_key FROM MenOfMadison.dbo.Players WHERE game_id = {self.game_id} AND league_id = {self.league_id}"
+    #             f"SELECT player_key FROM MenOfMadison.dbo.Players WHERE game_id = '{self.game_id}' AND league_id = {self.league_id}"
     #         )
     #         player_keys = list(players["player_key"])
     #         player_stats = pd.DataFrame()
