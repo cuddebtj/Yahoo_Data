@@ -4,8 +4,8 @@ import yaml
 from time import sleep
 from pathlib import Path
 
-from utils import get_season, nfl_weeks_pull, game_keys_pull
-from yahoo_query import league_season_data
+from scripts.utils import get_season, nfl_weeks_pull, game_keys_pull
+from scripts.yahoo_query import league_season_data
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
 
