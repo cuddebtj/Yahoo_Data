@@ -305,7 +305,7 @@ class league_season_data(object):
                 response = self.yahoo_query.get_league_matchups_by_week(nfl_week)
 
             except Exception as e:
-                if "token expired" in str(e):
+                if "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
                     print(f"Error, sleeping for 30 min before retrying.\n{e}")
@@ -561,7 +561,7 @@ class league_season_data(object):
                 )
 
             except Exception as e:
-                if "token expired" in str(e):
+                if "token_expired" in str(e):
                     self.yahoo_query._authenticate()
 
                 else:
@@ -624,7 +624,7 @@ class league_season_data(object):
                 response = self.yahoo_query.get_team_stats_by_week(str(team), nfl_week)
 
             except Exception as e:
-                if "token expired" in str(e):
+                if "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                                 
                 elif "Invalid week" in str(e):
