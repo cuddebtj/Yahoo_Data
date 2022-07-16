@@ -297,7 +297,7 @@ class league_season_data(object):
 
         return draft_results
 
-    def matchups_by_week(self, first_time="no", nfl_week=None):
+    def matchups_by_week_regseason(self, first_time="no", nfl_week=None):
 
         db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
         if nfl_week == None:
@@ -397,11 +397,12 @@ class league_season_data(object):
 
             matchups["game_id"] = self.game_id
             matchups["league_id"] = self.league_id
+            matchups = matchups[matchups["is_playoffs"] == 0]
 
         if str(first_time).upper() == "YES":
             matchups.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
-                matchups, "weeklyleaguematchups", first_time="yes"
+                matchups, "regseasonmatchups", first_time="yes"
             )
 
         elif str(first_time).upper() == "NO":
@@ -410,7 +411,7 @@ class league_season_data(object):
             matchups = pd.concat([psql_matchups, matchups])
             matchups.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
-                matchups, "weeklyleaguematchups", first_time="no"
+                matchups, "regseasonmatchups", first_time="no"
             )
 
             return matchups
@@ -602,6 +603,74 @@ class league_season_data(object):
             )
 
         return team_week_rosters
+
+    def team_points_by_week(self, first_time="no", nfl_week=None):
+
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
+        sql_query = (
+            f"SELECT team_id FROM dev.leagueteams WHERE game_id = '{self.game_id}'"
+        )
+        team_ids = db_cursor.copy_data_from_postgres(sql_query)
+        team_ids = list(team_ids["team_id"])
+
+        team_week_rosters = pd.DataFrame()
+        for team in team_ids:
+            try:
+                response = complex_json_handler(
+                    self.yahoo_query.get_team_stats_by_week(str(team), nfl_week)
+                )
+
+            except Exception as e:
+                if "token expired" in str(e):
+                    self.yahoo_query._authenticate()
+
+                else:
+                    print(f"Error, sleeping for 30 min before retrying.\n{e}")
+                    time.sleep(1800)
+                    self.yahoo_query._authenticate()
+
+                response = complex_json_handler(
+                    self.yahoo_query.get_team_stats_by_week(str(team), nfl_week)
+                )
+
+            team_roster = pd.DataFrame()
+            time.sleep(2)
+
+            for r in response["players"]:
+                row = pd.json_normalize(complex_json_handler(r["player"]))
+                team_roster = pd.concat([team_roster, row])
+                team_roster["team_id"] = team
+                team_roster["week"] = nfl_week
+
+            team_week_rosters = pd.concat([team_week_rosters, team_roster])
+
+        team_week_rosters["game_id"] = self.game_id
+        team_week_rosters["league_id"] = self.league_id
+        team_week_rosters["eligible_positions"] = [
+            ", ".join(map(str, l)) for l in team_week_rosters["eligible_positions"]
+        ]
+
+        db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
+
+        if str(first_time).upper() == "YES":
+            team_week_rosters.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                team_week_rosters, "weeklyteamroster", first_time="yes"
+            )
+
+        elif str(first_time).upper() == "NO":
+            query = (
+                f"SELECT * FROM dev.weeklyteamroster WHERE game_id != '{self.game_id}'"
+            )
+            psql_team_week_rosters = db_cursor.copy_data_from_postgres(query)
+            team_week_rosters = pd.concat([psql_team_week_rosters, team_week_rosters])
+            team_week_rosters.drop_duplicates(ignore_index=True, inplace=True)
+            db_cursor.copy_table_to_postgres_new(
+                team_week_rosters, "weeklyteamroster", first_time="no"
+            )
+
+        return team_week_rosters
+
 
     # def player_stats_by_week(self, first_time="no", nfl_week=None):
 
