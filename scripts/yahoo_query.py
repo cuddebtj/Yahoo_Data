@@ -613,16 +613,17 @@ class league_season_data(object):
         team_ids = db_cursor.copy_data_from_postgres(sql_query)
         team_ids = list(team_ids["team_id"])
 
-        team_week_rosters = pd.DataFrame()
+        team_points_weekly = pd.DataFrame()
         for team in team_ids:
             try:
-                response = complex_json_handler(
-                    self.yahoo_query.get_team_stats_by_week(str(team), nfl_week)
-                )
+                response = self.yahoo_query.get_team_stats_by_week(str(team), nfl_week)
 
             except Exception as e:
                 if "token expired" in str(e):
                     self.yahoo_query._authenticate()
+                                
+                elif "Invalid week" in str(e):
+                    return
 
                 else:
                     print(f"Error, sleeping for 30 min before retrying.\n{e}")
@@ -633,43 +634,45 @@ class league_season_data(object):
                     self.yahoo_query.get_team_stats_by_week(str(team), nfl_week)
                 )
 
-            team_roster = pd.DataFrame()
             time.sleep(2)
 
-            for r in response["players"]:
-                row = pd.json_normalize(complex_json_handler(r["player"]))
-                team_roster = pd.concat([team_roster, row])
-                team_roster["team_id"] = team
-                team_roster["week"] = nfl_week
+            team_pts = pd.DataFrame()
 
-            team_week_rosters = pd.concat([team_week_rosters, team_roster])
+            ttl_pts = pd.json_normalize(complex_json_handler(response['team_points']))
+            ttl_pts = ttl_pts[['total', 'week']]
+            ttl_pts.rename(columns={'total': 'final_points'}, inplace=True)
 
-        team_week_rosters["game_id"] = self.game_id
-        team_week_rosters["league_id"] = self.league_id
-        team_week_rosters["eligible_positions"] = [
-            ", ".join(map(str, l)) for l in team_week_rosters["eligible_positions"]
-        ]
+            pro_pts = pd.json_normalize(complex_json_handler(response['team_projected_points']))
+            pro_pts = pro_pts[['total']]
+            pro_pts.rename(columns={'total': 'projected_points'}, inplace=True)
+            team_pts = pd.concat([ttl_pts, pro_pts], axis=1)
+            team_pts['team_id'] = team
+
+            team_points_weekly = pd.concat([team_points_weekly, team_pts])
+
+        team_points_weekly["game_id"] = self.game_id
+        team_points_weekly["league_id"] = self.league_id
 
         db_cursor = DatabaseCursor(PATH, options="-c search_path=dev")
 
         if str(first_time).upper() == "YES":
-            team_week_rosters.drop_duplicates(ignore_index=True, inplace=True)
+            team_points_weekly.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
-                team_week_rosters, "weeklyteamroster", first_time="yes"
+                team_points_weekly, "weeklyteampoints", first_time="yes"
             )
 
         elif str(first_time).upper() == "NO":
             query = (
-                f"SELECT * FROM dev.weeklyteamroster WHERE game_id != '{self.game_id}'"
+                f"SELECT * FROM dev.weeklyteampoints WHERE game_id != '{self.game_id}'"
             )
-            psql_team_week_rosters = db_cursor.copy_data_from_postgres(query)
-            team_week_rosters = pd.concat([psql_team_week_rosters, team_week_rosters])
-            team_week_rosters.drop_duplicates(ignore_index=True, inplace=True)
+            psql_team_points_weekly = db_cursor.copy_data_from_postgres(query)
+            team_points_weekly = pd.concat([psql_team_points_weekly, team_points_weekly])
+            team_points_weekly.drop_duplicates(ignore_index=True, inplace=True)
             db_cursor.copy_table_to_postgres_new(
-                team_week_rosters, "weeklyteamroster", first_time="no"
+                team_points_weekly, "weeklyteampoints", first_time="no"
             )
 
-        return team_week_rosters
+        return team_points_weekly
 
 
     # def player_stats_by_week(self, first_time="no", nfl_week=None):

@@ -19,6 +19,7 @@ except Exception as error:
 TODAY = np.datetime64("today", "D")
 YEAR = TODAY.astype("datetime64[Y]").astype(int) + 1970
 NFL_WEEKS = nfl_weeks_pull()
+MAX_WEEK = NFL_WEEKS['week'].max()
 GAME_KEYS = game_keys_pull(first="no")
 SEASON = get_season()
 
@@ -69,7 +70,7 @@ if TODAY == np.datetime64(f"{YEAR}-08-31"):
 
 if (
     TODAY
-    == NFL_WEEKS["end"][(NFL_WEEKS["week"] == 15) & (NFL_WEEKS["game_id"] == GAME_ID)]
+    == NFL_WEEKS["end"][(NFL_WEEKS["week"] == MAX_WEEK) & (NFL_WEEKS["game_id"] == GAME_ID)]
 ):
     teams = league.teams_and_standings(first_time="no")
 
@@ -84,3 +85,5 @@ if (
 week_roster = league.team_roster_by_week(first_time="no", nfl_week=NFL_WEEK)
 sleep(5)
 matchups = league.matchups_by_week_regseason(first_time="no", nfl_week=NFL_WEEK)
+sleep(5)
+team_points = league.team_points_by_week( first_time='no', nfl_week=NFL_WEEK)
