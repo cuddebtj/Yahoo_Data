@@ -10,9 +10,12 @@ from yfpy.utils import complex_json_handler, unpack_data
 from yfpy import get_logger
 
 from db_psql_model import DatabaseCursor
+from utils import data_upload
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
 TEAMS_FILE = list(Path().cwd().parent.glob("**/teams.yaml"))[0]
+OPTION_DEV = "-c search_path=dev"
+OPTION_PROD = "-c search_path=prod"
 
 
 class league_season_data(object):
@@ -67,19 +70,9 @@ class league_season_data(object):
         league_metadata["game_id"] = self.game_id
         league_metadata.drop_duplicates(ignore_index=True, inplace=True)
 
-        if str(first_time).upper() == "YES":
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                league_metadata, "leaguemetadata", first_time="yes"
-            )
+        query = "SELECT * FROM dev.league_settings"
 
-        elif str(first_time).upper() == "NO":
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                league_metadata, "leaguemetadata", first_time="no"
-            )
+        data_upload(league_metadata, first_time, "league_metadata", query, PATH, OPTION_DEV)
 
         return league_metadata
 
@@ -101,19 +94,9 @@ class league_season_data(object):
         league_settings["league_id"] = self.league_id
         league_settings.drop_duplicates(ignore_index=True, inplace=True)
 
-        if str(first_time).upper() == "YES":
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                league_settings, "leaguesettings", first_time="yes"
-            )
+        query_1 = "SELECT * FROM dev.league_settings"
 
-        elif str(first_time).upper() == "NO":
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                league_settings, "leaguesettings", first_time="no"
-            )
+        data_upload(league_settings, first_time, "league_settings", query_1, PATH, OPTION_DEV)
 
         roster_positions = pd.DataFrame()
         for r in response["roster_positions"]:
@@ -124,19 +107,9 @@ class league_season_data(object):
         roster_positions["league_id"] = self.league_id
         roster_positions.drop_duplicates(ignore_index=True, inplace=True)
 
-        if str(first_time).upper() == "YES":
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                roster_positions, "rosterpositions", first_time="yes"
-            )
+        query_2 = "SELECT * FROM dev.roster_positions"
 
-        elif str(first_time).upper() == "NO":
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                roster_positions, "rosterpositions", first_time="no"
-            )
+        data_upload(roster_positions, first_time, "roster_positions", query_2, PATH, OPTION_DEV)
 
         stat_categories = pd.DataFrame()
         for r in response["stat_categories"]["stats"]:
@@ -179,21 +152,10 @@ class league_season_data(object):
         stat_categories = stat_categories.merge(
             stat_modifiers, how="outer", on="stat_id"
         )
-        stat_categories.drop_duplicates(ignore_index=True, inplace=True)
 
-        if str(first_time).upper() == "YES":
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                stat_categories, "rosterpositions", first_time="yes"
-            )
+        query_3 = "SELECT * FROM dev.stat_categories"
 
-        elif str(first_time).upper() == "NO":
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                stat_categories, "statcategories", first_time="no"
-            )
+        data_upload(stat_categories, first_time, "stat_categories", query_3, PATH, OPTION_DEV)
 
         return league_settings, roster_positions, stat_categories
 
@@ -271,15 +233,9 @@ class league_season_data(object):
             inplace=True,
         )
 
-        if str(first_time).upper() == "YES":
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(players, "draftresults", first_time="yes")
+        query = "SELECT * FROM dev.player_list"
 
-        elif str(first_time).upper() == "NO":
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(players, "draftresults", first_time="no")
+        data_upload(players, first_time, "player_list", query, PATH, OPTION_DEV)
 
         return players
 
@@ -295,17 +251,9 @@ class league_season_data(object):
         draft_results["league_id"] = self.league_id
         draft_results.drop_duplicates(ignore_index=True, inplace=True)
 
-        if str(first_time).upper() == "YES":
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                draft_results, "draftresults", first_time="yes"
-            )
+        query = "SELECT * FROM dev.draft_results"
 
-        elif str(first_time).upper() == "NO":
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(draft_results, "draftresults", first_time="no")
+        data_upload(draft_results, first_time, "draft_results", query, PATH, OPTION_DEV)
 
         return draft_results
 
@@ -425,27 +373,11 @@ class league_season_data(object):
             matchups["league_id"] = self.league_id
             matchups = matchups[matchups["is_playoffs"] == 0]
 
-        if str(first_time).upper() == "YES":
-            matchups.drop_duplicates(ignore_index=True, inplace=True)
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                matchups, "regseasonmatchups", first_time="yes"
-            )
+        query = "SELECT * FROM dev.reg_season_matchups"
 
-        elif str(first_time).upper() == "NO":
-            query = f"SELECT * FROM dev.regseasonmatchups WHERE (game_id != '{self.game_id}' AND week != '{nfl_week}')"
-            psql_matchups = DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_data_from_postgres(query)
-            matchups = pd.concat([psql_matchups, matchups], ignore_index=True)
-            matchups = pd.DataFrame(matchups)
-            matchups.drop_duplicates(ignore_index=True, inplace=True)
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(matchups, "regseasonmatchups", first_time="no")
+        data_upload(matchups, first_time, "reg_season_matchups", query, PATH, OPTION_DEV)
 
-            return matchups
+        return matchups
 
     def teams_and_standings(self, first_time="no"):
 
@@ -528,52 +460,32 @@ class league_season_data(object):
         correct_teams = correct_teams[~correct_teams["name"].isna()]
         teams_standings = teams_standings.merge(
             correct_teams,
-            how="left",
+            how="outer",
             left_on="name",
             right_on="name",
             suffixes=("_drop", ""),
         )
+
         teams_standings["nickname"] = teams_standings["nickname"].fillna(
             teams_standings["nickname_drop"]
         )
+
+        teams_standings["nickname"].replace("--hidden--", teams_standings['team_key'], inplace=True)
+
         teams_standings = teams_standings[
             teams_standings.columns.drop(list(teams_standings.filter(regex="_drop")))
         ]
-        teams_standings = teams_standings[teams_standings["nickname"] != "--hidden--"]
 
-        if str(first_time).upper() == "YES":
-            teams_standings = teams_standings.astype(str)
-            teams_standings.drop_duplicates(ignore_index=True, inplace=True)
-            teams_standings.sort_index(axis=1, inplace=True)
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                teams_standings, "leagueteams", first_time="yes"
-            )
+        query = "SELECT * FROM dev.league_teams"
 
-        elif str(first_time).upper() == "NO":
-            query = f"SELECT * FROM dev.leagueteams WHERE game_id != '{self.game_id}'"
-            psql_teams_standings = DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_data_from_postgres(query)
-            psql_teams_standings.sort_index(axis=1, inplace=True)
-            teams_standings = pd.concat([psql_teams_standings, teams_standings])
-            teams_standings = pd.DataFrame(teams_standings)
-            teams_standings = teams_standings.astype(str)
-            teams_standings.drop_duplicates(ignore_index=True, inplace=True)
-            teams_standings.sort_index(axis=1, inplace=True)
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                teams_standings, "leagueteams", first_time="no"
-            )
+        data_upload(teams_standings, first_time, "league_teams", query, PATH, OPTION_DEV)
 
         return teams_standings
 
     def team_roster_by_week(self, first_time="no", nfl_week=None):
 
         sql_query = (
-            f"SELECT team_id FROM dev.leagueteams WHERE game_id = '{self.game_id}'"
+            f"SELECT team_id FROM dev.league_teams WHERE game_id = '{self.game_id}'"
         )
         team_ids = DatabaseCursor(
             PATH, options="-c search_path=dev"
@@ -617,27 +529,9 @@ class league_season_data(object):
             ", ".join(map(str, l)) for l in team_week_rosters["eligible_positions"]
         ]
 
-        if str(first_time).upper() == "YES":
-            team_week_rosters.drop_duplicates(ignore_index=True, inplace=True)
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                team_week_rosters, "weeklyteamroster", first_time="yes"
-            )
+        query = "SELECT * FROM dev.weekly_team_roster"
 
-        elif str(first_time).upper() == "NO":
-            query = f"SELECT * FROM dev.weeklyteamroster WHERE (game_id != '{self.game_id}' AND week != '{nfl_week}')"
-            psql_team_week_rosters = DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_data_from_postgres(query)
-            team_week_rosters = pd.concat([psql_team_week_rosters, team_week_rosters])
-            team_week_rosters = pd.DataFrame(team_week_rosters)
-            team_week_rosters.drop_duplicates(ignore_index=True, inplace=True)
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                team_week_rosters, "weeklyteamroster", first_time="no"
-            )
+        data_upload(team_week_rosters, first_time, "weekly_team_roster", query, PATH, OPTION_DEV)
 
         return team_week_rosters
 
@@ -693,29 +587,9 @@ class league_season_data(object):
         team_points_weekly["game_id"] = self.game_id
         team_points_weekly["league_id"] = self.league_id
 
-        if str(first_time).upper() == "YES":
-            team_points_weekly.drop_duplicates(ignore_index=True, inplace=True)
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                team_points_weekly, "weeklyteampoints", first_time="yes"
-            )
+        query = "SELECT * FROM dev.weekly_team_pts"
 
-        elif str(first_time).upper() == "NO":
-            query = f"SELECT * FROM dev.weeklyteampoints WHERE (game_id != '{self.game_id}' AND week != '{nfl_week}')"
-            psql_team_points_weekly = DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_data_from_postgres(query)
-            team_points_weekly = pd.concat(
-                [psql_team_points_weekly, team_points_weekly]
-            )
-            team_points_weekly = pd.DataFrame(team_points_weekly)
-            team_points_weekly.drop_duplicates(ignore_index=True, inplace=True)
-            DatabaseCursor(
-                PATH, options="-c search_path=dev"
-            ).copy_table_to_postgres_new(
-                team_points_weekly, "weeklyteampoints", first_time="no"
-            )
+        data_upload(team_points_weekly, first_time, "weekly_team_pts", query, PATH, OPTION_DEV)
 
         return team_points_weekly
 
@@ -742,8 +616,8 @@ class league_season_data(object):
         )
 
         game_keys.drop_duplicates(ignore_index=True, inplace=True)
-        DatabaseCursor(PATH, options="-c search_path=prod").copy_table_to_postgres_new(
-            game_keys, "gamekeys", first_time="yes"
+        DatabaseCursor(PATH, options=OPTION_PROD).copy_table_to_postgres_new(
+            game_keys, "game_keys", first_time="yes"
         )
 
         return game_keys
@@ -752,7 +626,7 @@ class league_season_data(object):
 
         game_keys = DatabaseCursor(
             PATH, options="-c search_path=prod"
-        ).copy_table_to_postgres_new("SELECT game_id FROM prod.gamekeys")
+        ).copy_table_to_postgres_new("SELECT game_id FROM prod.game_keys")
         game_id = list(game_keys["game_id"])
         weeks = pd.DataFrame()
         for g in game_id:
@@ -765,8 +639,8 @@ class league_season_data(object):
         weeks.rename(columns={"display_name": "week"}, inplace=True)
 
         weeks.drop_duplicates(ignore_index=True, inplace=True)
-        DatabaseCursor(PATH, options="-c search_path=prod").copy_table_to_postgres_new(
-            weeks, "nflweeks", first_time="yes"
+        DatabaseCursor(PATH, options=OPTION_PROD).copy_table_to_postgres_new(
+            weeks, "nfl_weeks", first_time="yes"
         )
 
         return weeks
