@@ -72,7 +72,9 @@ class league_season_data(object):
 
         query = "SELECT * FROM dev.league_settings"
 
-        data_upload(league_metadata, first_time, "league_metadata", query, PATH, OPTION_DEV)
+        data_upload(
+            league_metadata, first_time, "league_metadata", query, PATH, OPTION_DEV
+        )
 
         return league_metadata
 
@@ -96,7 +98,9 @@ class league_season_data(object):
 
         query_1 = "SELECT * FROM dev.league_settings"
 
-        data_upload(league_settings, first_time, "league_settings", query_1, PATH, OPTION_DEV)
+        data_upload(
+            league_settings, first_time, "league_settings", query_1, PATH, OPTION_DEV
+        )
 
         roster_positions = pd.DataFrame()
         for r in response["roster_positions"]:
@@ -109,7 +113,9 @@ class league_season_data(object):
 
         query_2 = "SELECT * FROM dev.roster_positions"
 
-        data_upload(roster_positions, first_time, "roster_positions", query_2, PATH, OPTION_DEV)
+        data_upload(
+            roster_positions, first_time, "roster_positions", query_2, PATH, OPTION_DEV
+        )
 
         stat_categories = pd.DataFrame()
         for r in response["stat_categories"]["stats"]:
@@ -155,7 +161,9 @@ class league_season_data(object):
 
         query_3 = "SELECT * FROM dev.stat_categories"
 
-        data_upload(stat_categories, first_time, "stat_categories", query_3, PATH, OPTION_DEV)
+        data_upload(
+            stat_categories, first_time, "stat_categories", query_3, PATH, OPTION_DEV
+        )
 
         return league_settings, roster_positions, stat_categories
 
@@ -375,7 +383,9 @@ class league_season_data(object):
 
         query = "SELECT * FROM dev.reg_season_matchups"
 
-        data_upload(matchups, first_time, "reg_season_matchups", query, PATH, OPTION_DEV)
+        data_upload(
+            matchups, first_time, "reg_season_matchups", query, PATH, OPTION_DEV
+        )
 
         return matchups
 
@@ -449,7 +459,7 @@ class league_season_data(object):
 
         with open(TEAMS_FILE, "r") as file:
             c_teams = yaml.load(file, Loader=yaml.FullLoader)
-            
+
         corrected_teams = pd.DataFrame()
 
         for team in c_teams["name"]:
@@ -470,7 +480,9 @@ class league_season_data(object):
             teams_standings["nickname_drop"]
         )
 
-        teams_standings["nickname"].replace("--hidden--", teams_standings['team_key'], inplace=True)
+        teams_standings["nickname"].replace(
+            "--hidden--", teams_standings["team_key"], inplace=True
+        )
 
         teams_standings = teams_standings[
             teams_standings.columns.drop(list(teams_standings.filter(regex="_drop")))
@@ -478,7 +490,9 @@ class league_season_data(object):
 
         query = "SELECT * FROM dev.league_teams"
 
-        data_upload(teams_standings, first_time, "league_teams", query, PATH, OPTION_DEV)
+        data_upload(
+            teams_standings, first_time, "league_teams", query, PATH, OPTION_DEV
+        )
 
         return teams_standings
 
@@ -531,7 +545,9 @@ class league_season_data(object):
 
         query = "SELECT * FROM dev.weekly_team_roster"
 
-        data_upload(team_week_rosters, first_time, "weekly_team_roster", query, PATH, OPTION_DEV)
+        data_upload(
+            team_week_rosters, first_time, "weekly_team_roster", query, PATH, OPTION_DEV
+        )
 
         return team_week_rosters
 
@@ -543,7 +559,7 @@ class league_season_data(object):
         teams = DatabaseCursor(
             PATH, options="-c search_path=dev"
         ).copy_data_from_postgres(sql_query)
-        teams = teams['max_teams'].values[0]
+        teams = teams["max_teams"].values[0]
 
         team_points_weekly = pd.DataFrame()
         for team in range(1, teams):
@@ -589,7 +605,9 @@ class league_season_data(object):
 
         query = "SELECT * FROM dev.weekly_team_pts"
 
-        data_upload(team_points_weekly, first_time, "weekly_team_pts", query, PATH, OPTION_DEV)
+        data_upload(
+            team_points_weekly, first_time, "weekly_team_pts", query, PATH, OPTION_DEV
+        )
 
         return team_points_weekly
 

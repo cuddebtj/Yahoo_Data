@@ -35,7 +35,7 @@ def nfl_weeks_pull():
 
     try:
         db_cursor = DatabaseCursor(PATH, options="-c search_path=prod")
-        nfl_weeks = db_cursor.copy_data_from_postgres("SELECT * FROM prod.nflweeks")
+        nfl_weeks = db_cursor.copy_data_from_postgres("SELECT * FROM prod.nfl_weeks")
         nfl_weeks["end"] = pd.to_datetime(nfl_weeks["end"])
         nfl_weeks["start"] = pd.to_datetime(nfl_weeks["start"])
         return nfl_weeks
@@ -55,7 +55,9 @@ def game_keys_pull(first="yes"):
 
         elif "NO" == str(first).upper():
             db_cursor = DatabaseCursor(PATH, options="-c search_path=prod")
-            game_keys = db_cursor.copy_data_from_postgres("SELECT * FROM prod.gamekeys")
+            game_keys = db_cursor.copy_data_from_postgres(
+                "SELECT * FROM prod.game_keys"
+            )
             return game_keys
 
     except Exception as e:
@@ -68,13 +70,17 @@ def data_upload(df: pd.DataFrame, first_time, table_name, query, path, option):
         if str(first_time).upper == "YES":
             df.drop_duplicates(ignore_index=True, inplace=True)
             df.sort_index(axis=1, inplace=True)
-            DatabaseCursor(path, options=option).copy_table_to_postgres_new(df, table_name, first_time="yes")
+            DatabaseCursor(path, options=option).copy_table_to_postgres_new(
+                df, table_name, first_time="yes"
+            )
 
         elif str(first_time).upper() == "NO":
             psql = DatabaseCursor(path, options=option).copy_data_from_postgres(query)
             df = pd.concat([psql, df])
             df.drop_duplicates(ignore_index=True, inplace=True)
-            DatabaseCursor(path, options=option).copy_table_to_postgres_new(df, table_name, first_time="no")
+            DatabaseCursor(path, options=option).copy_table_to_postgres_new(
+                df, table_name, first_time="no"
+            )
 
     except Exception as e:
-        print(f'Error: {e}')
+        print(f"Error: {e}")
