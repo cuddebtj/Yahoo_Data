@@ -2,11 +2,15 @@ import pandas as pd
 import numpy as np
 import math
 import itertools
-
+import logging
 from pathlib import Path
 from datetime import datetime as dt
 
 from db_psql_model import DatabaseCursor
+
+
+logging.basicConfig()
+logging.getLogger('sqlalchemy').setLevel(logging.ERROR)
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
 

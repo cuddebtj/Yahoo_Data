@@ -23,6 +23,8 @@ class league_season_data(object):
     LOGGET = get_logger(__name__)
     LOG_OUTPUT = False
     logging.getLogger("yfpy.query").setLevel(level=logging.INFO)
+    logging.basicConfig()
+    logging.getLogger('sqlalchemy').setLevel(logging.ERROR)
 
     def __init__(
         self,
@@ -666,8 +668,10 @@ class league_season_data(object):
                 weeks = pd.concat([weeks, row])
 
         weeks.rename(columns={"display_name": "week"}, inplace=True)
-
+        weeks = weeks[['week', 'start', 'end', 'game_id']]
+        weeks = weeks.iloc[:,1:]
         weeks.drop_duplicates(ignore_index=True, inplace=True)
+
         DatabaseCursor(PATH, options=OPTION_PROD).copy_table_to_postgres_new(
             weeks, "nfl_weeks", first_time="yes"
         )
