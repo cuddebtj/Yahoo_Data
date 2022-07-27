@@ -482,13 +482,19 @@ class league_season_data(object):
             teams_standings["nickname_drop"]
         )
 
-        teams_standings["nickname"].replace(
-            "--hidden--", teams_standings["team_key"], inplace=True
+        teams_standings["nickname"] = np.where(
+            teams_standings["nickname"] == "--hidden--",
+            teams_standings["team_key"],
+            teams_standings["nickname"],
         )
 
         teams_standings = teams_standings[
             teams_standings.columns.drop(list(teams_standings.filter(regex="_drop")))
         ]
+
+        teams_standings.dropna(
+            subset=["game_id", "league_id", "manager_id", "team_key"], inplace=True
+        )
 
         query = "SELECT * FROM dev.league_teams"
 
@@ -574,7 +580,7 @@ class league_season_data(object):
             except Exception as e:
                 if "Invalid week" in str(e):
                     return
-                    
+
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
 
@@ -649,7 +655,7 @@ class league_season_data(object):
 
         game_keys = DatabaseCursor(
             PATH, options="-c search_path=prod"
-        ).copy_table_to_postgres_new("SELECT game_id FROM prod.game_keys")
+        ).copy_data_from_postgres("SELECT game_id FROM prod.game_keys")
         game_id = list(game_keys["game_id"])
         weeks = pd.DataFrame()
         for g in game_id:
