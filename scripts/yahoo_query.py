@@ -23,8 +23,6 @@ class league_season_data(object):
     LOGGET = get_logger(__name__)
     LOG_OUTPUT = False
     logging.getLogger("yfpy.query").setLevel(level=logging.INFO)
-    logging.basicConfig()
-    logging.getLogger('sqlalchemy').setLevel(logging.ERROR)
 
     def __init__(
         self,
@@ -75,7 +73,7 @@ class league_season_data(object):
         query = "SELECT * FROM dev.league_settings"
 
         data_upload(
-            league_metadata, first_time, "league_metadata", query, PATH, OPTION_DEV
+            df=league_metadata, first_time=first_time, table_name="league_metadata", query=query, path=PATH, option=OPTION_DEV
         )
 
         return league_metadata
@@ -101,7 +99,7 @@ class league_season_data(object):
         query_1 = "SELECT * FROM dev.league_settings"
 
         data_upload(
-            league_settings, first_time, "league_settings", query_1, PATH, OPTION_DEV
+            df=league_settings, first_time=first_time, table_name="league_settings", query=query_1, path=PATH, option=OPTION_DEV
         )
 
         roster_positions = pd.DataFrame()
@@ -116,7 +114,7 @@ class league_season_data(object):
         query_2 = "SELECT * FROM dev.roster_positions"
 
         data_upload(
-            roster_positions, first_time, "roster_positions", query_2, PATH, OPTION_DEV
+            df=roster_positions, first_time=first_time, table_name="roster_positions", query=query_2, path=PATH, option=OPTION_DEV
         )
 
         stat_categories = pd.DataFrame()
@@ -164,7 +162,7 @@ class league_season_data(object):
         query_3 = "SELECT * FROM dev.stat_categories"
 
         data_upload(
-            stat_categories, first_time, "stat_categories", query_3, PATH, OPTION_DEV
+            df=stat_categories, first_time=first_time, table_name="stat_categories", query=query_3, path=PATH, option=OPTION_DEV
         )
 
         return league_settings, roster_positions, stat_categories
@@ -245,7 +243,7 @@ class league_season_data(object):
 
         query = "SELECT * FROM dev.player_list"
 
-        data_upload(players, first_time, "player_list", query, PATH, OPTION_DEV)
+        data_upload(df=players, first_time=first_time, table_name="player_list", query=query, path=PATH, option=OPTION_DEV)
 
         return players
 
@@ -263,7 +261,7 @@ class league_season_data(object):
 
         query = "SELECT * FROM dev.draft_results"
 
-        data_upload(draft_results, first_time, "draft_results", query, PATH, OPTION_DEV)
+        data_upload(df=draft_results, first_time=first_time, table_name="draft_results", query=query, path=PATH, option=OPTION_DEV)
 
         return draft_results
 
@@ -387,9 +385,7 @@ class league_season_data(object):
 
         query = "SELECT * FROM dev.reg_season_matchups"
 
-        data_upload(
-            matchups, first_time, "reg_season_matchups", query, PATH, OPTION_DEV
-        )
+        data_upload(df=matchups, first_time=first_time, table_name="reg_season_matchups", query=query, path=PATH, option=OPTION_DEV)
 
         return matchups
 
@@ -501,7 +497,7 @@ class league_season_data(object):
         query = "SELECT * FROM dev.league_teams"
 
         data_upload(
-            teams_standings, first_time, "league_teams", query, PATH, OPTION_DEV
+            df=teams_standings, first_time=first_time, table_name="league_teams", query=query, path=PATH, option=OPTION_DEV
         )
 
         return teams_standings
@@ -559,7 +555,7 @@ class league_season_data(object):
         query = "SELECT * FROM dev.weekly_team_roster"
 
         data_upload(
-            team_week_rosters, first_time, "weekly_team_roster", query, PATH, OPTION_DEV
+            df=team_week_rosters, first_time=first_time, table_name="weekly_team_roster", query=query, path=PATH, option=OPTION_DEV
         )
 
         return team_week_rosters
@@ -567,7 +563,7 @@ class league_season_data(object):
     def team_points_by_week(self, first_time="no", nfl_week=None):
 
         sql_query = (
-            f"SELECT max_teams FROM dev.leaguesettings WHERE game_id = '{self.game_id}'"
+            f"SELECT max_teams FROM dev.league_settings WHERE game_id = '{self.game_id}'"
         )
         teams = DatabaseCursor(
             PATH, options="-c search_path=dev"
@@ -619,7 +615,7 @@ class league_season_data(object):
         query = "SELECT * FROM dev.weekly_team_pts"
 
         data_upload(
-            team_points_weekly, first_time, "weekly_team_pts", query, PATH, OPTION_DEV
+            df=team_points_weekly, first_time=first_time, table_name="weekly_team_pts", query=query, path=PATH, option=OPTION_DEV
         )
 
         return team_points_weekly

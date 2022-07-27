@@ -71,11 +71,11 @@ def game_keys_pull(first="yes"):
 def data_upload(df: pd.DataFrame, first_time, table_name, query, path, option):
 
     try:
-        if str(first_time).upper == "YES":
+        if str(first_time).upper() == "YES":
             df.drop_duplicates(ignore_index=True, inplace=True)
             df.sort_index(axis=1, inplace=True)
             DatabaseCursor(path, options=option).copy_table_to_postgres_new(
-                df, table_name, first_time="yes"
+                df, table_name, first_time="YES"
             )
 
         elif str(first_time).upper() == "NO":
@@ -83,7 +83,7 @@ def data_upload(df: pd.DataFrame, first_time, table_name, query, path, option):
             df = pd.concat([psql, df])
             df.drop_duplicates(ignore_index=True, inplace=True)
             DatabaseCursor(path, options=option).copy_table_to_postgres_new(
-                df, table_name, first_time="no"
+                df, table_name, first_time="NO"
             )
 
     except Exception as e:

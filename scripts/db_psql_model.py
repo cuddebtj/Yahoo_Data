@@ -4,14 +4,17 @@ import pandas as pd
 import logging
 from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
-from sqlalchemy import create_engine
+import sqlalchemy
 from io import StringIO
 
-logging.basicConfig()
-logging.getLogger('sqlalchemy').setLevel(logging.ERROR)
 
 
 class DatabaseCursor(object):
+
+    logging.basicConfig()
+    logging.getLogger("sqlalchemy.engine").setLevel(logging.ERROR)
+    logging.getLogger("sqlalchemy.pool").setLevel(logging.ERROR)
+
     def __init__(self, credential_file, **kwargs):
         """
         Import database credentials
@@ -36,7 +39,7 @@ class DatabaseCursor(object):
 
         try:
             self.conn_string = f"postgresql+psycopg2://{self.credentials['psql_username']}:{self.credentials['psql_password']}@localhost/{self.credentials['psql_database']}"
-            self.engine = create_engine(self.conn_string, connect_args=self.kwargs, echo=True)
+            self.engine = sqlalchemy.create_engine(self.conn_string, connect_args=self.kwargs)
             self.conn = self.engine.raw_connection()
             self.cur = self.conn.cursor()
 
