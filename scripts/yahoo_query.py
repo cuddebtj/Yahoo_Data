@@ -64,8 +64,25 @@ class league_season_data(object):
         """
         Pull League Metadata
         """
+        try:
+            response = complex_json_handler(self.yahoo_query.get_league_metadata())
+        except Exception as e:
+            if "Invalid week" in str(e):
+                return
+            elif "token_expired" in str(e):
+                self.yahoo_query._authenticate()
+            else:
+                print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                time.sleep(3600)
+                try:
+                    self.yahoo_query._authenticate()
+                except Exception as e:
+                    print("Error, sleepng for 30 min before retrying.\n{e}")
+                    time.sleep(1800)
+                    self.yahoo_query._authenticate()
 
-        response = complex_json_handler(self.yahoo_query.get_league_metadata())
+            response = complex_json_handler(self.yahoo_query.get_league_metadata())
+        
         league_metadata = pd.json_normalize(response)
         league_metadata["game_id"] = self.game_id
         league_metadata.drop_duplicates(ignore_index=True, inplace=True)
@@ -82,9 +99,25 @@ class league_season_data(object):
         """
         Get Roster Positions, Stat Categories, and League Settigns
         """
+        try:
+            response = complex_json_handler(self.yahoo_query.get_league_settings())
+        except Exception as e:
+            if "Invalid week" in str(e):
+                return
+            elif "token_expired" in str(e):
+                self.yahoo_query._authenticate()
+            else:
+                print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                time.sleep(3600)
+                try:
+                    self.yahoo_query._authenticate()
+                except Exception as e:
+                    print("Error, sleepng for 30 min before retrying.\n{e}")
+                    time.sleep(1800)
+                    self.yahoo_query._authenticate()
 
-        response = complex_json_handler(self.yahoo_query.get_league_settings())
-
+            response = complex_json_handler(self.yahoo_query.get_league_settings())
+        
         league_settings = pd.json_normalize(response)
         league_settings.drop(
             ["roster_positions", "stat_categories.stats", "stat_modifiers.stats"],
@@ -176,9 +209,14 @@ class league_season_data(object):
             if "token_expired" in str(e):
                 self.yahoo_query._authenticate()
             else:
-                print("Retrying after sleeping 30 min.")
-                time.sleep(1800)
-                self.yahoo_query._authenticate()
+                print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                time.sleep(3600)
+                try:
+                    self.yahoo_query._authenticate()
+                except Exception as e:
+                    print("Error, sleepng for 30 min before retrying.\n{e}")
+                    time.sleep(1800)
+                    self.yahoo_query._authenticate()
 
             response = self.yahoo_query.get_league_players()
 
@@ -197,9 +235,14 @@ class league_season_data(object):
                 if "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print("Retrying after sleeping 30 min.")
-                    time.sleep(1800)
-                    self.yahoo_query._authenticate()
+                    print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                    time.sleep(3600)
+                    try:
+                        self.yahoo_query._authenticate()
+                    except Exception as e:
+                        print("Error, sleepng for 30 min before retrying.\n{e}")
+                        time.sleep(1800)
+                        self.yahoo_query._authenticate()
 
                 draft_analysis = pd.json_normalize(
                     complex_json_handler(
@@ -249,7 +292,25 @@ class league_season_data(object):
 
     def draft_results(self, first_time="no"):
 
-        response = self.yahoo_query.get_league_draft_results()
+        try:
+            response = self.yahoo_query.get_league_draft_results()
+        except Exception as e:
+            if "Invalid week" in str(e):
+                return
+            elif "token_expired" in str(e):
+                self.yahoo_query._authenticate()
+            else:
+                print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                time.sleep(3600)
+                try:
+                    self.yahoo_query._authenticate()
+                except Exception as e:
+                    print("Error, sleepng for 30 min before retrying.\n{e}")
+                    time.sleep(1800)
+                    self.yahoo_query._authenticate()
+
+            response = self.yahoo_query.get_league_draft_results()
+
         draft_results = pd.DataFrame()
         for r in response:
             row = pd.json_normalize(complex_json_handler(r["draft_result"]))
@@ -277,16 +338,22 @@ class league_season_data(object):
 
             try:
                 response = self.yahoo_query.get_league_matchups_by_week(nfl_week)
-
             except Exception as e:
                 if "Invalid week" in str(e):
+                    return
+                elif "scoreboard" in str(e):
                     return
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print(f"Error, sleeping for 30 min before retrying.\n{e}")
-                    time.sleep(1800)
-                    self.yahoo_query._authenticate()
+                    print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                    time.sleep(3600)
+                    try:
+                        self.yahoo_query._authenticate()
+                    except Exception as e:
+                        print("Error, sleepng for 30 min before retrying.\n{e}")
+                        time.sleep(1800)
+                        self.yahoo_query._authenticate()
 
                 response = self.yahoo_query.get_league_matchups_by_week(nfl_week)
 
@@ -390,8 +457,24 @@ class league_season_data(object):
         return matchups
 
     def teams_and_standings(self, first_time="no"):
-
-        response = self.yahoo_query.get_league_standings()
+        try:
+            response = self.yahoo_query.get_league_standings()
+        except Exception as e:
+            if "Invalid week" in str(e):
+                return
+            elif "token_expired" in str(e):
+                self.yahoo_query._authenticate()
+            else:
+                print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                time.sleep(3600)
+                try:
+                    self.yahoo_query._authenticate()
+                except Exception as e:
+                    print("Error, sleepng for 30 min before retrying.\n{e}")
+                    time.sleep(1800)
+                    self.yahoo_query._authenticate()
+            response = self.yahoo_query.get_league_standings()
+        
         teams = complex_json_handler(response)
         teams_standings = pd.DataFrame()
         for t in teams["teams"]:
@@ -522,19 +605,21 @@ class league_season_data(object):
             except Exception as e:
                 if "Invalid week" in str(e):
                     return
-
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
-
                 else:
-                    print(f"Error, sleeping for 30 min before retrying.\n{e}")
-                    time.sleep(1800)
-                    self.yahoo_query._authenticate()
-
+                    print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                    time.sleep(3600)
+                    try:
+                        self.yahoo_query._authenticate()
+                    except Exception as e:
+                        print("Error, sleepng for 30 min before retrying.\n{e}")
+                        time.sleep(1800)
+                        self.yahoo_query._authenticate()
+                
                 response = complex_json_handler(
                     self.yahoo_query.get_team_roster_by_week(str(team), nfl_week)
                 )
-
             team_roster = pd.DataFrame()
             time.sleep(2)
 
@@ -578,30 +663,41 @@ class league_season_data(object):
             except Exception as e:
                 if "Invalid week" in str(e):
                     return
-
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
-
                 else:
-                    print(f"Error, sleeping for 30 min before retrying.\n{e}")
-                    time.sleep(1800)
-                    self.yahoo_query._authenticate()
+                    print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                    time.sleep(3600)
+                    try:
+                        self.yahoo_query._authenticate()
+                    except Exception as e:
+                        print("Error, sleepng for 30 min before retrying.\n{e}")
+                        time.sleep(1800)
+                        self.yahoo_query._authenticate()
+                try:
+                    response = complex_json_handler(
+                        self.yahoo_query.get_team_stats_by_week(str(team), nfl_week)
+                    )
+                except:
+                    response = self.yahoo_query.get_team_stats_by_week(str(team), nfl_week)
 
-                response = complex_json_handler(
-                    self.yahoo_query.get_team_stats_by_week(str(team), nfl_week)
-                )
-
-            time.sleep(2)
+            time.sleep(1)
 
             team_pts = pd.DataFrame()
-
-            ttl_pts = pd.json_normalize(complex_json_handler(response["team_points"]))
+            try:
+                ttl_pts = pd.json_normalize(complex_json_handler(response["team_points"]))
+            except:
+                ttl_pts = pd.json_normalize(response["team_points"])
             ttl_pts = ttl_pts[["total", "week"]]
             ttl_pts.rename(columns={"total": "final_points"}, inplace=True)
 
-            pro_pts = pd.json_normalize(
-                complex_json_handler(response["team_projected_points"])
-            )
+            try:
+                pro_pts = pd.json_normalize(
+                    complex_json_handler(response["team_projected_points"])
+                )
+            except:
+                pro_pts = pd.json_normalize(response["team_projected_points"])
+                
             pro_pts = pro_pts[["total"]]
             pro_pts.rename(columns={"total": "projected_points"}, inplace=True)
             team_pts = pd.concat([ttl_pts, pro_pts], axis=1)
