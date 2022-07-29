@@ -10,7 +10,7 @@ from db_psql_model import DatabaseCursor
 
 
 logging.basicConfig()
-logging.getLogger('sqlalchemy').setLevel(logging.ERROR)
+logging.getLogger("sqlalchemy").setLevel(logging.ERROR)
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
 

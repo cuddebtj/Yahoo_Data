@@ -8,7 +8,6 @@ import sqlalchemy
 from io import StringIO
 
 
-
 class DatabaseCursor(object):
 
     logging.basicConfig()
@@ -39,7 +38,9 @@ class DatabaseCursor(object):
 
         try:
             self.conn_string = f"postgresql+psycopg2://{self.credentials['psql_username']}:{self.credentials['psql_password']}@localhost/{self.credentials['psql_database']}"
-            self.engine = sqlalchemy.create_engine(self.conn_string, connect_args=self.kwargs)
+            self.engine = sqlalchemy.create_engine(
+                self.conn_string, connect_args=self.kwargs
+            )
             self.conn = self.engine.raw_connection()
             self.cur = self.conn.cursor()
 

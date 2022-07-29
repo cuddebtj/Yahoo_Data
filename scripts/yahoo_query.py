@@ -82,15 +82,51 @@ class league_season_data(object):
                     self.yahoo_query._authenticate()
 
             response = complex_json_handler(self.yahoo_query.get_league_metadata())
-        
+
         league_metadata = pd.json_normalize(response)
         league_metadata["game_id"] = self.game_id
         league_metadata.drop_duplicates(ignore_index=True, inplace=True)
+        league_metadata = league_metadata[
+            [
+                "allow_add_to_dl_extra_pos",
+                "current_week",
+                "draft_status",
+                "edit_key",
+                "end_date",
+                "end_week",
+                "game_code",
+                "game_id",
+                "iris_group_chat_id",
+                "is_cash_league",
+                "is_finished",
+                "is_pro_league",
+                "league_id",
+                "league_key",
+                "league_type",
+                "league_update_timestamp",
+                "logo_url",
+                "name",
+                "num_teams",
+                "renew",
+                "renewed",
+                "scoring_type",
+                "season",
+                "start_date",
+                "start_week",
+                "url",
+                "weekly_deadline",
+            ]
+        ]
 
         query = "SELECT * FROM dev.league_settings"
 
         data_upload(
-            df=league_metadata, first_time=first_time, table_name="league_metadata", query=query, path=PATH, option=OPTION_DEV
+            df=league_metadata,
+            first_time=first_time,
+            table_name="league_metadata",
+            query=query,
+            path=PATH,
+            option=OPTION_DEV,
         )
 
         return league_metadata
@@ -117,7 +153,7 @@ class league_season_data(object):
                     self.yahoo_query._authenticate()
 
             response = complex_json_handler(self.yahoo_query.get_league_settings())
-        
+
         league_settings = pd.json_normalize(response)
         league_settings.drop(
             ["roster_positions", "stat_categories.stats", "stat_modifiers.stats"],
@@ -132,7 +168,12 @@ class league_season_data(object):
         query_1 = "SELECT * FROM dev.league_settings"
 
         data_upload(
-            df=league_settings, first_time=first_time, table_name="league_settings", query=query_1, path=PATH, option=OPTION_DEV
+            df=league_settings,
+            first_time=first_time,
+            table_name="league_settings",
+            query=query_1,
+            path=PATH,
+            option=OPTION_DEV,
         )
 
         roster_positions = pd.DataFrame()
@@ -147,7 +188,12 @@ class league_season_data(object):
         query_2 = "SELECT * FROM dev.roster_positions"
 
         data_upload(
-            df=roster_positions, first_time=first_time, table_name="roster_positions", query=query_2, path=PATH, option=OPTION_DEV
+            df=roster_positions,
+            first_time=first_time,
+            table_name="roster_positions",
+            query=query_2,
+            path=PATH,
+            option=OPTION_DEV,
         )
 
         stat_categories = pd.DataFrame()
@@ -195,7 +241,12 @@ class league_season_data(object):
         query_3 = "SELECT * FROM dev.stat_categories"
 
         data_upload(
-            df=stat_categories, first_time=first_time, table_name="stat_categories", query=query_3, path=PATH, option=OPTION_DEV
+            df=stat_categories,
+            first_time=first_time,
+            table_name="stat_categories",
+            query=query_3,
+            path=PATH,
+            option=OPTION_DEV,
         )
 
         return league_settings, roster_positions, stat_categories
@@ -286,7 +337,14 @@ class league_season_data(object):
 
         query = "SELECT * FROM dev.player_list"
 
-        data_upload(df=players, first_time=first_time, table_name="player_list", query=query, path=PATH, option=OPTION_DEV)
+        data_upload(
+            df=players,
+            first_time=first_time,
+            table_name="player_list",
+            query=query,
+            path=PATH,
+            option=OPTION_DEV,
+        )
 
         return players
 
@@ -322,7 +380,14 @@ class league_season_data(object):
 
         query = "SELECT * FROM dev.draft_results"
 
-        data_upload(df=draft_results, first_time=first_time, table_name="draft_results", query=query, path=PATH, option=OPTION_DEV)
+        data_upload(
+            df=draft_results,
+            first_time=first_time,
+            table_name="draft_results",
+            query=query,
+            path=PATH,
+            option=OPTION_DEV,
+        )
 
         return draft_results
 
@@ -452,7 +517,14 @@ class league_season_data(object):
 
         query = "SELECT * FROM dev.reg_season_matchups"
 
-        data_upload(df=matchups, first_time=first_time, table_name="reg_season_matchups", query=query, path=PATH, option=OPTION_DEV)
+        data_upload(
+            df=matchups,
+            first_time=first_time,
+            table_name="reg_season_matchups",
+            query=query,
+            path=PATH,
+            option=OPTION_DEV,
+        )
 
         return matchups
 
@@ -474,7 +546,7 @@ class league_season_data(object):
                     time.sleep(1800)
                     self.yahoo_query._authenticate()
             response = self.yahoo_query.get_league_standings()
-        
+
         teams = complex_json_handler(response)
         teams_standings = pd.DataFrame()
         for t in teams["teams"]:
@@ -580,7 +652,12 @@ class league_season_data(object):
         query = "SELECT * FROM dev.league_teams"
 
         data_upload(
-            df=teams_standings, first_time=first_time, table_name="league_teams", query=query, path=PATH, option=OPTION_DEV
+            df=teams_standings,
+            first_time=first_time,
+            table_name="league_teams",
+            query=query,
+            path=PATH,
+            option=OPTION_DEV,
         )
 
         return teams_standings
@@ -616,7 +693,7 @@ class league_season_data(object):
                         print("Error, sleepng for 30 min before retrying.\n{e}")
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
-                
+
                 response = complex_json_handler(
                     self.yahoo_query.get_team_roster_by_week(str(team), nfl_week)
                 )
@@ -640,16 +717,19 @@ class league_season_data(object):
         query = "SELECT * FROM dev.weekly_team_roster"
 
         data_upload(
-            df=team_week_rosters, first_time=first_time, table_name="weekly_team_roster", query=query, path=PATH, option=OPTION_DEV
+            df=team_week_rosters,
+            first_time=first_time,
+            table_name="weekly_team_roster",
+            query=query,
+            path=PATH,
+            option=OPTION_DEV,
         )
 
         return team_week_rosters
 
     def team_points_by_week(self, first_time="no", nfl_week=None):
 
-        sql_query = (
-            f"SELECT max_teams FROM dev.league_settings WHERE game_id = '{self.game_id}'"
-        )
+        sql_query = f"SELECT max_teams FROM dev.league_settings WHERE game_id = '{self.game_id}'"
         teams = DatabaseCursor(
             PATH, options="-c search_path=dev"
         ).copy_data_from_postgres(sql_query)
@@ -679,13 +759,17 @@ class league_season_data(object):
                         self.yahoo_query.get_team_stats_by_week(str(team), nfl_week)
                     )
                 except:
-                    response = self.yahoo_query.get_team_stats_by_week(str(team), nfl_week)
+                    response = self.yahoo_query.get_team_stats_by_week(
+                        str(team), nfl_week
+                    )
 
             time.sleep(1)
 
             team_pts = pd.DataFrame()
             try:
-                ttl_pts = pd.json_normalize(complex_json_handler(response["team_points"]))
+                ttl_pts = pd.json_normalize(
+                    complex_json_handler(response["team_points"])
+                )
             except:
                 ttl_pts = pd.json_normalize(response["team_points"])
             ttl_pts = ttl_pts[["total", "week"]]
@@ -697,7 +781,7 @@ class league_season_data(object):
                 )
             except:
                 pro_pts = pd.json_normalize(response["team_projected_points"])
-                
+
             pro_pts = pro_pts[["total"]]
             pro_pts.rename(columns={"total": "projected_points"}, inplace=True)
             team_pts = pd.concat([ttl_pts, pro_pts], axis=1)
@@ -711,7 +795,12 @@ class league_season_data(object):
         query = "SELECT * FROM dev.weekly_team_pts"
 
         data_upload(
-            df=team_points_weekly, first_time=first_time, table_name="weekly_team_pts", query=query, path=PATH, option=OPTION_DEV
+            df=team_points_weekly,
+            first_time=first_time,
+            table_name="weekly_team_pts",
+            query=query,
+            path=PATH,
+            option=OPTION_DEV,
         )
 
         return team_points_weekly
@@ -760,8 +849,8 @@ class league_season_data(object):
                 weeks = pd.concat([weeks, row])
 
         weeks.rename(columns={"display_name": "week"}, inplace=True)
-        weeks = weeks[['week', 'start', 'end', 'game_id']]
-        weeks = weeks.iloc[:,1:]
+        weeks = weeks[["week", "start", "end", "game_id"]]
+        weeks = weeks.iloc[:, 1:]
         weeks.drop_duplicates(ignore_index=True, inplace=True)
 
         DatabaseCursor(PATH, options=OPTION_PROD).copy_table_to_postgres_new(
