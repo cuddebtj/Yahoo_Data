@@ -86,39 +86,8 @@ class league_season_data(object):
         league_metadata = pd.json_normalize(response)
         league_metadata["game_id"] = self.game_id
         league_metadata.drop_duplicates(ignore_index=True, inplace=True)
-        league_metadata = league_metadata[
-            [
-                "allow_add_to_dl_extra_pos",
-                "current_week",
-                "draft_status",
-                "edit_key",
-                "end_date",
-                "end_week",
-                "game_code",
-                "game_id",
-                "iris_group_chat_id",
-                "is_cash_league",
-                "is_finished",
-                "is_pro_league",
-                "league_id",
-                "league_key",
-                "league_type",
-                "league_update_timestamp",
-                "logo_url",
-                "name",
-                "num_teams",
-                "renew",
-                "renewed",
-                "scoring_type",
-                "season",
-                "start_date",
-                "start_week",
-                "url",
-                "weekly_deadline",
-            ]
-        ]
 
-        query = "SELECT * FROM dev.league_settings"
+        query = "SELECT * FROM dev.league_metadata"
 
         data_upload(
             df=league_metadata,
