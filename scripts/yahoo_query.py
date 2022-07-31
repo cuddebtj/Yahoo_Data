@@ -72,7 +72,7 @@ class league_season_data(object):
             elif "token_expired" in str(e):
                 self.yahoo_query._authenticate()
             else:
-                print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                print(f"Error, sleepng for 1 hour before retrying.\n{e}")
                 time.sleep(3600)
                 try:
                     self.yahoo_query._authenticate()
@@ -112,7 +112,7 @@ class league_season_data(object):
             elif "token_expired" in str(e):
                 self.yahoo_query._authenticate()
             else:
-                print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                print(f"Error, sleepng for 1 hour before retrying.\n{e}")
                 time.sleep(3600)
                 try:
                     self.yahoo_query._authenticate()
@@ -229,7 +229,7 @@ class league_season_data(object):
             if "token_expired" in str(e):
                 self.yahoo_query._authenticate()
             else:
-                print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                print(f"Error, sleepng for 1 hour before retrying.\n{e}")
                 time.sleep(3600)
                 try:
                     self.yahoo_query._authenticate()
@@ -255,7 +255,7 @@ class league_season_data(object):
                 if "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                    print(f"Error, sleepng for 1 hour before retrying.\n{e}")
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
@@ -327,7 +327,7 @@ class league_season_data(object):
             elif "token_expired" in str(e):
                 self.yahoo_query._authenticate()
             else:
-                print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                print(f"Error, sleepng for 1 hour before retrying.\n{e}")
                 time.sleep(3600)
                 try:
                     self.yahoo_query._authenticate()
@@ -380,7 +380,7 @@ class league_season_data(object):
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                    print(f"Error, sleepng for 1 hour before retrying.\n{e}")
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
@@ -506,7 +506,7 @@ class league_season_data(object):
             elif "token_expired" in str(e):
                 self.yahoo_query._authenticate()
             else:
-                print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                print(f"Error, sleepng for 1 hour before retrying.\n{e}")
                 time.sleep(3600)
                 try:
                     self.yahoo_query._authenticate()
@@ -633,16 +633,13 @@ class league_season_data(object):
 
     def team_roster_by_week(self, first_time="no", nfl_week=None):
 
-        sql_query = (
-            f"SELECT team_id FROM dev.league_teams WHERE game_id = '{self.game_id}'"
-        )
-        team_ids = DatabaseCursor(
+        sql_query = f"SELECT max_teams FROM dev.league_settings WHERE game_id = '{self.game_id}'"
+        teams = DatabaseCursor(
             PATH, options="-c search_path=dev"
         ).copy_data_from_postgres(sql_query)
-        team_ids = list(team_ids["team_id"])
+        teams = teams["max_teams"].values[0]
 
-        team_week_rosters = pd.DataFrame()
-        for team in team_ids:
+        for team in range(1, teams+1):
             try:
                 response = complex_json_handler(
                     self.yahoo_query.get_team_roster_by_week(str(team), nfl_week)
@@ -654,7 +651,7 @@ class league_season_data(object):
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                    print(f"Error, sleepng for 1 hour before retrying.\n{e}")
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
@@ -705,7 +702,7 @@ class league_season_data(object):
         teams = teams["max_teams"].values[0]
 
         team_points_weekly = pd.DataFrame()
-        for team in range(1, teams):
+        for team in range(1, teams+1):
             try:
                 response = self.yahoo_query.get_team_stats_by_week(str(team), nfl_week)
 
@@ -715,7 +712,7 @@ class league_season_data(object):
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print(f"Error, sleepng for 30 min before retrying.\n{e}")
+                    print(f"Error, sleepng for 1 hour before retrying.\n{e}")
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()

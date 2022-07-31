@@ -37,7 +37,6 @@ try:
 except Exception as e:
     print(e)
     NFL_WEEK = np.nan
-    pass
 
 
 CONSUMER_KEY = CREDS["YFPY_CONSUMER_KEY"]
@@ -64,9 +63,7 @@ if TODAY == np.datetime64(f"{YEAR}-08-31"):
     sleep(5)
     settings, roster, stat_cat = league.set_roster_pos_stat_cat(first_time="no")
     sleep(5)
-    teams = league.teams_and_standings(first_time="no")
-    sleep(5)
-    players = league.players_list(first_time="no")
+    # players = league.players_list(first_time="no")
 
 if (
     TODAY
