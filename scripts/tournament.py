@@ -145,12 +145,20 @@ class Tournament:
                                 )
                                 next_round_losers.append(match.get_loser_participant())
                                 self.__matches.append(match)
+
+                        if winners_number_of_byes > 0 and len(next_round[0]) > len(next_round[1]):
+                            next_round.insert(0, next_round_losers)
+                            next_round.insert(0, next_round_winners)
+                            winners_number_of_byes = 0
+                        else:
+                            next_round.append(next_round_winners)
+                            next_round.append(next_round_losers)
+
                         try:
                             next_round.remove(bracket)
                         except:
                             continue
-                        next_round.append(next_round_winners)
-                        next_round.append(next_round_losers)
+
                         next_round = [ele for ele in next_round if ele != []]
                         if len(next_round) == len(competitors_list):
                             break
