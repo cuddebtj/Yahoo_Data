@@ -1,5 +1,6 @@
 import math
 
+
 class Participant:
     """
     The Participant class represents a participant in a specific match.
@@ -139,7 +140,9 @@ class Tournament:
                                 next_round_winners.append(participant_pair[1])
                             else:
                                 match = Match(participant_pair[0], participant_pair[1])
-                                next_round_winners.append(match.get_winner_participant())
+                                next_round_winners.append(
+                                    match.get_winner_participant()
+                                )
                                 next_round_losers.append(match.get_loser_participant())
                                 self.__matches.append(match)
                         try:
@@ -195,7 +198,7 @@ class Tournament:
 
         final_dict = {}
         for team in range(len(self.__final)):
-            final_dict[f'{team+1}'] = self.__final[team][0].get_competitor()
+            final_dict[f"{team+1}"] = self.__final[team][0].get_competitor()
 
         return final_dict
 

@@ -639,7 +639,7 @@ class league_season_data(object):
         ).copy_data_from_postgres(sql_query)
         teams = teams["max_teams"].values[0]
 
-        for team in range(1, teams+1):
+        for team in range(1, teams + 1):
             try:
                 response = complex_json_handler(
                     self.yahoo_query.get_team_roster_by_week(str(team), nfl_week)
@@ -702,7 +702,7 @@ class league_season_data(object):
         teams = teams["max_teams"].values[0]
 
         team_points_weekly = pd.DataFrame()
-        for team in range(1, teams+1):
+        for team in range(1, teams + 1):
             try:
                 response = self.yahoo_query.get_team_stats_by_week(str(team), nfl_week)
 
