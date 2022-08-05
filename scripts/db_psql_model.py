@@ -152,6 +152,56 @@ class DatabaseCursor(object):
             self.__exit__(exc_result=False)
             print(f"Error: {error}")
 
+    def update_table_data(self, table, columns, values, where_clauses):
+        """
+        Function to update a values of a column within a table
+        Can take multiple columns as a list
+        Can take multiple values as a list
+        Columns length must equal values length
+        Where Clauses can either be a list or a string already formatted
+        """
+        cursor = self.__enter__()
+        if isinstance(where_clauses, list):
+            where_stmt = ""
+            for i, v in enumerate(where_clauses):
+                if i < len(where_clauses) - 1:
+                    where_stmt += f"{v} AND"
+                else:
+                    where_stmt += f"{v}"
+        else:
+            where_stmt = str(where_clauses)
+
+        if len(columns) == len(values):
+            if isinstance(columns, list):
+                col_str = ""
+                for i, v in enumerate(columns):
+                    if i < len(columns) - 1:
+                        col_str += f"{columns[i]} = {values[i]}, "
+                    else:
+                        col_str += f"{columns[i]} = {values[i]} "
+            else:
+                col_str = f"{columns} = {values} "
+
+            sql_query = sql.SQL(
+                "UPDATE {table} SET {col_str} WHERE {where_stmt};"
+            ).format(
+                table=sql.Identifier(table),
+                col_str=sql.Identifier(col_str),
+                where_stmt=sql.Identifier(where_stmt),
+            )
+
+            try:
+                cursor.execute(sql_query)
+                self.__exit__(exc_result=True)
+                print(f"{columns} updated with {values} in table {table} successfull!")
+
+            except (Exception, psycopg2.DatabaseError) as error:
+                self.__exit__(exc_result=False)
+                print(f"Error: {error}")
+
+        else:
+            print("Please have a value for each column to update.")
+
     def copy_table_to_postgres_new(self, df, table, first_time="NO"):
         """
         Copy table to postgres from a pandas dataframe

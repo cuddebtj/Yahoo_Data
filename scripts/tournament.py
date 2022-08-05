@@ -146,7 +146,9 @@ class Tournament:
                                 next_round_losers.append(match.get_loser_participant())
                                 self.__matches.append(match)
 
-                        if winners_number_of_byes > 0 and len(next_round[0]) > len(next_round[1]):
+                        if winners_number_of_byes > 0 and len(next_round[0]) > len(
+                            next_round[1]
+                        ):
                             next_round.insert(0, next_round_losers)
                             next_round.insert(0, next_round_winners)
                             winners_number_of_byes = 0
