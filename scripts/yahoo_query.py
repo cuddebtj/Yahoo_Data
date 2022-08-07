@@ -90,7 +90,7 @@ class league_season_data(object):
         query = (
             "SELECT * "
             "FROM dev.league_metadata "
-            f"WHERE (game_id != {str(self.game_id)}) "
+            f"WHERE (game_id <> '{str(self.game_id)}') "
             "GROUP BY allow_add_to_dl_extra_pos, current_week, draft_status, edit_key, end_date, end_week, game_code, game_id, iris_group_chat_id, "
             "is_cash_league, is_finished, is_pro_league, league_id, league_key, league_type, league_update_timestamp, logo_url, name, num_teams, "
             "password, renew, renewed, scoring_type, season, short_invitation_url, start_date, start_week, url, weekly_deadline "
@@ -144,7 +144,7 @@ class league_season_data(object):
         query_1 = (
             "SELECT * "
             "FROM dev.league_settings "
-            f"WHERE (game_id != {str(self.game_id)}) "
+            f"WHERE (game_id <> '{str(self.game_id)}') "
             "GROUP BY cant_cut_list, draft_pick_time, draft_time, draft_type, game_id, has_multiweek_championship, has_playoff_consolation_games, is_auction_draft, "
             "league_id, max_teams, num_playoff_consolation_teams, num_playoff_teams, pickem_enabled, player_pool, playoff_start_week, post_draft_players, "
             "scoring_type, trade_end_date, trade_ratify_type, trade_reject_time, uses_faab, uses_fractional_points, uses_lock_eliminated_teams, uses_negative_points, "
@@ -172,7 +172,7 @@ class league_season_data(object):
         query_2 = (
             "SELECT * "
             "FROM dev.roster_positions "
-            f"WHERE (game_id != {str(self.game_id)}) "
+            f"WHERE (game_id <> '{str(self.game_id)}') "
             "GROUP BY count, game_id, league_id, position, position_type "
         )
 
@@ -230,7 +230,7 @@ class league_season_data(object):
         query_3 = (
             "SELECT * "
             "FROM dev.stat_categories "
-            f"WHERE (game_id != {str(self.game_id)}) "
+            f"WHERE (game_id <> '{str(self.game_id)}') "
             "GROUP BY display_name, enabled, game_id, league_id, name, position_type, sort_order, stat_id, stat_modifier "
         )
 
@@ -332,7 +332,7 @@ class league_season_data(object):
         query = (
             "SELECT * "
             "FROM dev.player_list "
-            f"WHERE (game_id != {str(self.game_id)}) "
+            f"WHERE (game_id <> '{str(self.game_id)}') "
             "GROUP BY display_position, editorial_player_key, editorial_team_abbr, editorial_team_full_name, editorial_team_key, eligible_positions, "
             'is_undroppable, player_id, player_key, position_type, primary_position, uniform_number, "bye_weeks.week", "headshot.size", '
             '"headshot.url", "name.ascii_first", "name.ascii_last", "name.first", "name.full", "name.last", "draft_analysis.average_pick", '
@@ -384,7 +384,7 @@ class league_season_data(object):
         query = (
             "SELECT * "
             "FROM dev.draft_results "
-            f"WHERE (game_id != {str(self.game_id)}) "
+            f"WHERE (game_id <> '{str(self.game_id)}') "
             "GROUP BY game_id, league_id, pick, player_key, round, team_key "
         )
 
@@ -526,7 +526,7 @@ class league_season_data(object):
         query = (
             "SELECT * "
             "FROM dev.reg_season_matchups "
-            f"WHERE (game_id != {str(self.game_id)} AND week = {str(nfl_week)}) "
+            f"WHERE (game_id <> '{str(self.game_id)}' AND week <> '{str(nfl_week)}') "
             "GROUP BY game_id, is_consolation, is_matchup_recap_available, is_playoffs, is_tied, league_id, matchup_recap_title, matchup_recap_url, status, team_a_grade, team_a_points, team_a_projected_points, "
             "team_a_team_key, team_b_grade, team_b_points, team_b_projected_points, team_b_team_key, week, week_end, week_start, winner_team_key "
         )
@@ -666,7 +666,7 @@ class league_season_data(object):
         query = (
             "SELECT * "
             "FROM dev.league_teams "
-            f"WHERE (game_id != {str(self.game_id)}) "
+            f"WHERE (game_id <> '{str(self.game_id)}') "
             'GROUP BY clinched_playoffs, draft_grade, faab_balance, game_id, has_draft_grade, league_id, manager_id, name, nickname, number_of_moves, number_of_trades, "roster_adds.coverage_value", '
             '"roster_adds.value", team_id, team_key, "team_standings.outcome_totals.losses", "team_standings.outcome_totals.percentage", "team_standings.outcome_totals.ties", '
             '"team_standings.outcome_totals.wins", "team_standings.playoff_seed", "team_standings.points_against", "team_standings.points_for", "team_standings.rank", "team_standings.streak.type", '
@@ -738,7 +738,7 @@ class league_season_data(object):
         query = (
             "SELECT * "
             "FROM dev.weekly_team_roster "
-            f"WHERE (game_id != {str(self.game_id)} AND week != {str(nfl_week)} "
+            f"WHERE (game_id <> '{str(self.game_id)}' AND week <> '{str(nfl_week)}') "
             'GROUP BY "bye_weeks.week", display_position, editorial_player_key, editorial_team_abbr, editorial_team_full_name, editorial_team_key, eligible_positions, '
             'game_id, has_player_notes, "headshot.size", "headshot.url", is_editable, is_undroppable, league_id, "name.ascii_first", "name.ascii_last", "name.first", '
             '"name.full", "name.last", player_id, player_key, player_notes_last_timestamp, position_type, primary_position, "selected_position.coverage_type", '
@@ -831,7 +831,7 @@ class league_season_data(object):
         query = (
             "SELECT * "
             "FROM dev.weekly_team_pts "
-            f"WHERE (game_id != {str(self.game_id)} AND week != {str(nfl_week)} "
+            f"WHERE (game_id <> '{str(self.game_id)}' AND week <> '{str(nfl_week)}') "
             "GROUP BY final_points, game_id, league_id, projected_points, team_id, week, team_key "
         )
 

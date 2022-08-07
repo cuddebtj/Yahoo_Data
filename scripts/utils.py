@@ -97,9 +97,9 @@ def reg_season(game_id):
     """
     Fucntion to calculate regular season rankings, scores, wins/losses, and matchups
     """
-    matchups_query = f"SELECT * FROM dev.reg_season_matchups WHERE game_id = {game_id}"
-    teams_query = f"SELECT team_key, name, nickname, game_id FROM dev.league_teams WHERE game_id = {game_id}"
-    settings_query = f"SELECT * FROM dev.league_settings WHERE game_id = {game_id}"
+    matchups_query = f"SELECT * FROM dev.reg_season_matchups WHERE game_id = '{str(game_id)}'"
+    teams_query = f"SELECT team_key, name, nickname, game_id FROM dev.league_teams WHERE game_id = '{str(game_id)}'"
+    settings_query = f"SELECT * FROM dev.league_settings WHERE game_id = '{str(game_id)}'"
     matchups = (
         DatabaseCursor(PATH, options=OPTION_DEV)
         .copy_data_from_postgres(matchups_query)
@@ -111,7 +111,7 @@ def reg_season(game_id):
         .copy_data_from_postgres(teams_query)
         .drop_duplicates()
     )
-    settings_query = f"SELECT * FROM dev.league_settings WHERE game_id = {game_id}"
+
     settings = (
         DatabaseCursor(PATH, options=OPTION_DEV)
         .copy_data_from_postgres(settings_query)
@@ -287,27 +287,27 @@ def post_season(one_reg_season, game_id, nfl_week):
     """
     Function to calculate post_season winners/losers, create final rank for the season
     """
-    settings_query = f"SELECT * FROM dev.league_settings WHERE game_id = {game_id}"
+    settings_query = f"SELECT * FROM dev.league_settings WHERE game_id = '{str(game_id)}'"
     settings = (
         DatabaseCursor(PATH, options=OPTION_DEV)
         .copy_data_from_postgres(settings_query)
         .drop_duplicates()
     )
-    meta_query = f"SELECT game_id, league_id, end_week FROM dev.league_metadata WHERE game_id = {game_id}"
+    meta_query = f"SELECT game_id, league_id, end_week FROM dev.league_metadata WHERE game_id = '{str(game_id)}'"
     metadata = (
         DatabaseCursor(PATH, options=OPTION_DEV)
         .copy_data_from_postgres(meta_query)
         .drop_duplicates()
     )
 
-    teams_query = f"SELECT team_key, name, nickname, game_id FROM dev.league_teams WHERE game_id = {game_id}"
+    teams_query = f"SELECT team_key, name, nickname, game_id FROM dev.league_teams WHERE game_id = '{str(game_id)}'"
     teams = (
         DatabaseCursor(PATH, options=OPTION_DEV)
         .copy_data_from_postgres(teams_query)
         .drop_duplicates()
     )
 
-    weekly_points_query = f"SELECT * FROM dev.weekly_team_pts WHERE game_id = {game_id}"
+    weekly_points_query = f"SELECT * FROM dev.weekly_team_pts WHERE game_id = '{str(game_id)}'"
     weekly_points = (
         DatabaseCursor(PATH, options=OPTION_DEV)
         .copy_data_from_postgres(weekly_points_query)
@@ -757,7 +757,7 @@ def post_season(one_reg_season, game_id, nfl_week):
         ] = one_playoff_season.loc[playoff_end_week_mask, "finish"].fillna(
             one_playoff_season["reg_season_rank"]
         )
-        
+
     try:
         one_playoff_season.sort_values(["week", "finish"], inplace=True)
 
