@@ -231,7 +231,7 @@ class league_season_data(object):
             "SELECT * "
             "FROM raw.stat_categories "
             f"WHERE (game_id <> '{str(self.game_id)}') "
-            "GROUP BY display_name, enabled, game_id, league_id, name, position_type, sort_order, stat_id, stat_modifier "
+            'GROUP BY display_name, enabled, game_id, league_id, name, position_type, sort_order, stat_id, stat_modifier, is_only_display_stat '
         )
 
         data_upload(

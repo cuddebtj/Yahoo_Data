@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import yaml
-import logging
 from pathlib import Path
 from time import sleep
 
@@ -56,62 +55,30 @@ for today in dates:
 
     if int(SEASON) == 2021:
         league.all_game_keys()
-        sleep(0.1)
         league.all_nfl_weeks()
-        sleep(0.1)
-
         league.metadata(first_time="yes")
-        sleep(0.1)
-
         league.set_roster_pos_stat_cat(first_time="yes")
-        sleep(0.1)
-
         league.draft_results(first_time="yes")
-        sleep(0.1)
-
         league.teams_and_standings(first_time="yes")
-        sleep(0.1)
-
         # league.players_list(first_time="yes")
 
         league.matchups_by_week_regseason(first_time="yes", nfl_week=1)
-        for week in nfl_weeks_list[1:]:
-            league.matchups_by_week_regseason(first_time="no", nfl_week=week)
-            sleep(0.1)
-
         league.team_roster_by_week(first_time="yes", nfl_week=1)
-        for week in nfl_weeks_list[1:]:
-            league.team_roster_by_week(first_time="no", nfl_week=week)
-            sleep(0.1)
-
         league.team_points_by_week(first_time="yes", nfl_week=1)
         for week in nfl_weeks_list[1:]:
+            league.matchups_by_week_regseason(first_time="no", nfl_week=week)
+            league.team_roster_by_week(first_time="no", nfl_week=week)
             league.team_points_by_week(first_time="no", nfl_week=week)
-            sleep(0.1)
+            sleep(15)
 
     else:
         league.metadata(first_time="no")
-        sleep(0.1)
-
         league.set_roster_pos_stat_cat(first_time="no")
-        sleep(0.1)
-
         league.draft_results(first_time="no")
-        sleep(0.1)
-
         league.teams_and_standings(first_time="no")
-        sleep(0.1)
-
+        # league.players_list(first_time="no")
+        
         for week in nfl_weeks_list:
             league.matchups_by_week_regseason(first_time="no", nfl_week=week)
-            sleep(0.1)
-
-        league.players_list(first_time="no")
-
-        for week in nfl_weeks_list:
             league.team_roster_by_week(first_time="no", nfl_week=week)
-            sleep(0.1)
-
-        for week in nfl_weeks_list:
             league.team_points_by_week(first_time="no", nfl_week=week)
-            sleep(0.1)
