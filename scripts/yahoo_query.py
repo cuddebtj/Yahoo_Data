@@ -692,6 +692,8 @@ class league_season_data(object):
         ).copy_data_from_postgres(sql_query)
         teams = teams["max_teams"].values[0]
 
+        team_week_rosters = pd.DataFrame()
+
         for team in range(1, teams + 1):
             try:
                 response = complex_json_handler(

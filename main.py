@@ -69,7 +69,7 @@ if (
     TODAY
     == NFL_WEEKS["end"][
         (NFL_WEEKS["week"] == MAX_WEEK) & (NFL_WEEKS["game_id"] == GAME_ID)
-    ]
+    ].values[0]
 ):
     teams = league.teams_and_standings(first_time="no")
 
