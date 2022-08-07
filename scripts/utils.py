@@ -493,10 +493,12 @@ def post_season(one_reg_season, game_id, nfl_week):
                 match.set_winner(right_comp)
             elif right_score < left_score:
                 match.set_winner(left_comp)
-    for rk, tm in playoff_bracket.get_final().items():
-        one_playoff_season.loc[
-            (one_playoff_season["team_key"] == tm) & playoff_end_week_mask, "finish"
-        ] = int(rk)
+
+    if nfl_week == playoff_end_week:
+        for rk, tm in playoff_bracket.get_final().items():
+            one_playoff_season.loc[
+                (one_playoff_season["team_key"] == tm) & playoff_end_week_mask, "finish"
+            ] = int(rk)
 
     if conso_teams:
         if len(conso_teams) < len(playoff_teams):
@@ -617,10 +619,11 @@ def post_season(one_reg_season, game_id, nfl_week):
                     elif right_score == left_score:
                         match.set_winner(left_comp)
 
-        for rk, tm in conso_bracket.get_final().items():
-            one_playoff_season.loc[
-                (one_playoff_season["team_key"] == tm) & playoff_end_week_mask, "finish"
-            ] = int(rk) + len(playoff_teams)
+        if nfl_week == playoff_end_week:
+            for rk, tm in conso_bracket.get_final().items():
+                one_playoff_season.loc[
+                    (one_playoff_season["team_key"] == tm) & playoff_end_week_mask, "finish"
+                ] = int(rk) + len(playoff_teams)
 
     if toilet_teams:
         if len(toilet_teams) < len(playoff_teams):
@@ -740,21 +743,22 @@ def post_season(one_reg_season, game_id, nfl_week):
                         match.set_winner(left_comp)
                     elif right_score == left_score:
                         match.set_winner(left_comp)
-
-        for rk, tm in toilet_bracket.get_final().items():
-            one_playoff_season.loc[
-                (one_playoff_season["team_key"] == tm) & playoff_end_week_mask, "finish"
-            ] = (
-                int(rk) + len(playoff_teams) + (len(conso_teams) if conso_teams else 0)
-            )
-
-    try:
+        if nfl_week == playoff_end_week:
+            for rk, tm in toilet_bracket.get_final().items():
+                one_playoff_season.loc[
+                    (one_playoff_season["team_key"] == tm) & playoff_end_week_mask, "finish"
+                ] = (
+                    int(rk) + len(playoff_teams) + (len(conso_teams) if conso_teams else 0)
+                )
+    
+    if nfl_week == playoff_end_week:
         one_playoff_season.loc[
             playoff_end_week_mask, "finish"
         ] = one_playoff_season.loc[playoff_end_week_mask, "finish"].fillna(
             one_playoff_season["reg_season_rank"]
         )
-
+        
+    try:
         one_playoff_season.sort_values(["week", "finish"], inplace=True)
 
         DatabaseCursor(PATH, options=OPTION_PROD).copy_table_to_postgres_new(
@@ -762,5 +766,6 @@ def post_season(one_reg_season, game_id, nfl_week):
             table=f"playoff_board_{str(game_id)}",
             first_time="YES",
         )
+
     except Exception as e:
         print("Error: Upload unsuccessful.", e, sep="\n")
