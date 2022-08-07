@@ -14,8 +14,8 @@ from utils import data_upload
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
 TEAMS_FILE = list(Path().cwd().parent.glob("**/teams.yaml"))[0]
+OPTION_RAW = "-c search_path=raw"
 OPTION_DEV = "-c search_path=dev"
-OPTION_PROD = "-c search_path=prod"
 
 
 class league_season_data(object):
@@ -72,12 +72,12 @@ class league_season_data(object):
             elif "token_expired" in str(e):
                 self.yahoo_query._authenticate()
             else:
-                print(f"Error, sleepng for 1 hour before retrying.\n{e}")
+                print(f"Error: get_league_metadata, sleepng for 1 hour before retrying.\n{e}")
                 time.sleep(3600)
                 try:
                     self.yahoo_query._authenticate()
                 except Exception as e:
-                    print("Error, sleepng for 30 min before retrying.\n{e}")
+                    print("Error: get_league_metadata, sleepng for 30 min before retrying.\n{e}")
                     time.sleep(1800)
                     self.yahoo_query._authenticate()
 
@@ -89,7 +89,7 @@ class league_season_data(object):
 
         query = (
             "SELECT * "
-            "FROM dev.league_metadata "
+            "FROM raw.league_metadata "
             f"WHERE (game_id <> '{str(self.game_id)}') "
             "GROUP BY allow_add_to_dl_extra_pos, current_week, draft_status, edit_key, end_date, end_week, game_code, game_id, iris_group_chat_id, "
             "is_cash_league, is_finished, is_pro_league, league_id, league_key, league_type, league_update_timestamp, logo_url, name, num_teams, "
@@ -102,7 +102,7 @@ class league_season_data(object):
             table_name="league_metadata",
             query=query,
             path=PATH,
-            option=OPTION_DEV,
+            option=OPTION_RAW,
         )
 
         return league_metadata
@@ -119,12 +119,12 @@ class league_season_data(object):
             elif "token_expired" in str(e):
                 self.yahoo_query._authenticate()
             else:
-                print(f"Error, sleepng for 1 hour before retrying.\n{e}")
+                print(f"Error: get_league_settings, sleepng for 1 hour before retrying.\n{e}")
                 time.sleep(3600)
                 try:
                     self.yahoo_query._authenticate()
                 except Exception as e:
-                    print("Error, sleepng for 30 min before retrying.\n{e}")
+                    print("Error: get_league_settings, sleepng for 30 min before retrying.\n{e}")
                     time.sleep(1800)
                     self.yahoo_query._authenticate()
 
@@ -143,7 +143,7 @@ class league_season_data(object):
 
         query_1 = (
             "SELECT * "
-            "FROM dev.league_settings "
+            "FROM raw.league_settings "
             f"WHERE (game_id <> '{str(self.game_id)}') "
             "GROUP BY cant_cut_list, draft_pick_time, draft_time, draft_type, game_id, has_multiweek_championship, has_playoff_consolation_games, is_auction_draft, "
             "league_id, max_teams, num_playoff_consolation_teams, num_playoff_teams, pickem_enabled, player_pool, playoff_start_week, post_draft_players, "
@@ -157,7 +157,7 @@ class league_season_data(object):
             table_name="league_settings",
             query=query_1,
             path=PATH,
-            option=OPTION_DEV,
+            option=OPTION_RAW,
         )
 
         roster_positions = pd.DataFrame()
@@ -171,7 +171,7 @@ class league_season_data(object):
 
         query_2 = (
             "SELECT * "
-            "FROM dev.roster_positions "
+            "FROM raw.roster_positions "
             f"WHERE (game_id <> '{str(self.game_id)}') "
             "GROUP BY count, game_id, league_id, position, position_type "
         )
@@ -182,7 +182,7 @@ class league_season_data(object):
             table_name="roster_positions",
             query=query_2,
             path=PATH,
-            option=OPTION_DEV,
+            option=OPTION_RAW,
         )
 
         stat_categories = pd.DataFrame()
@@ -229,7 +229,7 @@ class league_season_data(object):
 
         query_3 = (
             "SELECT * "
-            "FROM dev.stat_categories "
+            "FROM raw.stat_categories "
             f"WHERE (game_id <> '{str(self.game_id)}') "
             "GROUP BY display_name, enabled, game_id, league_id, name, position_type, sort_order, stat_id, stat_modifier "
         )
@@ -240,7 +240,7 @@ class league_season_data(object):
             table_name="stat_categories",
             query=query_3,
             path=PATH,
-            option=OPTION_DEV,
+            option=OPTION_RAW,
         )
 
         return league_settings, roster_positions, stat_categories
@@ -254,12 +254,12 @@ class league_season_data(object):
             if "token_expired" in str(e):
                 self.yahoo_query._authenticate()
             else:
-                print(f"Error, sleepng for 1 hour before retrying.\n{e}")
+                print(f"Error: get_league_players, sleepng for 1 hour before retrying.\n{e}")
                 time.sleep(3600)
                 try:
                     self.yahoo_query._authenticate()
                 except Exception as e:
-                    print("Error, sleepng for 30 min before retrying.\n{e}")
+                    print("Error: get_league_players, sleepng for 30 min before retrying.\n{e}")
                     time.sleep(1800)
                     self.yahoo_query._authenticate()
 
@@ -280,12 +280,12 @@ class league_season_data(object):
                 if "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print(f"Error, sleepng for 1 hour before retrying.\n{e}")
+                    print(f"Error: get_player_draft_analysis, sleepng for 1 hour before retrying.\n{e}")
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
                     except Exception as e:
-                        print("Error, sleepng for 30 min before retrying.\n{e}")
+                        print("Error: get_player_draft_analysis, sleepng for 30 min before retrying.\n{e}")
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
 
@@ -331,7 +331,7 @@ class league_season_data(object):
 
         query = (
             "SELECT * "
-            "FROM dev.player_list "
+            "FROM raw.player_list "
             f"WHERE (game_id <> '{str(self.game_id)}') "
             "GROUP BY display_position, editorial_player_key, editorial_team_abbr, editorial_team_full_name, editorial_team_key, eligible_positions, "
             'is_undroppable, player_id, player_key, position_type, primary_position, uniform_number, "bye_weeks.week", "headshot.size", '
@@ -346,7 +346,7 @@ class league_season_data(object):
             table_name="player_list",
             query=query,
             path=PATH,
-            option=OPTION_DEV,
+            option=OPTION_RAW,
         )
 
         return players
@@ -361,12 +361,12 @@ class league_season_data(object):
             elif "token_expired" in str(e):
                 self.yahoo_query._authenticate()
             else:
-                print(f"Error, sleepng for 1 hour before retrying.\n{e}")
+                print(f"Error: get_league_draft_results, sleepng for 1 hour before retrying.\n{e}")
                 time.sleep(3600)
                 try:
                     self.yahoo_query._authenticate()
                 except Exception as e:
-                    print("Error, sleepng for 30 min before retrying.\n{e}")
+                    print("Error: get_league_draft_results, sleepng for 30 min before retrying.\n{e}")
                     time.sleep(1800)
                     self.yahoo_query._authenticate()
 
@@ -383,7 +383,7 @@ class league_season_data(object):
 
         query = (
             "SELECT * "
-            "FROM dev.draft_results "
+            "FROM raw.draft_results "
             f"WHERE (game_id <> '{str(self.game_id)}') "
             "GROUP BY game_id, league_id, pick, player_key, round, team_key "
         )
@@ -394,7 +394,7 @@ class league_season_data(object):
             table_name="draft_results",
             query=query,
             path=PATH,
-            option=OPTION_DEV,
+            option=OPTION_RAW,
         )
 
         return draft_results
@@ -419,12 +419,12 @@ class league_season_data(object):
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print(f"Error, sleepng for 1 hour before retrying.\n{e}")
+                    print(f"Error: get_league_matchups_by_week {nfl_week}, sleepng for 1 hour before retrying.\n{e}")
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
                     except Exception as e:
-                        print("Error, sleepng for 30 min before retrying.\n{e}")
+                        print("Error: get_league_matchups_by_week {nfl_week}, sleepng for 30 min before retrying.\n{e}")
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
 
@@ -525,7 +525,7 @@ class league_season_data(object):
 
         query = (
             "SELECT * "
-            "FROM dev.reg_season_matchups "
+            "FROM raw.reg_season_matchups "
             f"WHERE (game_id <> '{str(self.game_id)}' AND week <> '{str(nfl_week)}') "
             "GROUP BY game_id, is_consolation, is_matchup_recap_available, is_playoffs, is_tied, league_id, matchup_recap_title, matchup_recap_url, status, team_a_grade, team_a_points, team_a_projected_points, "
             "team_a_team_key, team_b_grade, team_b_points, team_b_projected_points, team_b_team_key, week, week_end, week_start, winner_team_key "
@@ -537,8 +537,10 @@ class league_season_data(object):
             table_name="reg_season_matchups",
             query=query,
             path=PATH,
-            option=OPTION_DEV,
+            option=OPTION_RAW,
         )
+
+        print(self.game_id, nfl_week)
 
         return matchups
 
@@ -551,12 +553,12 @@ class league_season_data(object):
             elif "token_expired" in str(e):
                 self.yahoo_query._authenticate()
             else:
-                print(f"Error, sleepng for 1 hour before retrying.\n{e}")
+                print(f"Error: get_league_standings, sleepng for 1 hour before retrying.\n{e}")
                 time.sleep(3600)
                 try:
                     self.yahoo_query._authenticate()
                 except Exception as e:
-                    print("Error, sleepng for 30 min before retrying.\n{e}")
+                    print("Error: get_league_standings, sleepng for 30 min before retrying.\n{e}")
                     time.sleep(1800)
                     self.yahoo_query._authenticate()
             response = self.yahoo_query.get_league_standings()
@@ -665,7 +667,7 @@ class league_season_data(object):
 
         query = (
             "SELECT * "
-            "FROM dev.league_teams "
+            "FROM raw.league_teams "
             f"WHERE (game_id <> '{str(self.game_id)}') "
             'GROUP BY clinched_playoffs, draft_grade, faab_balance, game_id, has_draft_grade, league_id, manager_id, name, nickname, number_of_moves, number_of_trades, "roster_adds.coverage_value", '
             '"roster_adds.value", team_id, team_key, "team_standings.outcome_totals.losses", "team_standings.outcome_totals.percentage", "team_standings.outcome_totals.ties", '
@@ -679,16 +681,16 @@ class league_season_data(object):
             table_name="league_teams",
             query=query,
             path=PATH,
-            option=OPTION_DEV,
+            option=OPTION_RAW,
         )
 
         return teams_standings
 
     def team_roster_by_week(self, first_time="no", nfl_week=None):
 
-        sql_query = f"SELECT max_teams FROM dev.league_settings WHERE game_id = '{self.game_id}'"
+        sql_query = f"SELECT max_teams FROM raw.league_settings WHERE game_id = '{self.game_id}'"
         teams = DatabaseCursor(
-            PATH, options="-c search_path=dev"
+            PATH, options=OPTION_RAW
         ).copy_data_from_postgres(sql_query)
         teams = teams["max_teams"].values[0]
 
@@ -706,12 +708,12 @@ class league_season_data(object):
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print(f"Error, sleepng for 1 hour before retrying.\n{e}")
+                    print(f"Error: team_roster_by_week {nfl_week}, sleepng for 1 hour before retrying.\n{e}")
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
                     except Exception as e:
-                        print("Error, sleepng for 30 min before retrying.\n{e}")
+                        print(f"Error: team_roster_by_week {nfl_week}, sleepng for 30 min before retrying.\n{e}")
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
 
@@ -737,7 +739,7 @@ class league_season_data(object):
 
         query = (
             "SELECT * "
-            "FROM dev.weekly_team_roster "
+            "FROM raw.weekly_team_roster "
             f"WHERE (game_id <> '{str(self.game_id)}' AND week <> '{str(nfl_week)}') "
             'GROUP BY "bye_weeks.week", display_position, editorial_player_key, editorial_team_abbr, editorial_team_full_name, editorial_team_key, eligible_positions, '
             'game_id, has_player_notes, "headshot.size", "headshot.url", is_editable, is_undroppable, league_id, "name.ascii_first", "name.ascii_last", "name.first", '
@@ -751,16 +753,18 @@ class league_season_data(object):
             table_name="weekly_team_roster",
             query=query,
             path=PATH,
-            option=OPTION_DEV,
+            option=OPTION_RAW,
         )
+
+        print(self.game_id, nfl_week)
 
         return team_week_rosters
 
     def team_points_by_week(self, first_time="no", nfl_week=None):
 
-        sql_query = f"SELECT max_teams FROM dev.league_settings WHERE game_id = '{self.game_id}'"
+        sql_query = f"SELECT max_teams FROM raw.league_settings WHERE game_id = '{self.game_id}'"
         teams = DatabaseCursor(
-            PATH, options="-c search_path=dev"
+            PATH, options=OPTION_RAW
         ).copy_data_from_postgres(sql_query)
         teams = teams["max_teams"].values[0]
 
@@ -775,12 +779,12 @@ class league_season_data(object):
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print(f"Error, sleepng for 1 hour before retrying.\n{e}")
+                    print(f"Error: team_points_by_week {nfl_week}, sleepng for 1 hour before retrying.\n{e}")
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
                     except Exception as e:
-                        print("Error, sleepng for 30 min before retrying.\n{e}")
+                        print(f"Error: team_points_by_week {nfl_week}, sleepng for 30 min before retrying.\n{e}")
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
                 try:
@@ -830,7 +834,7 @@ class league_season_data(object):
 
         query = (
             "SELECT * "
-            "FROM dev.weekly_team_pts "
+            "FROM raw.weekly_team_pts "
             f"WHERE (game_id <> '{str(self.game_id)}' AND week <> '{str(nfl_week)}') "
             "GROUP BY final_points, game_id, league_id, projected_points, team_id, week, team_key "
         )
@@ -841,9 +845,11 @@ class league_season_data(object):
             table_name="weekly_team_pts",
             query=query,
             path=PATH,
-            option=OPTION_DEV,
+            option=OPTION_RAW,
         )
 
+        print(self.game_id, nfl_week)
+        
         return team_points_weekly
 
     def all_game_keys(self):
@@ -869,7 +875,7 @@ class league_season_data(object):
         )
 
         game_keys.drop_duplicates(ignore_index=True, inplace=True)
-        DatabaseCursor(PATH, options=OPTION_PROD).copy_table_to_postgres_new(
+        DatabaseCursor(PATH, options=OPTION_DEV).copy_table_to_postgres_new(
             game_keys, "game_keys", first_time="yes"
         )
 
@@ -878,8 +884,8 @@ class league_season_data(object):
     def all_nfl_weeks(self):
 
         game_keys = DatabaseCursor(
-            PATH, options="-c search_path=prod"
-        ).copy_data_from_postgres("SELECT game_id FROM prod.game_keys")
+            PATH, options="-c search_path=dev"
+        ).copy_data_from_postgres("SELECT game_id FROM dev.game_keys")
         game_id = list(game_keys["game_id"])
         weeks = pd.DataFrame()
         for g in game_id:
@@ -894,7 +900,7 @@ class league_season_data(object):
         weeks = weeks.iloc[:, 1:]
         weeks.drop_duplicates(ignore_index=True, inplace=True)
 
-        DatabaseCursor(PATH, options=OPTION_PROD).copy_table_to_postgres_new(
+        DatabaseCursor(PATH, options=OPTION_DEV).copy_table_to_postgres_new(
             weeks, "nfl_weeks", first_time="yes"
         )
 

@@ -14,8 +14,8 @@ logging.basicConfig()
 logging.getLogger("sqlalchemy").setLevel(logging.ERROR)
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
+OPTION_RAW = "-c search_path=raw"
 OPTION_DEV = "-c search_path=dev"
-OPTION_PROD = "-c search_path=prod"
 
 
 def get_season():
@@ -41,8 +41,8 @@ def nfl_weeks_pull():
     """
 
     try:
-        db_cursor = DatabaseCursor(PATH, options="-c search_path=prod")
-        nfl_weeks = db_cursor.copy_data_from_postgres("SELECT * FROM prod.nfl_weeks")
+        db_cursor = DatabaseCursor(PATH, options=OPTION_DEV)
+        nfl_weeks = db_cursor.copy_data_from_postgres("SELECT * FROM dev.nfl_weeks")
         nfl_weeks["end"] = pd.to_datetime(nfl_weeks["end"])
         nfl_weeks["start"] = pd.to_datetime(nfl_weeks["start"])
         return nfl_weeks
@@ -61,9 +61,9 @@ def game_keys_pull(first="yes"):
             return game_keys
 
         elif "NO" == str(first).upper():
-            db_cursor = DatabaseCursor(PATH, options="-c search_path=prod")
+            db_cursor = DatabaseCursor(PATH, options=OPTION_DEV)
             game_keys = db_cursor.copy_data_from_postgres(
-                "SELECT * FROM prod.game_keys"
+                "SELECT * FROM dev.game_keys"
             )
             return game_keys
 
@@ -97,25 +97,60 @@ def reg_season(game_id):
     """
     Fucntion to calculate regular season rankings, scores, wins/losses, and matchups
     """
-    matchups_query = f"SELECT * FROM dev.reg_season_matchups WHERE game_id = '{str(game_id)}'"
-    teams_query = f"SELECT team_key, name, nickname, game_id FROM dev.league_teams WHERE game_id = '{str(game_id)}'"
-    settings_query = f"SELECT * FROM dev.league_settings WHERE game_id = '{str(game_id)}'"
+    matchups_query = f"SELECT * FROM raw.reg_season_matchups WHERE game_id = '{str(game_id)}'"
+    teams_query = f"SELECT team_key, name, nickname, game_id FROM raw.league_teams WHERE game_id = '{str(game_id)}'"
+    settings_query = f"SELECT * FROM raw.league_settings WHERE game_id = '{str(game_id)}'"
     matchups = (
-        DatabaseCursor(PATH, options=OPTION_DEV)
+        DatabaseCursor(PATH, options=OPTION_RAW)
         .copy_data_from_postgres(matchups_query)
         .drop_duplicates()
     )
 
     teams = (
-        DatabaseCursor(PATH, options=OPTION_DEV)
+        DatabaseCursor(PATH, options=OPTION_RAW)
         .copy_data_from_postgres(teams_query)
         .drop_duplicates()
     )
 
     settings = (
-        DatabaseCursor(PATH, options=OPTION_DEV)
+        DatabaseCursor(PATH, options=OPTION_RAW)
         .copy_data_from_postgres(settings_query)
         .drop_duplicates()
+    )
+
+    matchups_a = matchups.copy()
+    matchups_b = matchups.copy()
+
+    matchups_b_cols = list(matchups_b.columns)
+
+    rename_columns = {}
+    for col in matchups_b_cols:
+        if "team_a" in col:
+            rename_columns[col] = f"team_b{col[6:]}"
+        elif "team_b" in col:
+            rename_columns[col] = f"team_a{col[6:]}"
+
+    matchups_b.rename(columns=rename_columns, inplace=True)
+
+    matchups = pd.concat([matchups_a, matchups_b])
+
+    matchups.sort_values(["week_start", "team_a_team_key"], inplace=True)
+
+    matchups.reset_index(drop=True, inplace=True)
+
+    matchups.drop(
+        [
+            "is_matchup_recap_available",
+            "is_tied",
+            "matchup_recap_title",
+            "matchup_recap_url",
+            "status",
+            "league_id",
+            "team_a_grade",
+            "team_b_grade",
+        ],
+        axis=1,
+        inplace=True,
     )
 
     # logic to help create playoff brackets
@@ -276,7 +311,7 @@ def reg_season(game_id):
         ["week", "reg_season_rank_run"], ascending=[True, True], inplace=True
     )
 
-    DatabaseCursor(PATH, options=OPTION_PROD).copy_table_to_postgres_new(
+    DatabaseCursor(PATH, options=OPTION_DEV).copy_table_to_postgres_new(
         df=one_reg_season, table=f"reg_season_board_{str(game_id)}", first_time="YES"
     )
 
@@ -287,29 +322,29 @@ def post_season(one_reg_season, game_id, nfl_week):
     """
     Function to calculate post_season winners/losers, create final rank for the season
     """
-    settings_query = f"SELECT * FROM dev.league_settings WHERE game_id = '{str(game_id)}'"
+    settings_query = f"SELECT * FROM raw.league_settings WHERE game_id = '{str(game_id)}'"
     settings = (
-        DatabaseCursor(PATH, options=OPTION_DEV)
+        DatabaseCursor(PATH, options=OPTION_RAW)
         .copy_data_from_postgres(settings_query)
         .drop_duplicates()
     )
-    meta_query = f"SELECT game_id, league_id, end_week FROM dev.league_metadata WHERE game_id = '{str(game_id)}'"
+    meta_query = f"SELECT game_id, league_id, end_week FROM raw.league_metadata WHERE game_id = '{str(game_id)}'"
     metadata = (
-        DatabaseCursor(PATH, options=OPTION_DEV)
+        DatabaseCursor(PATH, options=OPTION_RAW)
         .copy_data_from_postgres(meta_query)
         .drop_duplicates()
     )
 
-    teams_query = f"SELECT team_key, name, nickname, game_id FROM dev.league_teams WHERE game_id = '{str(game_id)}'"
+    teams_query = f"SELECT team_key, name, nickname, game_id FROM raw.league_teams WHERE game_id = '{str(game_id)}'"
     teams = (
-        DatabaseCursor(PATH, options=OPTION_DEV)
+        DatabaseCursor(PATH, options=OPTION_RAW)
         .copy_data_from_postgres(teams_query)
         .drop_duplicates()
     )
 
-    weekly_points_query = f"SELECT * FROM dev.weekly_team_pts WHERE game_id = '{str(game_id)}'"
+    weekly_points_query = f"SELECT * FROM raw.weekly_team_pts WHERE game_id = '{str(game_id)}'"
     weekly_points = (
-        DatabaseCursor(PATH, options=OPTION_DEV)
+        DatabaseCursor(PATH, options=OPTION_RAW)
         .copy_data_from_postgres(weekly_points_query)
         .drop_duplicates()
     )
@@ -493,8 +528,10 @@ def post_season(one_reg_season, game_id, nfl_week):
                 match.set_winner(right_comp)
             elif right_score < left_score:
                 match.set_winner(left_comp)
+            print(f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----")
 
     if nfl_week == playoff_end_week:
+        print(playoff_bracket.get_final())
         for rk, tm in playoff_bracket.get_final().items():
             one_playoff_season.loc[
                 (one_playoff_season["team_key"] == tm) & playoff_end_week_mask, "finish"
@@ -559,6 +596,7 @@ def post_season(one_reg_season, game_id, nfl_week):
                         match.set_winner(left_comp)
                     elif right_score == left_score:
                         match.set_winner(left_comp)
+                    print(f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----")
 
         else:
             conso_bracket = Tournament(conso_teams)
@@ -618,6 +656,7 @@ def post_season(one_reg_season, game_id, nfl_week):
                         match.set_winner(left_comp)
                     elif right_score == left_score:
                         match.set_winner(left_comp)
+                    print(f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----")
 
         if nfl_week == playoff_end_week:
             for rk, tm in conso_bracket.get_final().items():
@@ -684,6 +723,7 @@ def post_season(one_reg_season, game_id, nfl_week):
                         match.set_winner(left_comp)
                     elif right_score == left_score:
                         match.set_winner(left_comp)
+                    print(f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----")
 
         else:
             toilet_bracket = Tournament(toilet_teams)
@@ -743,6 +783,8 @@ def post_season(one_reg_season, game_id, nfl_week):
                         match.set_winner(left_comp)
                     elif right_score == left_score:
                         match.set_winner(left_comp)
+                    print(f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----")
+
         if nfl_week == playoff_end_week:
             for rk, tm in toilet_bracket.get_final().items():
                 one_playoff_season.loc[
@@ -761,11 +803,13 @@ def post_season(one_reg_season, game_id, nfl_week):
     try:
         one_playoff_season.sort_values(["week", "finish"], inplace=True)
 
-        DatabaseCursor(PATH, options=OPTION_PROD).copy_table_to_postgres_new(
+        DatabaseCursor(PATH, options=OPTION_DEV).copy_table_to_postgres_new(
             df=one_playoff_season,
             table=f"playoff_board_{str(game_id)}",
             first_time="YES",
         )
 
     except Exception as e:
-        print("Error: Upload unsuccessful.", e, sep="\n")
+        print("Error: UNSUCCESSFUL.", e, sep="\n")
+
+    return one_playoff_season

@@ -19,7 +19,7 @@ class DatabaseCursor(object):
         Import database credentials
 
         credential_file = path to private yaml file
-        kwargs = {options: "-c search_path=dev"}
+        kwargs = {options: "-c search_path=raw"}
         """
 
         self.kwargs = kwargs
@@ -85,7 +85,7 @@ class DatabaseCursor(object):
 
         except (Exception, psycopg2.DatabaseError) as error:
             self.__exit__(exc_result=False)
-            print(f"Error: {error}")
+            print(f"Error: {error}\n UNSUCCESFUL Metadata Pull.")
 
     def create_schema(self, schema):
         """
@@ -127,7 +127,7 @@ class DatabaseCursor(object):
 
         except (Exception, psycopg2.DatabaseError) as error:
             self.__exit__(exc_result=False)
-            print(f"Error: {error}")
+            print(f"Error: {error}\n UNSUCCESFUL Drop: {schema}")
 
     def drop_table(self, schema, table):
         """
@@ -149,7 +149,7 @@ class DatabaseCursor(object):
 
         except (Exception, psycopg2.DatabaseError) as error:
             self.__exit__(exc_result=False)
-            print(f"Error: {error}")
+            print(f"Error: {error}\n UNSUCCESFUL Drop: {schema}.{table}")
 
     def copy_table_to_postgres_new(self, df, table, first_time="NO"):
         """
@@ -165,14 +165,14 @@ class DatabaseCursor(object):
         cursor = self.__enter__()
 
         if str(first_time).upper() == "YES":
-            if "prod" in str(self.kwargs):
+            if "dev" in str(self.kwargs):
                 df.head(0).to_sql(
-                    table, self.engine, if_exists="replace", index=False, schema="prod"
+                    table, self.engine, if_exists="replace", index=False, schema="dev"
                 )
 
             else:
                 df.head(0).to_sql(
-                    table, self.engine, if_exists="replace", index=False, schema="dev"
+                    table, self.engine, if_exists="replace", index=False, schema="raw"
                 )
 
         buffer = StringIO()
@@ -191,7 +191,7 @@ class DatabaseCursor(object):
 
         except (Exception, psycopg2.DatabaseError) as error:
             self.__exit__(exc_result=False)
-            print(f"Error {error}\nUpload unsuccessful: {table}")
+            print(f"Error {error}\nUNSUCCESSFUL: {table}")
 
     def copy_data_from_postgres(self, query):
         """
@@ -199,7 +199,7 @@ class DatabaseCursor(object):
         Pandas dataframe
         https://towardsdatascience.com/optimizing-pandas-read-sql-for-postgres-f31cd7f707ab
 
-        query = "select * from dev.test"
+        query = "select * from raw.test"
         """
         cursor = self.__enter__()
 
@@ -218,4 +218,4 @@ class DatabaseCursor(object):
 
         except (Exception, psycopg2.DatabaseError) as error:
             self.__exit__(exc_result=False)
-            print(f"Error {error}\n Query unsuccessful.")
+            print(f"Error {error}\n UNSUCCESFUL: {query}")
