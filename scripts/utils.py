@@ -8,6 +8,7 @@ from datetime import datetime as dt
 
 from scripts.db_psql_model import DatabaseCursor
 from scripts.tournament import Tournament
+
 # from db_psql_model import DatabaseCursor
 # from tournament import Tournament
 
@@ -63,9 +64,7 @@ def game_keys_pull(first="yes"):
 
         elif "NO" == str(first).upper():
             db_cursor = DatabaseCursor(PATH, options=OPTION_DEV)
-            game_keys = db_cursor.copy_data_from_postgres(
-                "SELECT * FROM dev.game_keys"
-            )
+            game_keys = db_cursor.copy_data_from_postgres("SELECT * FROM dev.game_keys")
             return game_keys
 
     except Exception as e:
@@ -98,9 +97,13 @@ def reg_season(game_id, nfl_week):
     """
     Fucntion to calculate regular season rankings, scores, wins/losses, and matchups
     """
-    matchups_query = f"SELECT * FROM raw.reg_season_matchups WHERE game_id = '{str(game_id)}'"
+    matchups_query = (
+        f"SELECT * FROM raw.reg_season_matchups WHERE game_id = '{str(game_id)}'"
+    )
     teams_query = f"SELECT team_key, name, nickname, game_id FROM raw.league_teams WHERE game_id = '{str(game_id)}'"
-    settings_query = f"SELECT * FROM raw.league_settings WHERE game_id = '{str(game_id)}'"
+    settings_query = (
+        f"SELECT * FROM raw.league_settings WHERE game_id = '{str(game_id)}'"
+    )
     matchups = (
         DatabaseCursor(PATH, options=OPTION_RAW)
         .copy_data_from_postgres(matchups_query)
@@ -165,7 +168,9 @@ def reg_season(game_id, nfl_week):
             (matchups["game_id"] == game_id) & (matchups["week"] < playoff_start_week)
         ]
         one_reg_season["win_loss"] = np.where(
-            one_reg_season["winner_team_key"] == one_reg_season["team_a_team_key"], "W", "L"
+            one_reg_season["winner_team_key"] == one_reg_season["team_a_team_key"],
+            "W",
+            "L",
         )
         one_reg_season["pts_system_weekly_rank"] = one_reg_season.groupby(
             ["week", "game_id"]
@@ -269,10 +274,16 @@ def reg_season(game_id, nfl_week):
         )
 
         one_reg_season["ttl_wins_run"] = (
-            one_reg_season["win_loss"].eq("W").groupby(one_reg_season["team_key"]).cumsum()
+            one_reg_season["win_loss"]
+            .eq("W")
+            .groupby(one_reg_season["team_key"])
+            .cumsum()
         )
         one_reg_season["ttl_loss_run"] = (
-            one_reg_season["win_loss"].eq("L").groupby(one_reg_season["team_key"]).cumsum()
+            one_reg_season["win_loss"]
+            .eq("L")
+            .groupby(one_reg_season["team_key"])
+            .cumsum()
         )
         one_reg_season["w_l_rank_run"] = (
             one_reg_season.groupby(["week"])["ttl_wins_run"]
@@ -314,7 +325,9 @@ def reg_season(game_id, nfl_week):
         )
 
         DatabaseCursor(PATH, options=OPTION_DEV).copy_table_to_postgres_new(
-            df=one_reg_season, table=f"reg_season_board_{str(game_id)}", first_time="YES"
+            df=one_reg_season,
+            table=f"reg_season_board_{str(game_id)}",
+            first_time="YES",
         )
 
         return one_reg_season
@@ -324,7 +337,9 @@ def post_season(one_reg_season, game_id, nfl_week):
     """
     Function to calculate post_season winners/losers, create final rank for the season
     """
-    settings_query = f"SELECT * FROM raw.league_settings WHERE game_id = '{str(game_id)}'"
+    settings_query = (
+        f"SELECT * FROM raw.league_settings WHERE game_id = '{str(game_id)}'"
+    )
     settings = (
         DatabaseCursor(PATH, options=OPTION_RAW)
         .copy_data_from_postgres(settings_query)
@@ -344,7 +359,9 @@ def post_season(one_reg_season, game_id, nfl_week):
         .drop_duplicates()
     )
 
-    weekly_points_query = f"SELECT * FROM raw.weekly_team_pts WHERE game_id = '{str(game_id)}'"
+    weekly_points_query = (
+        f"SELECT * FROM raw.weekly_team_pts WHERE game_id = '{str(game_id)}'"
+    )
     weekly_points = (
         DatabaseCursor(PATH, options=OPTION_RAW)
         .copy_data_from_postgres(weekly_points_query)
@@ -359,7 +376,9 @@ def post_season(one_reg_season, game_id, nfl_week):
     ].values[0]
 
     if playoff_start_week <= nfl_week:
-        playoff_end_week = settings["end_week"][settings["game_id"] == game_id].values[0]
+        playoff_end_week = settings["end_week"][settings["game_id"] == game_id].values[
+            0
+        ]
         playoff_weeks = range(playoff_start_week, playoff_end_week + 1)
         max_teams = settings["max_teams"][settings["game_id"] == game_id].values[0]
         num_playoff_teams = settings["num_playoff_teams"][
@@ -411,9 +430,9 @@ def post_season(one_reg_season, game_id, nfl_week):
             }
         )
         one_playoff_season.sort_values(["team_key", "week"], inplace=True)
-        one_playoff_season["ttl_pts_for_run"] = one_playoff_season.groupby(["team_key"])[
-            "team_pts"
-        ].cumsum()
+        one_playoff_season["ttl_pts_for_run"] = one_playoff_season.groupby(
+            ["team_key"]
+        )["team_pts"].cumsum()
         one_playoff_season["ttl_pro_pts_for_run"] = one_playoff_season.groupby(
             ["team_key"]
         )["team_pro_pts"].cumsum()
@@ -532,13 +551,16 @@ def post_season(one_reg_season, game_id, nfl_week):
                     match.set_winner(right_comp)
                 elif right_score < left_score:
                     match.set_winner(left_comp)
-                print(f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----")
+                print(
+                    f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----"
+                )
 
         if nfl_week == playoff_end_week:
             print(playoff_bracket.get_final())
             for rk, tm in playoff_bracket.get_final().items():
                 one_playoff_season.loc[
-                    (one_playoff_season["team_key"] == tm) & playoff_end_week_mask, "finish"
+                    (one_playoff_season["team_key"] == tm) & playoff_end_week_mask,
+                    "finish",
                 ] = int(rk)
 
         if conso_teams:
@@ -600,7 +622,9 @@ def post_season(one_reg_season, game_id, nfl_week):
                             match.set_winner(left_comp)
                         elif right_score == left_score:
                             match.set_winner(left_comp)
-                        print(f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----")
+                        print(
+                            f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----"
+                        )
 
             else:
                 conso_bracket = Tournament(conso_teams)
@@ -660,12 +684,15 @@ def post_season(one_reg_season, game_id, nfl_week):
                             match.set_winner(left_comp)
                         elif right_score == left_score:
                             match.set_winner(left_comp)
-                        print(f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----")
+                        print(
+                            f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----"
+                        )
 
             if nfl_week == playoff_end_week:
                 for rk, tm in conso_bracket.get_final().items():
                     one_playoff_season.loc[
-                        (one_playoff_season["team_key"] == tm) & playoff_end_week_mask, "finish"
+                        (one_playoff_season["team_key"] == tm) & playoff_end_week_mask,
+                        "finish",
                     ] = int(rk) + len(playoff_teams)
 
         if toilet_teams:
@@ -727,7 +754,9 @@ def post_season(one_reg_season, game_id, nfl_week):
                             match.set_winner(left_comp)
                         elif right_score == left_score:
                             match.set_winner(left_comp)
-                        print(f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----")
+                        print(
+                            f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----"
+                        )
 
             else:
                 toilet_bracket = Tournament(toilet_teams)
@@ -787,16 +816,21 @@ def post_season(one_reg_season, game_id, nfl_week):
                             match.set_winner(left_comp)
                         elif right_score == left_score:
                             match.set_winner(left_comp)
-                        print(f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----")
+                        print(
+                            f"----{right_comp} -- {right_score}---- vs ----{left_comp} -- {left_score}----"
+                        )
 
             if nfl_week == playoff_end_week:
                 for rk, tm in toilet_bracket.get_final().items():
                     one_playoff_season.loc[
-                        (one_playoff_season["team_key"] == tm) & playoff_end_week_mask, "finish"
+                        (one_playoff_season["team_key"] == tm) & playoff_end_week_mask,
+                        "finish",
                     ] = (
-                        int(rk) + len(playoff_teams) + (len(conso_teams) if conso_teams else 0)
+                        int(rk)
+                        + len(playoff_teams)
+                        + (len(conso_teams) if conso_teams else 0)
                     )
-        
+
         if nfl_week == playoff_end_week:
             one_playoff_season.loc[
                 playoff_end_week_mask, "finish"

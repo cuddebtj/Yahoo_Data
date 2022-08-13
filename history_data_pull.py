@@ -77,7 +77,7 @@ for today in dates:
         league.draft_results(first_time="no")
         league.teams_and_standings(first_time="no")
         # league.players_list(first_time="no")
-        
+
         for week in nfl_weeks_list:
             league.matchups_by_week_regseason(first_time="no", nfl_week=week)
             league.team_roster_by_week(first_time="no", nfl_week=week)
