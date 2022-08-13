@@ -96,7 +96,7 @@ class league_season_data(object):
         league_metadata = league_metadata[
             [
                 "game_id",
-                "lague_id",
+                "league_id",
                 "name",
                 "num_teams",
                 "season",
@@ -108,7 +108,7 @@ class league_season_data(object):
         ]
 
         league_metadata["game_id"] = league_metadata["game_id"].astype(int)
-        league_metadata["lague_id"] = league_metadata["lague_id"].astype(int)
+        league_metadata["league_id"] = league_metadata["league_id"].astype(int)
         league_metadata["name"] = league_metadata["name"].astype(str)
         league_metadata["num_teams"] = league_metadata["num_teams"].astype(int)
         league_metadata["season"] = league_metadata["season"].astype(int)
@@ -119,7 +119,7 @@ class league_season_data(object):
 
         query = (
             'SELECT "game_id"'
-            ', "lague_id"'
+            ', "league_id"'
             ', "name"'
             ', "num_teams"'
             ', "season"'
@@ -130,7 +130,7 @@ class league_season_data(object):
             "FROM raw.league_metadata "
             f'WHERE ("game_id" <> {self.game_id}) '
             'GROUP BY "game_id"'
-            ', "lague_id"'
+            ', "league_id"'
             ', "name"'
             ', "num_teams"'
             ', "season"'
