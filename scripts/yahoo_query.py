@@ -88,14 +88,46 @@ class league_season_data(object):
         league_metadata = pd.json_normalize(response)
         league_metadata["game_id"] = self.game_id
         league_metadata.drop_duplicates(ignore_index=True, inplace=True)
+        league_metadata = league_metadata[
+            [
+                "game_id", 
+                "lague_id", 
+                "league_key", 
+                "name", 
+                "num_teams", 
+                "season", 
+                "start_date", 
+                "start_week", 
+                "end_date", 
+                "end_week"
+            ]
+        ]
 
         query = (
-            "SELECT * "
+            'SELECT "game_id"'
+            ', "lague_id"'
+            ', "league_key"'
+            ', "name"'
+            ', "num_teams"'
+            ', "season"'
+            ', "start_date"'
+            ', "start_week"'
+            ', "end_date"'
+            ', "end_week" '
             "FROM raw.league_metadata "
             f"WHERE (game_id <> '{str(self.game_id)}') "
-            "GROUP BY allow_add_to_dl_extra_pos, current_week, draft_status, edit_key, end_date, end_week, game_code, game_id, iris_group_chat_id, "
-            "is_cash_league, is_finished, is_pro_league, league_id, league_key, league_type, league_update_timestamp, logo_url, name, num_teams, "
-            "password, renew, renewed, scoring_type, season, short_invitation_url, start_date, start_week, url, weekly_deadline "
+            'GROUP BY "game_id"'
+            ', "lague_id"'
+            ', "league_key"'
+            ', "name"'
+            ', "num_teams"'
+            ', "season"'
+            ', "start_date"'
+            ', "start_week"'
+            ', "end_date"'
+            ', "end_week" '
+            'ORDER BY "game_id"'
+            ', "league_id" '
         )
 
         data_upload(
@@ -142,15 +174,41 @@ class league_season_data(object):
         league_settings["game_id"] = self.game_id
         league_settings["league_id"] = self.league_id
         league_settings.drop_duplicates(ignore_index=True, inplace=True)
+        league_settings = league_settings[
+            [
+                "game_id", 
+                "league_id", 
+                "has_multiweek_championship", 
+                "max_teams", "num_playoff_teams", 
+                "has_playoff_consolation_games", 
+                "num_playoff_consolation_teams", 
+                "playoff_start_week", 
+                "trade_end_date"
+            ]
+        ]
 
         query_1 = (
-            "SELECT * "
+            'SELECT "game_id" '
+            ', "league_id" '
+            ', "has_multiweek_championship" '
+            ', "max_teams", "num_playoff_teams" '
+            ', "has_playoff_consolation_games" '
+            ', "num_playoff_consolation_teams" '
+            ', "playoff_start_week" '
+            ', "trade_end_date" '
             "FROM raw.league_settings "
             f"WHERE (game_id <> '{str(self.game_id)}') "
-            "GROUP BY cant_cut_list, draft_pick_time, draft_time, draft_type, game_id, has_multiweek_championship, has_playoff_consolation_games, is_auction_draft, "
-            "league_id, max_teams, num_playoff_consolation_teams, num_playoff_teams, pickem_enabled, player_pool, playoff_start_week, post_draft_players, "
-            "scoring_type, trade_end_date, trade_ratify_type, trade_reject_time, uses_faab, uses_fractional_points, uses_lock_eliminated_teams, uses_negative_points, "
-            "uses_playoff, uses_playoff_reseeding, waiver_rule, waiver_time, waiver_type "
+            'GROUP BY "game_id"'
+            ', "league_id"'
+            ', "has_multiweek_championship"'
+            ', "max_teams"'
+            ', "num_playoff_teams"'
+            ', "has_playoff_consolation_games"'
+            ', "num_playoff_consolation_teams"'
+            ', "playoff_start_week"'
+            ', "trade_end_date" '
+            'ORDER BY "game_id" '
+            ', "league_id" '
         )
 
         data_upload(
@@ -170,12 +228,31 @@ class league_season_data(object):
         roster_positions["game_id"] = self.game_id
         roster_positions["league_id"] = self.league_id
         roster_positions.drop_duplicates(ignore_index=True, inplace=True)
+        roster_positions = roster_positions[
+            [
+                "game_id",
+                "league_id",
+                "position_type",
+                "position",
+                "count"
+            ]
+        ]
 
         query_2 = (
-            "SELECT * "
+            'SELECT "game_id"'
+            ', "league_id"'
+            ', "position_type"'
+            ', "position" '
+            ', "count" '
             "FROM raw.roster_positions "
             f"WHERE (game_id <> '{str(self.game_id)}') "
-            "GROUP BY count, game_id, league_id, position, position_type "
+            'GROUP BY "game_id"'
+            ', "league_id"'
+            ', "position_type"'
+            ', "position" '
+            ', "count" '
+            'ORDER BY "game_id"'
+            ', "league_id'
         )
 
         data_upload(
@@ -228,12 +305,40 @@ class league_season_data(object):
         stat_categories = stat_categories.merge(
             stat_modifiers, how="outer", on="stat_id"
         )
+        stat_categories = stat_categories[
+            [
+                "game_id",
+                "league_id",
+                "stat_id",
+                "name",
+                "display_name",
+                "is_only_display_stat",
+                "position_type",
+                "stat_modifier"
+            ]
+        ]
 
         query_3 = (
-            "SELECT * "
+            'SELECT "game_id",'
+            ', "league_id"'
+            ', "stat_id"'
+            ', "name"'
+            ', "display_name"'
+            ', "is_only_display_stat"'
+            ', "position_type"'
+            ', "stat_modifier"'
             "FROM raw.stat_categories "
             f"WHERE (game_id <> '{str(self.game_id)}') "
-            'GROUP BY display_name, enabled, game_id, league_id, name, position_type, sort_order, stat_id, stat_modifier, is_only_display_stat '
+            'GROUP BY "game_id",'
+            ', "league_id"'
+            ', "stat_id"'
+            ', "name"'
+            ', "display_name"'
+            ', "is_only_display_stat"'
+            ', "position_type"'
+            ', "stat_modifier"'
+            'ORDER BY "game_id"'
+            ', "league_id"'
         )
 
         data_upload(
@@ -331,15 +436,81 @@ class league_season_data(object):
             inplace=True,
         )
 
+        players = players[
+            [
+                "game_id",
+                "league_id",
+                "player_id",
+                "player_key",
+                "position_type",
+                "display_position",
+                "eligible_positions",
+                "name.ascii_first",
+                "name.ascii_last",
+                "name.first",
+                "name.last",
+                "name.full",
+                "uniform_number",
+                "bye_weeks.week",
+                "draft_analysis.average_round",
+                "draft_analysis.average_pick",
+                "draft_analysis.average_cost",
+                "draft_analysis.percent_drafted",
+                "editorial_team_key",
+                "editorial_team_full_name",
+                "editorial_team_abbr"
+            ]
+        ]
+
         query = (
-            "SELECT * "
+            'SELECT "game_id"'
+            ',"league_id"'
+            ',"player_id"'
+            ',"player_key"'
+            ',"position_type"'
+            ',"display_position"'
+            ',"eligible_positions"'
+            ',"name.ascii_first"'
+            ',"name.ascii_last"'
+            ',"name.first"'
+            ',"name.last"'
+            ',"name.full"'
+            ',"uniform_number"'
+            ',"bye_weeks.week"'
+            ',"draft_analysis.average_round"'
+            ',"draft_analysis.average_pick"'
+            ',"draft_analysis.average_cost"'
+            ',"draft_analysis.percent_drafted"'
+            ',"editorial_team_key"'
+            ',"editorial_team_full_name"'
+            ',"editorial_team_abbr"'
             "FROM raw.player_list "
             f"WHERE (game_id <> '{str(self.game_id)}') "
-            "GROUP BY display_position, editorial_player_key, editorial_team_abbr, editorial_team_full_name, editorial_team_key, eligible_positions, "
-            'is_undroppable, player_id, player_key, position_type, primary_position, uniform_number, "bye_weeks.week", "headshot.size", '
-            '"headshot.url", "name.ascii_first", "name.ascii_last", "name.first", "name.full", "name.last", "draft_analysis.average_pick", '
-            '"draft_analysis.average_round", "draft_analysis.average_cost", "draft_analysis.percent_drafted", status, has_player_notes, '
-            "player_notes_last_timestamp, game_id, league_id "
+            'GROUP BY "game_id"'
+            ',"league_id"'
+            ',"player_id"'
+            ',"player_key"'
+            ',"position_type"'
+            ',"display_position"'
+            ',"eligible_positions"'
+            ',"name.ascii_first"'
+            ',"name.ascii_last"'
+            ',"name.first"'
+            ',"name.last"'
+            ',"name.full"'
+            ',"uniform_number"'
+            ',"bye_weeks.week"'
+            ',"draft_analysis.average_round"'
+            ',"draft_analysis.average_pick"'
+            ',"draft_analysis.average_cost"'
+            ',"draft_analysis.percent_drafted"'
+            ',"editorial_team_key"'
+            ',"editorial_team_full_name"'
+            ',"editorial_team_abbr"'
+            'ORDER BY "game_id"'
+            ', "league_id"'
+            ', "player_id"'
+            ', "editorial_team_key"'
         )
 
         data_upload(
@@ -382,12 +553,35 @@ class league_season_data(object):
         draft_results["game_id"] = self.game_id
         draft_results["league_id"] = self.league_id
         draft_results.drop_duplicates(ignore_index=True, inplace=True)
+        draft_results = draft_results[
+            [
+                "game_id",
+                "league_id",
+                "round",
+                "pick",
+                "player_key",
+                "team_key"
+            ]
+        ]
 
         query = (
-            "SELECT * "
+            'SELECT "game_id"'
+            ', "league_id"'
+            ', "round"'
+            ', "pick"'
+            ', "player_key"'
+            ', "team_key" '
             "FROM raw.draft_results "
             f"WHERE (game_id <> '{str(self.game_id)}') "
-            "GROUP BY game_id, league_id, pick, player_key, round, team_key "
+            'GROUP BY "game_id"'
+            ', "league_id"'
+            ', "round"'
+            ', "pick"'
+            ', "player_key"'
+            ', "team_key" '
+            'ORDER BY "game_id"'
+            ', "league_id"'
+            ', "pick"'
         )
 
         data_upload(
@@ -524,13 +718,69 @@ class league_season_data(object):
             matchups["game_id"] = self.game_id
             matchups["league_id"] = self.league_id
             matchups = matchups[matchups["is_playoffs"] == 0]
+            matchups = matchups[
+                [
+                    "game_id",
+                    "league_id",
+                    "week",
+                    "week_start",
+                    "week_end",
+                    "is_playoffs",
+                    "is_consolation",
+                    "is_tied",
+                    "team_a_team_key",
+                    "team_a_team_points",
+                    "team_a_team_projected_points",
+                    "team_b_team_key",
+                    "team_b_team_points",
+                    "team_b_team_projected_points",
+                    "winner_team_key",
+                    "team_a_grade",
+                    "team_b_grade"
+                ]
+            ]
 
         query = (
-            "SELECT * "
+            'SELECT "game_id"'
+            ', "league_id"'
+            ', "week"'
+            ', "week_start"'
+            ', "week_end"'
+            ', "is_playoffs"'
+            ', "is_consolation"'
+            ', "is_tied"'
+            ', "team_a_team_key"'
+            ', "team_a_team_points"'
+            ', "team_a_team_projected_points"'
+            ', "team_b_team_key"'
+            ', "team_b_team_points"'
+            ', "team_b_team_projected_points"'
+            ', "winner_team_key"'
+            ', "team_a_grade"'
+            ', "team_b_grade"'
             "FROM raw.reg_season_matchups "
             f"WHERE (game_id <> '{str(self.game_id)}' AND week <> '{str(nfl_week)}') "
-            "GROUP BY game_id, is_consolation, is_matchup_recap_available, is_playoffs, is_tied, league_id, matchup_recap_title, matchup_recap_url, status, team_a_grade, team_a_points, team_a_projected_points, "
-            "team_a_team_key, team_b_grade, team_b_points, team_b_projected_points, team_b_team_key, week, week_end, week_start, winner_team_key "
+            'GROUP BY "game_id"'
+            ', "league_id"'
+            ', "week"'
+            ', "week_start"'
+            ', "week_end"'
+            ', "is_playoffs"'
+            ', "is_consolation"'
+            ', "is_tied"'
+            ', "team_a_team_key"'
+            ', "team_a_team_points"'
+            ', "team_a_team_projected_points"'
+            ', "team_b_team_key"'
+            ', "team_b_team_points"'
+            ', "team_b_team_projected_points"'
+            ', "winner_team_key"'
+            ', "team_a_grade"'
+            ', "team_b_grade"'
+            'ORDER BY "game_id"'
+            ', "league_id"'
+            ', "week"'
+            ', "team_a_team_key"'
         )
 
         data_upload(
@@ -667,14 +917,77 @@ class league_season_data(object):
             subset=["game_id", "league_id", "manager_id", "team_key"], inplace=True
         )
 
+        teams_standings = teams_standings[
+            [
+                "game_id",
+                "league_id",
+                "team_id",
+                "team_key",
+                "manager_id",
+                "clinched_playoffs",
+                "draft_grade",
+                "faab_balance",
+                "name",
+                "nickname",
+                "number_of_moves",
+                "number_of_trades",
+                "team_standings.playoff_seed",
+                "team_standings.rank",
+                "team_standings.outcome_totals.wins",
+                "team_standings.outcome_totals.losses",
+                "team_standings.outcome_totals.ties",
+                "team_standings.outcome_totals.percentage",
+                "team_standings.points_for",
+                "team_standings.points_against"
+            ]
+        ]
+
         query = (
-            "SELECT * "
+            'SELECT "game_id"'
+            ',"league_id"'
+            ',"team_id"'
+            ',"team_key"'
+            ',"manager_id"'
+            ',"clinched_playoffs"'
+            ',"draft_grade"'
+            ',"faab_balance"'
+            ',"name"'
+            ',"nickname"'
+            ',"number_of_moves"'
+            ',"number_of_trades"'
+            ',"team_standings.playoff_seed"'
+            ',"team_standings.rank"'
+            ',"team_standings.outcome_totals.wins"'
+            ',"team_standings.outcome_totals.losses"'
+            ',"team_standings.outcome_totals.ties"'
+            ',"team_standings.outcome_totals.percentage"'
+            ',"team_standings.points_for"'
+            ',"team_standings.points_against" '
             "FROM raw.league_teams "
             f"WHERE (game_id <> '{str(self.game_id)}') "
-            'GROUP BY clinched_playoffs, draft_grade, faab_balance, game_id, has_draft_grade, league_id, manager_id, name, nickname, number_of_moves, number_of_trades, "roster_adds.coverage_value", '
-            '"roster_adds.value", team_id, team_key, "team_standings.outcome_totals.losses", "team_standings.outcome_totals.percentage", "team_standings.outcome_totals.ties", '
-            '"team_standings.outcome_totals.wins", "team_standings.playoff_seed", "team_standings.points_against", "team_standings.points_for", "team_standings.rank", "team_standings.streak.type", '
-            '"team_standings.streak.value", waiver_priority'
+            'GROUP BY "game_id"'
+            ',"league_id"'
+            ',"team_id"'
+            ',"team_key"'
+            ',"manager_id"'
+            ',"clinched_playoffs"'
+            ',"draft_grade"'
+            ',"faab_balance"'
+            ',"name"'
+            ',"nickname"'
+            ',"number_of_moves"'
+            ',"number_of_trades"'
+            ',"team_standings.playoff_seed"'
+            ',"team_standings.rank"'
+            ',"team_standings.outcome_totals.wins"'
+            ',"team_standings.outcome_totals.losses"'
+            ',"team_standings.outcome_totals.ties"'
+            ',"team_standings.outcome_totals.percentage"'
+            ',"team_standings.points_for"'
+            ',"team_standings.points_against" '
+            'ORDER BY "game_id"'
+            ', "league_id"'
+            ', "team_id"'
         )
 
         data_upload(
@@ -739,14 +1052,49 @@ class league_season_data(object):
             ", ".join(map(str, l)) for l in team_week_rosters["eligible_positions"]
         ]
 
+        team_week_rosters = team_week_rosters[
+            [
+                "game_id",
+                "league_id",
+                "week",
+                "team_id",
+                "selected_position.position",
+                "player_id",
+                "player_key",
+                "display_position",
+                "eligible_positions",
+                "position_type"
+            ]
+        ]
+
         query = (
-            "SELECT * "
+            'SELECT "game_id"'
+            ',"league_id"'
+            ',"week"'
+            ',"team_id"'
+            ',"selected_position.position"'
+            ',"player_id"'
+            ',"player_key"'
+            ',"display_position"'
+            ',"eligible_positions"'
+            ',"position_type" '
             "FROM raw.weekly_team_roster "
             f"WHERE (game_id <> '{str(self.game_id)}' AND week <> '{str(nfl_week)}') "
-            'GROUP BY "bye_weeks.week", display_position, editorial_player_key, editorial_team_abbr, editorial_team_full_name, editorial_team_key, eligible_positions, '
-            'game_id, has_player_notes, "headshot.size", "headshot.url", is_editable, is_undroppable, league_id, "name.ascii_first", "name.ascii_last", "name.first", '
-            '"name.full", "name.last", player_id, player_key, player_notes_last_timestamp, position_type, primary_position, "selected_position.coverage_type", '
-            '"selected_position.is_flex", "selected_position.position", "selected_position.week", status, team_id, uniform_number, week'
+            'GROUP BY "game_id"'
+            ',"league_id"'
+            ',"week"'
+            ',"team_id"'
+            ',"selected_position.position"'
+            ',"player_id"'
+            ',"player_key"'
+            ',"display_position"'
+            ',"eligible_positions"'
+            ',"position_type" '
+            'ORDER BY "game_id"'
+            ', "league_id"'
+            ', "week"'
+            ', "team_id"'
+            ', "selected_position.position"'
         )
 
         data_upload(
@@ -834,11 +1182,39 @@ class league_season_data(object):
             + team_points_weekly["team_id"].astype(str)
         )
 
+        team_points_weekly = team_points_weekly[
+            [
+                "game_id",
+                "league_id",
+                "team_id",
+                "team_key",
+                "week",
+                "final_points",
+                "projected_points"
+            ]
+        ]
+
         query = (
-            "SELECT * "
+            'SELECT "game_id"'
+            ',"league_id"'
+            ',"team_id"'
+            ',"team_key"'
+            ',"week"'
+            ',"final_points"'
+            ',"projected_points" '
             "FROM raw.weekly_team_pts "
             f"WHERE (game_id <> '{str(self.game_id)}' AND week <> '{str(nfl_week)}') "
-            "GROUP BY final_points, game_id, league_id, projected_points, team_id, week, team_key "
+            'GROUP BY "game_id"'
+            ',"league_id"'
+            ',"team_id"'
+            ',"team_key"'
+            ',"week"'
+            ',"final_points"'
+            ',"projected_points" '
+            'ORDER BY "game_id"'
+            ', "league_id"'
+            ', "week"'
+            ', "team_id"'
         )
 
         data_upload(
