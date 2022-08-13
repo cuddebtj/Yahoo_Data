@@ -805,11 +805,11 @@ class league_season_data(object):
                 "is_consolation",
                 "is_tied",
                 "team_a_team_key",
-                "team_a_team_points",
-                "team_a_team_projected_points",
+                "team_a_points",
+                "team_a_projected_points",
                 "team_b_team_key",
-                "team_b_team_points",
-                "team_b_team_projected_points",
+                "team_b_points",
+                "team_b_projected_points",
                 "winner_team_key",
                 "team_a_grade",
                 "team_b_grade",
@@ -825,14 +825,14 @@ class league_season_data(object):
         matchups["is_consolation"] = matchups["is_consolation"].astype("bool")
         matchups["is_tied"] = matchups["is_tied"].astype("bool")
         matchups["team_a_team_key"] = matchups["team_a_team_key"].astype(str)
-        matchups["team_a_team_points"] = matchups["team_a_team_points"].astype(float).round(decimals=2)
-        matchups["team_a_team_projected_points"] = matchups["team_a_team_projected_points"].astype(float).round(decimals=2)
+        matchups["team_a_points"] = matchups["team_a_points"].astype(float).round(decimals=2)
+        matchups["team_a_projected_points"] = matchups["team_a_projected_points"].astype(float).round(decimals=2)
         matchups["team_b_team_key"] = matchups["team_b_team_key"].astype(str)
-        matchups["team_b_team_points"] = matchups["team_a_team_key"].astype(float).round(decimals=2)
-        matchups["team_b_team_projected_points"] = matchups["team_a_team_points"].astype(float).round(decimals=2)
-        matchups["winner_team_key"] = matchups["team_a_team_projected_points"].astype(str)
-        matchups["team_a_grade"] = matchups["team_b_team_key"].astype(str)
-        matchups["team_b_grade"] = matchups["team_b_team_key"].astype(str)
+        matchups["team_b_points"] = matchups["team_b_points"].astype(float).round(decimals=2)
+        matchups["team_b_projected_points"] = matchups["team_b_projected_points"].astype(float).round(decimals=2)
+        matchups["winner_team_key"] = matchups["winner_team_key"].astype(str)
+        matchups["team_a_grade"] = matchups["team_a_grade"].astype(str)
+        matchups["team_b_grade"] = matchups["team_b_grade"].astype(str)
 
         query = (
             'SELECT "game_id"'
@@ -844,11 +844,11 @@ class league_season_data(object):
             ', "is_consolation"'
             ', "is_tied"'
             ', "team_a_team_key"'
-            ', "team_a_team_points"'
-            ', "team_a_team_projected_points"'
+            ', "team_a_points"'
+            ', "team_a_projected_points"'
             ', "team_b_team_key"'
-            ', "team_b_team_points"'
-            ', "team_b_team_projected_points"'
+            ', "team_b_points"'
+            ', "team_b_projected_points"'
             ', "winner_team_key"'
             ', "team_a_grade"'
             ', "team_b_grade"'
@@ -863,11 +863,11 @@ class league_season_data(object):
             ', "is_consolation"'
             ', "is_tied"'
             ', "team_a_team_key"'
-            ', "team_a_team_points"'
-            ', "team_a_team_projected_points"'
+            ', "team_a_points"'
+            ', "team_a_projected_points"'
             ', "team_b_team_key"'
-            ', "team_b_team_points"'
-            ', "team_b_team_projected_points"'
+            ', "team_b_points"'
+            ', "team_b_projected_points"'
             ', "winner_team_key"'
             ', "team_a_grade"'
             ', "team_b_grade"'
