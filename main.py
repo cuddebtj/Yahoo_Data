@@ -54,7 +54,7 @@ league = league_season_data(
     browser_callback=True,
 )
 
-if TODAY == np.datetime64(f"{YEAR}-08-31"):
+if TODAY == np.datetime64(f"{YEAR}-08-31", "D"):
     game_keys = league.all_game_keys()
     sleep(5)
     nfl_weeks = league.all_nfl_weeks()

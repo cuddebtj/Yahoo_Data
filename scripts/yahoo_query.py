@@ -112,9 +112,9 @@ class league_season_data(object):
         league_metadata["name"] = league_metadata["name"].astype(str)
         league_metadata["num_teams"] = league_metadata["num_teams"].astype(int)
         league_metadata["season"] = league_metadata["season"].astype(int)
-        league_metadata["start_date"] = league_metadata["start_date"].astype("datetime64[ns]")
+        league_metadata["start_date"] = league_metadata["start_date"].astype("datetime64[D]")
         league_metadata["start_week"] = league_metadata["start_week"].astype(int)
-        league_metadata["end_date"] = league_metadata["end_date"].astype("datetime64[ns]")
+        league_metadata["end_date"] = league_metadata["end_date"].astype("datetime64[D]")
         league_metadata["end_week"] = league_metadata["end_week"].astype(int)
 
         query = (
@@ -212,7 +212,7 @@ class league_season_data(object):
         league_settings["has_playoff_consolation_games"] = league_settings["has_playoff_consolation_games"].astype("bool")
         league_settings["num_playoff_consolation_teams"] = league_settings["num_playoff_consolation_teams"].astype(int)
         league_settings["playoff_start_week"] = league_settings["playoff_start_week"].astype(int)
-        league_settings["trade_end_date"] = league_settings["trade_end_date"].astype("datetime64[ns]")
+        league_settings["trade_end_date"] = league_settings["trade_end_date"].astype("datetime64[D]")
 
         query_1 = (
             'SELECT "game_id" '
@@ -819,8 +819,8 @@ class league_season_data(object):
         matchups["game_id"] = matchups["game_id"].astype(int)
         matchups["league_id"] = matchups["league_id"].astype(int)
         matchups["week"] = matchups["week"].astype(int)
-        matchups["week_start"] = matchups["week_start"].astype("datetime64[ns]")
-        matchups["week_end"] = matchups["week_end"].astype("datetime64[ns]")
+        matchups["week_start"] = matchups["week_start"].astype("datetime64[D]")
+        matchups["week_end"] = matchups["week_end"].astype("datetime64[D]")
         matchups["is_playoffs"] = matchups["is_playoffs"].astype("bool")
         matchups["is_consolation"] = matchups["is_consolation"].astype("bool")
         matchups["is_tied"] = matchups["is_tied"].astype("bool")
