@@ -8,7 +8,7 @@ from scripts.utils import nfl_weeks_pull, game_keys_pull
 from scripts.yahoo_query import league_season_data
 
 dates = [
-    np.datetime64("2021-09-28"),
+    # np.datetime64("2021-09-28"),
     np.datetime64("2020-09-28"),
     np.datetime64("2019-09-28"),
     np.datetime64("2018-09-28"),
@@ -53,7 +53,7 @@ for today in dates:
         browser_callback=True,
     )
 
-    if int(SEASON) == 2021:
+    if int(SEASON) == 2020:
         league.all_game_keys()
         league.all_nfl_weeks()
         league.metadata(first_time="yes")
