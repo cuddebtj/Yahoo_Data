@@ -4,7 +4,7 @@ import yaml
 from pathlib import Path
 from time import sleep
 
-from scripts.utils import nfl_weeks_pull, game_keys_pull
+from scripts.utils import nfl_weeks_pull, game_keys_pull, get_season
 from scripts.yahoo_query import league_season_data
 
 dates = [
@@ -26,7 +26,7 @@ GAME_KEYS = game_keys_pull(first="no")
 
 for today in dates:
 
-    SEASON = today.astype("datetime64[Y]").item().year
+    SEASON = get_season(today)
     LEAGUE_ID = GAME_KEYS[GAME_KEYS["season"] == SEASON]["league_ID"].values[0]
     GAME_ID = GAME_KEYS[GAME_KEYS["season"] == SEASON]["game_id"].values[0]
     nfl_weeks_list = list(NFL_WEEKS["week"][NFL_WEEKS["game_id"] == GAME_ID])
@@ -62,11 +62,11 @@ for today in dates:
         league.teams_and_standings(first_time="yes")
         # league.players_list(first_time="yes")
 
-        league.matchups_by_week_regseason(first_time="yes", nfl_week=1)
+        league.matchups_by_week(first_time="yes", nfl_week=1)
         league.team_roster_by_week(first_time="yes", nfl_week=1)
         league.team_points_by_week(first_time="yes", nfl_week=1)
         for week in nfl_weeks_list[1:]:
-            league.matchups_by_week_regseason(first_time="no", nfl_week=week)
+            league.matchups_by_week(first_time="no", nfl_week=week)
             league.team_roster_by_week(first_time="no", nfl_week=week)
             league.team_points_by_week(first_time="no", nfl_week=week)
             sleep(15)
@@ -79,6 +79,6 @@ for today in dates:
         # league.players_list(first_time="no")
 
         for week in nfl_weeks_list:
-            league.matchups_by_week_regseason(first_time="no", nfl_week=week)
+            league.matchups_by_week(first_time="no", nfl_week=week)
             league.team_roster_by_week(first_time="no", nfl_week=week)
             league.team_points_by_week(first_time="no", nfl_week=week)

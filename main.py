@@ -83,6 +83,6 @@ if (
 
 week_roster = league.team_roster_by_week(first_time="no", nfl_week=NFL_WEEK)
 sleep(5)
-matchups = league.matchups_by_week_regseason(first_time="no", nfl_week=NFL_WEEK)
+matchups = league.matchups_by_week(first_time="no", nfl_week=NFL_WEEK)
 sleep(5)
 team_points = league.team_points_by_week(first_time="no", nfl_week=NFL_WEEK)

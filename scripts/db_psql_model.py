@@ -28,8 +28,8 @@ class DatabaseCursor(object):
             with open(credential_file) as file:
                 self.credentials = yaml.load(file, Loader=yaml.FullLoader)
 
-        except Exception as error:
-            print(error)
+        except Exception as e:
+            print(f"\n----ERROR db_psql_model.py: credential file\n----{e}\n")
 
     def __enter__(self):
         """
@@ -47,7 +47,7 @@ class DatabaseCursor(object):
             return self.cur
 
         except (Exception, psycopg2.OperationalError) as error:
-            print(error)
+            print(f"\n----ERROR db_psql_model.py: __enter__\n----{error}\n")
 
     def __exit__(self, exc_result):
         """
@@ -85,7 +85,7 @@ class DatabaseCursor(object):
 
         except (Exception, psycopg2.DatabaseError) as error:
             self.__exit__(exc_result=False)
-            print(f"Error: {error}\n UNSUCCESFUL Metadata Pull.")
+            print(f"\n----ERROR db_psql_model.py: get_tables_metadata\n----{error}\n")
 
     def create_schema(self, schema):
         """
@@ -102,11 +102,11 @@ class DatabaseCursor(object):
         try:
             cursor.execute(sql_query)
             self.__exit__(exc_result=True)
-            print(f"{schema} schema created within MenOfMadison.")
+            print(f"\n----{schema} schema created within MenOfMadison.\n")
 
         except (Exception, psycopg2.DatabaseError) as error:
             self.__exit__(exc_result=False)
-            print(f"Error: {error}")
+            print(f"\n----ERROR db_psql_model.py: create_schema\n----{schema}\n----{error}\n")
 
     def drop_schema(self, schema):
         """
@@ -123,11 +123,11 @@ class DatabaseCursor(object):
         try:
             cursor.execute(sql_query)
             self.__exit__(exc_result=True)
-            print(f"{schema} schema dropped within MenOfMadison.")
+            print(f"\n----{schema} schema dropped within MenOfMadison.\n")
 
         except (Exception, psycopg2.DatabaseError) as error:
             self.__exit__(exc_result=False)
-            print(f"Error: {error}\n UNSUCCESFUL Drop: {schema}")
+            print(f"\n----ERROR db_psql_model.py: drop_schema\n----{schema}\n----{error}\n")
 
     def drop_table(self, schema, table):
         """
@@ -145,11 +145,11 @@ class DatabaseCursor(object):
         try:
             cursor.execute(sql_query)
             self.__exit__(exc_result=True)
-            print(f"{table} table dropped within MenOfMadison.{schema}")
+            print(f"\n----{table} table dropped within MenOfMadison {schema}\n")
 
         except (Exception, psycopg2.DatabaseError) as error:
             self.__exit__(exc_result=False)
-            print(f"Error: {error}\n UNSUCCESFUL Drop: {schema}.{table}")
+            print(f"\n----ERROR db_psql_model.py: drop_table\n----{schema}.{table}\n----{error}\n")
 
     def copy_table_to_postgres_new(self, df, table, first_time="NO"):
         """
@@ -187,11 +187,11 @@ class DatabaseCursor(object):
             )
             cursor.copy_expert(query, buffer)
             self.__exit__(exc_result=True)
-            print(f"Upload successful: {table}")
+            print(f"\n----Upload successful: {table}\n")
 
         except (Exception, psycopg2.DatabaseError) as error:
             self.__exit__(exc_result=False)
-            print(f"Error {error}\nUNSUCCESSFUL: {table}")
+            print(f"\n----ERROR db_psql_model.py: copy_table_to_postgres_new\n----{table}\n----{error}\n")
 
     def copy_data_from_postgres(self, query):
         """
@@ -213,9 +213,9 @@ class DatabaseCursor(object):
             buffer.seek(0)
             df = pd.read_csv(buffer)
             self.__exit__(exc_result=True)
-            print(f"Successfully pulled: {query}")
+            print(f"\n----Successfully pulled: {query}\n")
             return df
 
         except (Exception, psycopg2.DatabaseError) as error:
             self.__exit__(exc_result=False)
-            print(f"Error {error}\n UNSUCCESFUL: {query}")
+            print(f"\n----ERROR db_psql_model.py: copy_data_from_postgres\n----{query}\n----{error}\n")
