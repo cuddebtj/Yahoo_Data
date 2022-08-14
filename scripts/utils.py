@@ -6,11 +6,11 @@ import logging
 from pathlib import Path
 from datetime import datetime as dt
 
-# from scripts.db_psql_model import DatabaseCursor
-# from scripts.tournament import Tournament
+from scripts.db_psql_model import DatabaseCursor
+from scripts.tournament import Tournament
 
-from db_psql_model import DatabaseCursor
-from tournament import Tournament
+# from db_psql_model import DatabaseCursor
+# from tournament import Tournament
 
 logging.basicConfig()
 logging.getLogger("sqlalchemy").setLevel(logging.ERROR)

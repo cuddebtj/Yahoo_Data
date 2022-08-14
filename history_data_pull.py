@@ -30,6 +30,7 @@ for today in dates:
     LEAGUE_ID = GAME_KEYS[GAME_KEYS["season"] == SEASON]["league_ID"].values[0]
     GAME_ID = GAME_KEYS[GAME_KEYS["season"] == SEASON]["game_id"].values[0]
     nfl_weeks_list = list(NFL_WEEKS["week"][NFL_WEEKS["game_id"] == GAME_ID])
+    print(today, SEASON, LEAGUE_ID, GAME_ID, sep='\n----')
 
     try:
         with open(PATH) as file:
@@ -69,7 +70,7 @@ for today in dates:
             league.matchups_by_week(first_time="no", nfl_week=week)
             league.team_roster_by_week(first_time="no", nfl_week=week)
             league.team_points_by_week(first_time="no", nfl_week=week)
-            sleep(15)
+            sleep(60)
 
     else:
         league.metadata(first_time="no")
@@ -82,3 +83,4 @@ for today in dates:
             league.matchups_by_week(first_time="no", nfl_week=week)
             league.team_roster_by_week(first_time="no", nfl_week=week)
             league.team_points_by_week(first_time="no", nfl_week=week)
+            sleep(60)
