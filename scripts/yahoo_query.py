@@ -908,7 +908,7 @@ class league_season_data(object):
             data_upload(
                 df=matchups,
                 first_time=first_time,
-                table_name="weekly_matchups",
+                table_name=f"weekly_matchups_{self.game_id}",
                 query=query,
                 path=PATH,
                 option=OPTION_RAW,

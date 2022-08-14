@@ -6,11 +6,11 @@ import logging
 from pathlib import Path
 from datetime import datetime as dt
 
-from scripts.db_psql_model import DatabaseCursor
-from scripts.tournament import Tournament
+# from scripts.db_psql_model import DatabaseCursor
+# from scripts.tournament import Tournament
 
-# from db_psql_model import DatabaseCursor
-# from tournament import Tournament
+from db_psql_model import DatabaseCursor
+from tournament import Tournament
 
 logging.basicConfig()
 logging.getLogger("sqlalchemy").setLevel(logging.ERROR)
@@ -28,7 +28,9 @@ def get_season(date):
     try:
         nfl_weeks_query = "SELECT * FROM dev.nfl_weeks"
         nfl_weeks = DatabaseCursor(PATH, options=OPTION_DEV).copy_data_from_postgres(nfl_weeks_query)
-        game_ids = nfl_weeks["game_id"][(nfl_weeks["end"] > date)]
+        nfl_weeks["start"] = nfl_weeks["start"].astype("datetime64[D]")
+        nfl_weeks["end"] = nfl_weeks["end"].astype("datetime64[D]")
+        game_ids = nfl_weeks["game_id"][(nfl_weeks["end"].astype('datetime64[D]') > date)]
         game_id = game_ids.min()
         week_1 = nfl_weeks[(nfl_weeks["game_id"] == game_id) & (nfl_weeks["week"] == 1)]
         season = week_1["start"].values[0].astype("datetime64[Y]").astype(int) + 1970

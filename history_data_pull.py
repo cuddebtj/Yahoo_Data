@@ -79,8 +79,11 @@ for today in dates:
         league.teams_and_standings(first_time="no")
         # league.players_list(first_time="no")
 
-        for week in nfl_weeks_list:
+        league.matchups_by_week(first_time="yes", nfl_week=1)
+        for week in nfl_weeks_list[1:]:
             league.matchups_by_week(first_time="no", nfl_week=week)
+            
+        for week in nfl_weeks_list:
             league.team_roster_by_week(first_time="no", nfl_week=week)
             league.team_points_by_week(first_time="no", nfl_week=week)
             sleep(60)
