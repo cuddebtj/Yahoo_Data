@@ -10,14 +10,14 @@ from scripts.yahoo_query import league_season_data
 dates = [
     # np.datetime64("2021-09-28", "D"),
     np.datetime64("2020-09-28", "D"),
-    # np.datetime64("2019-09-28", "D"),
-    # np.datetime64("2018-09-28", "D"),
-    # np.datetime64("2017-09-28", "D"),
-    # np.datetime64("2016-09-28", "D"),
-    # np.datetime64("2015-09-28", "D"),
-    # np.datetime64("2014-09-28", "D"),
-    # np.datetime64("2013-09-28", "D"),
-    # np.datetime64("2012-09-28", "D"),
+    np.datetime64("2019-09-28", "D"),
+    np.datetime64("2018-09-28", "D"),
+    np.datetime64("2017-09-28", "D"),
+    np.datetime64("2016-09-28", "D"),
+    np.datetime64("2015-09-28", "D"),
+    np.datetime64("2014-09-28", "D"),
+    np.datetime64("2013-09-28", "D"),
+    np.datetime64("2012-09-28", "D"),
 ]
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
