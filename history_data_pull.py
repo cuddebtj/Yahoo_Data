@@ -1,3 +1,4 @@
+from xml.sax.handler import DTDHandler
 import pandas as pd
 import numpy as np
 import yaml
@@ -30,7 +31,7 @@ for today in dates:
     LEAGUE_ID = GAME_KEYS[GAME_KEYS["season"] == SEASON]["league_ID"].values[0]
     GAME_ID = GAME_KEYS[GAME_KEYS["season"] == SEASON]["game_id"].values[0]
     nfl_weeks_list = list(NFL_WEEKS["week"][NFL_WEEKS["game_id"] == GAME_ID])
-    print('----\n', today, SEASON, LEAGUE_ID, GAME_ID, sep='\n----')
+    print('\n', today, SEASON, LEAGUE_ID, GAME_ID, sep='\n----')
 
     try:
         with open(PATH) as file:
@@ -55,8 +56,8 @@ for today in dates:
     )
 
     if int(SEASON) == 2020:
-        league.all_game_keys()
-        league.all_nfl_weeks()
+        # league.all_game_keys()
+        # league.all_nfl_weeks()
         league.metadata(first_time="yes")
         league.set_roster_pos_stat_cat(first_time="yes")
         league.draft_results(first_time="yes")
