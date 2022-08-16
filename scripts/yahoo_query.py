@@ -18,8 +18,6 @@ from scripts.utils import data_upload
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
 TEAMS_FILE = list(Path().cwd().parent.glob("**/teams.yaml"))[0]
-OPTION_RAW = "-c search_path=raw"
-OPTION_DEV = "-c search_path=dev"
 
 
 class league_season_data(object):
@@ -130,7 +128,7 @@ class league_season_data(object):
                 ', "end_date"'
                 ', "end_week" '
                 "FROM raw.league_metadata "
-                f'WHERE ("game_id" <> {self.game_id}) '
+                "WHERE (game_id <> '"+str(self.game_id)+"') "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "name"'
@@ -150,7 +148,7 @@ class league_season_data(object):
                 table_name="league_metadata",
                 query=query,
                 path=PATH,
-                option=OPTION_RAW,
+                option_schema='raw',
             )
 
             return league_metadata
@@ -233,7 +231,7 @@ class league_season_data(object):
                 ', "playoff_start_week" '
                 ', "trade_end_date" '
                 "FROM raw.league_settings "
-                f'WHERE ("game_id" <> {self.game_id}) '
+                "WHERE (game_id <> '"+str(self.game_id)+"') "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "has_multiweek_championship"'
@@ -253,7 +251,7 @@ class league_season_data(object):
                 table_name="league_settings",
                 query=query_1,
                 path=PATH,
-                option=OPTION_RAW,
+                option_schema='raw',
             )
 
             roster_positions = pd.DataFrame()
@@ -281,7 +279,7 @@ class league_season_data(object):
                 ', "position" '
                 ', "count" '
                 "FROM raw.roster_positions "
-                f'WHERE ("game_id" <> {self.game_id}) '
+                "WHERE (game_id <> '"+str(self.game_id)+"') "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "position_type"'
@@ -297,7 +295,7 @@ class league_season_data(object):
                 table_name="roster_positions",
                 query=query_2,
                 path=PATH,
-                option=OPTION_RAW,
+                option_schema='raw',
             )
 
             stat_categories = pd.DataFrame()
@@ -373,15 +371,15 @@ class league_season_data(object):
                 ', "position_type"'
                 ', "stat_modifier"'
                 "FROM raw.stat_categories "
-                f'WHERE ("game_id" <> {self.game_id}) '
-                'GROUP BY "game_id",'
+                "WHERE (game_id <> '"+str(self.game_id)+"') "
+                'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "stat_id"'
                 ', "name"'
                 ', "display_name"'
                 ', "is_only_display_stat"'
                 ', "position_type"'
-                ', "stat_modifier"'
+                ', "stat_modifier" '
                 'ORDER BY "game_id"'
                 ', "league_id"'
             )
@@ -392,7 +390,7 @@ class league_season_data(object):
                 table_name="stat_categories",
                 query=query_3,
                 path=PATH,
-                option=OPTION_RAW,
+                option_schema='raw',
             )
 
             return league_settings, roster_positions, stat_categories
@@ -564,9 +562,9 @@ class league_season_data(object):
                 ',"draft_analysis.percent_drafted"'
                 ',"editorial_team_key"'
                 ',"editorial_team_full_name"'
-                ',"editorial_team_abbr"'
+                ',"editorial_team_abbr" '
                 "FROM raw.player_list "
-                f'WHERE ("game_id" <> {self.game_id}) '
+                "WHERE (game_id <> '"+str(self.game_id)+"') "
                 'GROUP BY "game_id"'
                 ',"league_id"'
                 ',"player_id"'
@@ -587,7 +585,7 @@ class league_season_data(object):
                 ',"draft_analysis.percent_drafted"'
                 ',"editorial_team_key"'
                 ',"editorial_team_full_name"'
-                ',"editorial_team_abbr"'
+                ',"editorial_team_abbr" '
                 'ORDER BY "game_id"'
                 ', "league_id"'
                 ', "player_id"'
@@ -600,7 +598,7 @@ class league_season_data(object):
                 table_name="player_list",
                 query=query,
                 path=PATH,
-                option=OPTION_RAW,
+                option_schema='raw',
             )
 
             return players
@@ -663,7 +661,7 @@ class league_season_data(object):
                 ', "player_key"'
                 ', "team_key" '
                 "FROM raw.draft_results "
-                f'WHERE ("game_id" <> {self.game_id}) '
+                "WHERE (game_id <> '"+str(self.game_id)+"') "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "round"'
@@ -681,7 +679,7 @@ class league_season_data(object):
                 table_name="draft_results",
                 query=query,
                 path=PATH,
-                option=OPTION_RAW,
+                option_schema='raw',
             )
 
             return draft_results
@@ -825,22 +823,22 @@ class league_season_data(object):
             matchups = matchups[
                 [
                     "game_id",
+                    "is_consolation",
+                    "is_playoffs",
+                    "is_tied",
                     "league_id",
+                    "team_a_grade",
+                    "team_a_points",
+                    "team_a_projected_points",
+                    "team_a_team_key",
+                    "team_b_grade",
+                    "team_b_points",
+                    "team_b_projected_points",
+                    "team_b_team_key",
                     "week",
                     "week_start",
                     "week_end",
-                    "is_playoffs",
-                    "is_consolation",
-                    "is_tied",
-                    "team_a_team_key",
-                    "team_a_points",
-                    "team_a_projected_points",
-                    "team_b_team_key",
-                    "team_b_points",
-                    "team_b_projected_points",
                     "winner_team_key",
-                    "team_a_grade",
-                    "team_b_grade",
                 ]
             ]
 
@@ -881,7 +879,7 @@ class league_season_data(object):
                 ', "team_a_grade"'
                 ', "team_b_grade"'
                 "FROM raw.weekly_matchups "
-                f'WHERE ("game_id" <> {self.game_id} AND "week" <> {nfl_week}) '
+                "WHERE (game_id <> '"+str(self.game_id)+"' AND week <> '"+str(nfl_week)+"') "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "week"'
@@ -898,7 +896,7 @@ class league_season_data(object):
                 ', "team_b_projected_points"'
                 ', "winner_team_key"'
                 ', "team_a_grade"'
-                ', "team_b_grade"'
+                ', "team_b_grade" '
                 'ORDER BY "game_id"'
                 ', "league_id"'
                 ', "week"'
@@ -908,10 +906,10 @@ class league_season_data(object):
             data_upload(
                 df=matchups,
                 first_time=first_time,
-                table_name=f"weekly_matchups_{self.game_id}",
+                table_name=f"weekly_matchups",
                 query=query,
                 path=PATH,
-                option=OPTION_RAW,
+                option_schema='raw',
             )
 
             print(self.game_id, nfl_week)
@@ -1118,7 +1116,7 @@ class league_season_data(object):
                 ',"team_standings.points_for"'
                 ',"team_standings.points_against" '
                 "FROM raw.league_teams "
-                f'WHERE ("game_id" <> {self.game_id}) '
+                "WHERE (game_id <> '"+str(self.game_id)+"') "
                 'GROUP BY "game_id"'
                 ',"league_id"'
                 ',"team_id"'
@@ -1150,7 +1148,7 @@ class league_season_data(object):
                 table_name="league_teams",
                 query=query,
                 path=PATH,
-                option=OPTION_RAW,
+                option_schema='raw',
             )
 
             return teams_standings
@@ -1164,7 +1162,7 @@ class league_season_data(object):
         """
         try:
             sql_query = f"SELECT max_teams FROM raw.league_settings WHERE game_id = '{self.game_id}'"
-            teams = DatabaseCursor(PATH, options=OPTION_RAW).copy_data_from_postgres(
+            teams = DatabaseCursor(PATH, option_schema='raw').copy_data_from_postgres(
                 sql_query
             )
             teams = teams["max_teams"].values[0]
@@ -1254,7 +1252,7 @@ class league_season_data(object):
                 ',"eligible_positions"'
                 ',"position_type" '
                 "FROM raw.weekly_team_roster "
-                f'WHERE ("game_id" <> {self.game_id} AND "week" <> {nfl_week}) '
+                "WHERE (game_id <> '"+str(self.game_id)+"' AND week <> '"+str(nfl_week)+"') "
                 'GROUP BY "game_id"'
                 ',"league_id"'
                 ',"week"'
@@ -1278,7 +1276,7 @@ class league_season_data(object):
                 table_name="weekly_team_roster",
                 query=query,
                 path=PATH,
-                option=OPTION_RAW,
+                option_schema='raw',
             )
 
             print(self.game_id, nfl_week)
@@ -1294,7 +1292,7 @@ class league_season_data(object):
         """
         try:
             sql_query = f"SELECT max_teams FROM raw.league_settings WHERE game_id = '{self.game_id}'"
-            teams = DatabaseCursor(PATH, options=OPTION_RAW).copy_data_from_postgres(
+            teams = DatabaseCursor(PATH, option_schema='raw').copy_data_from_postgres(
                 sql_query
             )
             teams = teams["max_teams"].values[0]
@@ -1396,7 +1394,7 @@ class league_season_data(object):
                 ',"final_points"'
                 ',"projected_points" '
                 "FROM raw.weekly_team_pts "
-                f'WHERE ("game_id" <> {self.game_id} AND "week" <> {nfl_week}) '
+                "WHERE (game_id <> '"+str(self.game_id)+"' AND week <> '"+str(nfl_week)+"') "
                 'GROUP BY "game_id"'
                 ',"league_id"'
                 ',"team_id"'
@@ -1416,7 +1414,7 @@ class league_season_data(object):
                 table_name="weekly_team_pts",
                 query=query,
                 path=PATH,
-                option=OPTION_RAW,
+                option_schema='raw',
             )
 
             print(self.game_id, nfl_week)
@@ -1460,7 +1458,7 @@ class league_season_data(object):
                 ]
             ]
             game_keys.drop_duplicates(ignore_index=True, inplace=True)
-            DatabaseCursor(PATH, options=OPTION_DEV).copy_table_to_postgres_new(
+            DatabaseCursor(PATH, option_schema='dev').copy_table_to_postgres_new(
                 game_keys, "game_keys", first_time="yes"
             )
 
@@ -1475,7 +1473,7 @@ class league_season_data(object):
         """
         try:
             game_keys = DatabaseCursor(
-                PATH, options="-c search_path=dev"
+                PATH, option_schema='dev'
             ).copy_data_from_postgres("SELECT game_id FROM dev.game_keys")
             game_id = list(game_keys["game_id"])
             weeks = pd.DataFrame()
@@ -1493,7 +1491,7 @@ class league_season_data(object):
             weeks["end"] = weeks["end"].astype("datetime64[D]")
             weeks.drop_duplicates(ignore_index=True, inplace=True)
 
-            DatabaseCursor(PATH, options=OPTION_DEV).copy_table_to_postgres_new(
+            DatabaseCursor(PATH, option_schema='dev').copy_table_to_postgres_new(
                 weeks, "nfl_weeks", first_time="yes"
             )
 

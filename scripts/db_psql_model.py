@@ -1,28 +1,25 @@
 import psycopg2
 import yaml
 import pandas as pd
-import logging
 from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
-import sqlalchemy
+from psycopg2.extensions import AsIs
 from io import StringIO
 
 
 class DatabaseCursor(object):
-
-    logging.basicConfig()
-    logging.getLogger("sqlalchemy.engine").setLevel(logging.ERROR)
-    logging.getLogger("sqlalchemy.pool").setLevel(logging.ERROR)
 
     def __init__(self, credential_file, **kwargs):
         """
         Import database credentials
 
         credential_file = path to private yaml file
-        kwargs = {options: "-c search_path=raw"}
+        kwargs = {option_schema: "raw"}
         """
 
         self.kwargs = kwargs
+        if 'option_schema' not in self.kwargs:
+            self.kwargs['option_schema'] = ''
 
         try:
             with open(credential_file) as file:
@@ -37,11 +34,12 @@ class DatabaseCursor(object):
         """
 
         try:
-            self.conn_string = f"postgresql+psycopg2://{self.credentials['psql_username']}:{self.credentials['psql_password']}@localhost/{self.credentials['psql_database']}"
-            self.engine = sqlalchemy.create_engine(
-                self.conn_string, connect_args=self.kwargs
+            self.conn = psycopg2.connect(
+                dbname=self.credentials['psql_database'],
+                user=self.credentials['psql_username'],
+                password=self.credentials['psql_password'],
+                options=f"-c search_path={self.kwargs['option_schema']}",
             )
-            self.conn = self.engine.raw_connection()
             self.cur = self.conn.cursor()
 
             return self.cur
@@ -162,30 +160,31 @@ class DatabaseCursor(object):
         df = pd.DataFrame()
         first_time = "NO"
         """
-        cursor = self.__enter__()
-
-        if str(first_time).upper() == "YES":
-            if "dev" in str(self.kwargs):
-                df.head(0).to_sql(
-                    table, self.engine, if_exists="replace", index=False, schema="dev"
-                )
-
-            else:
-                df.head(0).to_sql(
-                    table, self.engine, if_exists="replace", index=False, schema="raw"
-                )
 
         buffer = StringIO()
-        df.to_csv(buffer, index=False, header=False)
+        df.to_csv(buffer, index=False)
+        columns = df.columns.to_list()
+        fields = []
+        for col in columns:
+            fields.append(f'"{col}" TEXT')
         buffer.seek(0)
 
         try:
-            query = sql.SQL(
-                "COPY {table} FROM STDIN (FORMAT 'csv', HEADER false);"
+            if "YES" == str(first_time).upper():
+                if 'option_schema' not in self.kwargs:
+                    self.drop_table(schema=self.kwargs["option_schema"], table=table)
+                cursor = self.__enter__()
+                create_sql = f'CREATE TABLE IF NOT EXISTS "{table}" ({", ".join(fields)})'
+                cursor.execute(create_sql)
+                self.__exit__(exc_result=True)
+
+            cursor = self.__enter__()
+            copy_to = sql.SQL(
+                "COPY {table} FROM STDIN WITH (FORMAT CSV, HEADER FALSE);"
             ).format(
                 table=sql.Identifier(table),
             )
-            cursor.copy_expert(query, buffer)
+            cursor.copy_expert(copy_to, buffer)
             self.__exit__(exc_result=True)
             print(f"\n----Upload successful: {table}\n")
 
@@ -203,9 +202,7 @@ class DatabaseCursor(object):
         """
         cursor = self.__enter__()
 
-        sql_query = "COPY ({query}) TO STDOUT WITH CSV {head}".format(
-            query=query, head="HEADER"
-        )
+        sql_query = "COPY ({query}) TO STDOUT WITH (FORMAT CSV, HEADER TRUE)".format(query=query)
         buffer = StringIO()
 
         try:

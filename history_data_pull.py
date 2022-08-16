@@ -10,14 +10,14 @@ from scripts.yahoo_query import league_season_data
 dates = [
     # np.datetime64("2021-09-28", "D"),
     np.datetime64("2020-09-28", "D"),
-    np.datetime64("2019-09-28", "D"),
-    np.datetime64("2018-09-28", "D"),
-    np.datetime64("2017-09-28", "D"),
-    np.datetime64("2016-09-28", "D"),
-    np.datetime64("2015-09-28", "D"),
-    np.datetime64("2014-09-28", "D"),
-    np.datetime64("2013-09-28", "D"),
-    np.datetime64("2012-09-28", "D"),
+    # np.datetime64("2019-09-28", "D"),
+    # np.datetime64("2018-09-28", "D"),
+    # np.datetime64("2017-09-28", "D"),
+    # np.datetime64("2016-09-28", "D"),
+    # np.datetime64("2015-09-28", "D"),
+    # np.datetime64("2014-09-28", "D"),
+    # np.datetime64("2013-09-28", "D"),
+    # np.datetime64("2012-09-28", "D"),
 ]
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
@@ -30,7 +30,7 @@ for today in dates:
     LEAGUE_ID = GAME_KEYS[GAME_KEYS["season"] == SEASON]["league_ID"].values[0]
     GAME_ID = GAME_KEYS[GAME_KEYS["season"] == SEASON]["game_id"].values[0]
     nfl_weeks_list = list(NFL_WEEKS["week"][NFL_WEEKS["game_id"] == GAME_ID])
-    print(today, SEASON, LEAGUE_ID, GAME_ID, sep='\n----')
+    print('----\n', today, SEASON, LEAGUE_ID, GAME_ID, sep='\n----')
 
     try:
         with open(PATH) as file:

@@ -2,22 +2,18 @@ import pandas as pd
 import numpy as np
 import math
 import itertools
-import logging
 from pathlib import Path
 from datetime import datetime as dt
 
-# from scripts.db_psql_model import DatabaseCursor
-# from scripts.tournament import Tournament
+from scripts.db_psql_model import DatabaseCursor
+from scripts.tournament import Tournament
 
-from db_psql_model import DatabaseCursor
-from tournament import Tournament
+# from db_psql_model import DatabaseCursor
+# from tournament import Tournament
 
-logging.basicConfig()
-logging.getLogger("sqlalchemy").setLevel(logging.ERROR)
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
-OPTION_RAW = "-c search_path=raw"
-OPTION_DEV = "-c search_path=dev"
+
 
 
 def get_season(date):
@@ -27,7 +23,7 @@ def get_season(date):
     """
     try:
         nfl_weeks_query = "SELECT * FROM dev.nfl_weeks"
-        nfl_weeks = DatabaseCursor(PATH, options=OPTION_DEV).copy_data_from_postgres(nfl_weeks_query)
+        nfl_weeks = DatabaseCursor(PATH, option_schema='dev').copy_data_from_postgres(nfl_weeks_query)
         nfl_weeks["start"] = nfl_weeks["start"].astype("datetime64[D]")
         nfl_weeks["end"] = nfl_weeks["end"].astype("datetime64[D]")
         game_ids = nfl_weeks["game_id"][(nfl_weeks["end"].astype('datetime64[D]') > date)]
@@ -47,7 +43,7 @@ def nfl_weeks_pull():
     """
 
     try:
-        db_cursor = DatabaseCursor(PATH, options=OPTION_DEV)
+        db_cursor = DatabaseCursor(PATH, option_schema='dev')
         nfl_weeks = db_cursor.copy_data_from_postgres("SELECT * FROM dev.nfl_weeks")
         nfl_weeks["end"] = pd.to_datetime(nfl_weeks["end"])
         nfl_weeks["start"] = pd.to_datetime(nfl_weeks["start"])
@@ -68,7 +64,7 @@ def game_keys_pull(first="yes"):
             return game_keys
 
         elif "NO" == str(first).upper():
-            db_cursor = DatabaseCursor(PATH, options=OPTION_DEV)
+            db_cursor = DatabaseCursor(PATH, option_schema='dev')
             game_keys = db_cursor.copy_data_from_postgres("SELECT * FROM dev.game_keys")
             return game_keys
 
@@ -76,23 +72,19 @@ def game_keys_pull(first="yes"):
         print(f"\n----ERROR utils.py: game_keys_pull\n----{e}\n")
 
 
-def data_upload(df: pd.DataFrame, first_time, table_name, query, path, option):
+def data_upload(df: pd.DataFrame, first_time, table_name, query, path, option_schema):
 
     try:
         if str(first_time).upper() == "YES":
             df.drop_duplicates(ignore_index=True, inplace=True)
             df.sort_index(axis=1, inplace=True)
-            DatabaseCursor(path, options=option).copy_table_to_postgres_new(
-                df, table_name, first_time="YES"
-            )
+            DatabaseCursor(path, option_schema=option_schema).copy_table_to_postgres_new(df, table_name, first_time="YES")
 
         elif str(first_time).upper() == "NO":
-            psql = DatabaseCursor(path, options=option).copy_data_from_postgres(query)
+            psql = DatabaseCursor(path).copy_data_from_postgres(query)
             df = pd.concat([psql, df])
             df.drop_duplicates(ignore_index=True, inplace=True)
-            DatabaseCursor(path, options=option).copy_table_to_postgres_new(
-                df, table_name, first_time="NO"
-            )
+            DatabaseCursor(path, option_schema=option_schema).copy_table_to_postgres_new(df, table_name, first_time="NO")
 
     except Exception as e:
         print(f"\n----ERROR utils.py: data_upload\n----{table_name}\n----{e}\n")
@@ -104,26 +96,26 @@ def reg_season(game_id, nfl_week):
     """
     try:
         matchups_query = (
-            f"SELECT * FROM raw.weekly_matchups WHERE game_id = {game_id}"
+            f"SELECT * FROM raw.weekly_matchups WHERE game_id = '{game_id}'"
         )
-        teams_query = f"SELECT team_key, name, nickname, game_id FROM raw.league_teams WHERE game_id = {game_id}"
+        teams_query = f"SELECT team_key, name, nickname, game_id FROM raw.league_teams WHERE game_id = '{game_id}'"
         settings_query = (
-            f"SELECT * FROM raw.league_settings WHERE game_id = {game_id}"
+            f"SELECT * FROM raw.league_settings WHERE game_id = '{game_id}'"
         )
         matchups = (
-            DatabaseCursor(PATH, options=OPTION_RAW)
+            DatabaseCursor(PATH, option_schema='raw')
             .copy_data_from_postgres(matchups_query)
             .drop_duplicates()
         )
 
         teams = (
-            DatabaseCursor(PATH, options=OPTION_RAW)
+            DatabaseCursor(PATH, option_schema='raw')
             .copy_data_from_postgres(teams_query)
             .drop_duplicates()
         )
 
         settings = (
-            DatabaseCursor(PATH, options=OPTION_RAW)
+            DatabaseCursor(PATH, option_schema='raw')
             .copy_data_from_postgres(settings_query)
             .drop_duplicates()
         )
@@ -330,7 +322,7 @@ def reg_season(game_id, nfl_week):
                 ["week", "reg_season_rank_run"], ascending=[True, True], inplace=True
             )
 
-            DatabaseCursor(PATH, options=OPTION_DEV).copy_table_to_postgres_new(
+            DatabaseCursor(PATH, option_schema='dev').copy_table_to_postgres_new(
                 df=one_reg_season,
                 table=f"reg_season_board_{str(game_id)}",
                 first_time="YES",
@@ -348,32 +340,32 @@ def post_season(one_reg_season, game_id, nfl_week):
     """
     try:
         settings_query = (
-            f"SELECT * FROM raw.league_settings WHERE game_id = {game_id}"
+            f"SELECT * FROM raw.league_settings WHERE game_id = '{game_id}'"
         )
         settings = (
-            DatabaseCursor(PATH, options=OPTION_RAW)
+            DatabaseCursor(PATH, option_schema='raw')
             .copy_data_from_postgres(settings_query)
             .drop_duplicates()
         )
-        meta_query = f"SELECT game_id, league_id, end_week FROM raw.league_metadata WHERE game_id = {game_id}"
+        meta_query = f"SELECT game_id, league_id, end_week FROM raw.league_metadata WHERE game_id = '{game_id}'"
         metadata = (
-            DatabaseCursor(PATH, options=OPTION_RAW)
+            DatabaseCursor(PATH, option_schema='raw')
             .copy_data_from_postgres(meta_query)
             .drop_duplicates()
         )
 
-        teams_query = f"SELECT team_key, name, nickname, game_id FROM raw.league_teams WHERE game_id = {game_id}"
+        teams_query = f"SELECT team_key, name, nickname, game_id FROM raw.league_teams WHERE game_id = '{game_id}'"
         teams = (
-            DatabaseCursor(PATH, options=OPTION_RAW)
+            DatabaseCursor(PATH, option_schema='raw')
             .copy_data_from_postgres(teams_query)
             .drop_duplicates()
         )
 
         weekly_points_query = (
-            f"SELECT * FROM raw.weekly_team_pts WHERE game_id = {game_id}"
+            f"SELECT * FROM raw.weekly_team_pts WHERE game_id = '{game_id}'"
         )
         weekly_points = (
-            DatabaseCursor(PATH, options=OPTION_RAW)
+            DatabaseCursor(PATH, option_schema='raw')
             .copy_data_from_postgres(weekly_points_query)
             .drop_duplicates()
         )
@@ -850,7 +842,7 @@ def post_season(one_reg_season, game_id, nfl_week):
 
             one_playoff_season.sort_values(["week", "finish"], inplace=True)
 
-            DatabaseCursor(PATH, options=OPTION_DEV).copy_table_to_postgres_new(
+            DatabaseCursor(PATH, option_schema='dev').copy_table_to_postgres_new(
                 df=one_playoff_season,
                 table=f"playoff_board_{str(game_id)}",
                 first_time="YES",
