@@ -19,8 +19,8 @@ class DatabaseCursor(object):
         """
 
         self.kwargs = kwargs
-        if "option_schema" not in self.kwargs:
-            self.kwargs["option_schema"] = ""
+        if "option_schema" not in self.kwargs.keys():
+            self.kwargs["option_schema"] = "public"
 
         try:
             with open(credential_file) as file:
@@ -222,11 +222,9 @@ class DatabaseCursor(object):
             if "YES" == str(first_time).upper():
                 if "option_schema" not in self.kwargs:
                     self.drop_table(schema=self.kwargs["option_schema"], table=table)
-                else:
-                    self.kwargs["option_schema"] = ""
                 cursor = self.__enter__()
                 create_sql = (
-                    f'CREATE TABLE IF NOT EXISTS "{table}" ({", ".join(fields)})'
+                    f'CREATE TABLE IF NOT EXISTS "{self.kwargs["option_schema"]}"."{table}" ({", ".join(fields)})'
                 )
                 cursor.execute(create_sql)
                 log_print(
