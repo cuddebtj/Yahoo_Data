@@ -274,8 +274,8 @@ class league_season_data(object):
 
             query_2 = (
                 'SELECT "game_id"'
-                ', "league_id"'
-                ', "position_type"'
+                ', "league_id" '
+                ', "position_type" '
                 ', "position" '
                 ', "count" '
                 "FROM raw.roster_positions "
@@ -286,7 +286,7 @@ class league_season_data(object):
                 ', "position" '
                 ', "count" '
                 'ORDER BY "game_id"'
-                ', "league_id'
+                ', "league_id:'
             )
 
             data_upload(
@@ -362,7 +362,7 @@ class league_season_data(object):
             stat_categories["stat_modifier"] = stat_categories["stat_modifier"].astype(float).round(decimals=2)
 
             query_3 = (
-                'SELECT "game_id",'
+                'SELECT "game_id" '
                 ', "league_id"'
                 ', "stat_id"'
                 ', "name"'
@@ -1003,10 +1003,10 @@ class league_season_data(object):
                 teams_standings.drop(columns="draft_position", inplace=True)
 
             if "draft_grade" not in teams_standings.columns:
-                teams_standings["draft_grade"] = "na"
+                teams_standings["draft_grade"] = ""
 
             if "faab_balance" not in teams_standings.columns:
-                teams_standings["faab_balance"] = ""
+                teams_standings["faab_balance"] = 0
 
             teams_standings["game_id"] = self.game_id
             teams_standings["league_id"] = self.league_id
