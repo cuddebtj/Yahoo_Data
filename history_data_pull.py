@@ -1,11 +1,9 @@
-from xml.sax.handler import DTDHandler
-import pandas as pd
 import numpy as np
 import yaml
 from pathlib import Path
 from time import sleep
 
-from scripts.utils import nfl_weeks_pull, game_keys_pull, get_season
+from scripts.utils import nfl_weeks_pull, game_keys_pull, get_season, log_print
 from scripts.yahoo_query import league_season_data
 
 dates = [
@@ -31,14 +29,14 @@ for today in dates:
     LEAGUE_ID = GAME_KEYS[GAME_KEYS["season"] == SEASON]["league_ID"].values[0]
     GAME_ID = GAME_KEYS[GAME_KEYS["season"] == SEASON]["game_id"].values[0]
     nfl_weeks_list = list(NFL_WEEKS["week"][NFL_WEEKS["game_id"] == GAME_ID])
-    print('\n', today, SEASON, LEAGUE_ID, GAME_ID, sep='\n----')
+    log_print(success="Start of scrape for new game_id", game_id=GAME_ID, season=SEASON, today=today)
 
     try:
         with open(PATH) as file:
-            credentials = yaml.load(file, Loader=yaml.FullLoader)
+            credentials = yaml.load(file, Loader=yaml.SafeLoader)
 
-    except Exception as error:
-        print(error)
+    except Exception as e:
+        log_print(error=e, game_id=GAME_ID, season=SEASON, today=today, credentials="Credential File")
 
     CONSUMER_KEY = credentials["YFPY_CONSUMER_KEY"]
     CONSUMER_SECRET = credentials["YFPY_CONSUMER_SECRET"]

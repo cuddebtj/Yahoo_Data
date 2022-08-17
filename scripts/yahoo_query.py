@@ -11,10 +11,10 @@ from yfpy.utils import complex_json_handler, unpack_data
 from yfpy import get_logger
 
 from scripts.db_psql_model import DatabaseCursor
-from scripts.utils import data_upload
+from scripts.utils import data_upload, log_print
 
 # from db_psql_model import DatabaseCursor
-# from utils import data_upload
+# from utils import data_upload, log_print
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
 TEAMS_FILE = list(Path().cwd().parent.glob("**/teams.yaml"))[0]
@@ -75,16 +75,12 @@ class league_season_data(object):
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print(
-                        f"\n----ERROR yahoo_query.py: metadata, sleepng for 1 hour before retrying.\n----{e}\n"
-                    )
+                    log_print(error=e, module_="yahoo_query.py", func="metadata", game_id=self.game_id, first_time=first_time, sleep="1 hour before retrying")
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
                     except Exception as e:
-                        print(
-                            f"\n----ERROR yahoo_query.py: metadata, sleepng for 30 min before retrying.\n----{e}\n"
-                        )
+                        log_print(error=e, module_="yahoo_query.py", func="metadata", game_id=self.game_id, first_time=first_time, sleep="30 min before 2nd retry")
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
 
@@ -154,7 +150,7 @@ class league_season_data(object):
             return league_metadata
 
         except Exception as e:
-            print(f"\n----ERROR yahoo_query.py: metadata\n----{self.game_id}--{self.league_id}\n----{e}\n")
+            log_print(error=e, module_="yahoo_query.py", func="metadata", game_id=self.game_id, first_time=first_time)
 
     def set_roster_pos_stat_cat(self, first_time="no"):
         """
@@ -169,16 +165,12 @@ class league_season_data(object):
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print(
-                        f"\n----ERROR yahoo_query.py: set_roster_pos_stat_cat, sleepng for 1 hour before retrying.\n----{self.game_id}--{self.league_id}\n----{e}\n"
-                    )
+                    log_print(error=e, module_="yahoo_query.py", func="set_roster_pos_stat_cat", game_id=self.game_id, first_time=first_time, sleep="1 hour before retrying")
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
                     except Exception as e:
-                        print(
-                            f"\n----ERROR yahoo_query.py: set_roster_pos_stat_cat, sleepng for 30 min before retrying.\n----{self.game_id}--{self.league_id}\n----{e}\n"
-                        )
+                        log_print(error=e, module_="yahoo_query.py", func="set_roster_pos_stat_cat", game_id=self.game_id, first_time=first_time, sleep="30 min before 2nd retry")
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
 
@@ -396,7 +388,8 @@ class league_season_data(object):
             return league_settings, roster_positions, stat_categories
         
         except Exception as e:
-            print(f"\n----ERROR yahoo_query.py: set_roster_pos_stat_cat\n----{self.game_id}--{self.league_id}\n----{e}\n")
+            log_print(error=e, module_="yahoo_query.py", func="set_roster_pos_stat_cat", game_id=self.game_id, first_time=first_time)
+            # print(f"\n----ERROR yahoo_query.py: set_roster_pos_stat_cat\n----{self.game_id}--{self.league_id}\n----{e}\n")
 
     def players_list(self, first_time="no"):
         """
@@ -410,16 +403,12 @@ class league_season_data(object):
                 if "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print(
-                        f"\n----ERROR yahoo_query.py: players_list, sleepng for 1 hour before retrying.\n----{self.game_id}--{self.league_id}\n----{e}\n"
-                    )
+                    log_print(error=e, module_="yahoo_query.py", func="players_list", game_id=self.game_id, first_time=first_time, sleep="1 hour before retrying")
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
                     except Exception as e:
-                        print(
-                            f"\n----ERROR yahoo_query.py: players_list, sleepng for 30 min before retrying.\n----{self.game_id}--{self.league_id}\n----{e}\n"
-                        )
+                        log_print(error=e, module_="yahoo_query.py", func="players_list", game_id=self.game_id, first_time=first_time, sleep="30 min before 2nd retry")
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
 
@@ -440,16 +429,12 @@ class league_season_data(object):
                     if "token_expired" in str(e):
                         self.yahoo_query._authenticate()
                     else:
-                        print(
-                            f"\n----ERROR yahoo_query.py: players_list--get_player_draft_analysis, sleepng for 1 hour before retrying.\n----{self.game_id}--{self.league_id}\n----{e}\n"
-                        )
+                        log_print(error=e, module_="yahoo_query.py", func="draft_results --> player draft analysis", game_id=self.game_id, first_time=first_time, sleep="1 hour before retrying")
                         time.sleep(3600)
                         try:
                             self.yahoo_query._authenticate()
                         except Exception as e:
-                            print(
-                                f"\n----ERROR yahoo_query.py: players_list--get_player_draft_analysis, sleepng for 30 min before retrying.\n----{self.game_id}--{self.league_id}\n----{e}\n"
-                            )
+                            log_print(error=e, module_="yahoo_query.py", func="draft_results --> player draft analysis", game_id=self.game_id, first_time=first_time, sleep="30 min before 2nd retry")
                             time.sleep(1800)
                             self.yahoo_query._authenticate()
 
@@ -604,7 +589,8 @@ class league_season_data(object):
             return players
 
         except Exception as e:
-            print(f"\n----ERROR yahoo_query.py: players_list.\n----{self.game_id}--{self.league_id}\n----{e}\n")
+            log_print(error=e, module_="yahoo_query.py", func="players_list", game_id=self.game_id, first_time=first_time)
+            # print(f"\n----ERROR yahoo_query.py: players_list.\n----{self.game_id}--{self.league_id}\n----{e}\n")
 
     def draft_results(self, first_time="no"):
         """
@@ -619,16 +605,12 @@ class league_season_data(object):
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print(
-                        f"\n----ERROR yahoo_query.py: draft_results, sleepng for 1 hour before retrying.\n----{self.game_id}--{self.league_id}\n----{e}\n"
-                    )
+                    log_print(error=e, module_="yahoo_query.py", func="draft_results", game_id=self.game_id, first_time=first_time, sleep="1 hour before retrying")
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
                     except Exception as e:
-                        print(
-                            f"\n----ERROR yahoo_query.py: draft_results, sleepng for 30 min before retrying.\n----{self.game_id}--{self.league_id}\n----{e}\n"
-                        )
+                        log_print(error=e, module_="yahoo_query.py", func="draft_results", game_id=self.game_id, first_time=first_time, sleep="30 min before 2nd retry")
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
 
@@ -685,7 +667,8 @@ class league_season_data(object):
             return draft_results
 
         except Exception as e:
-            print(f"\n----ERROR yahoo_query.py: draft_results.\n----{self.game_id}--{self.league_id}\n----{e}\n")
+            log_print(error=e, module_="yahoo_query.py", func="draft_results", game_id=self.game_id, first_time=first_time)
+            # print(f"\n----ERROR yahoo_query.py: draft_results.\n----{self.game_id}--{self.league_id}\n----{e}\n")
 
     def matchups_by_week(self, first_time="no", nfl_week=None):
         """
@@ -710,16 +693,12 @@ class league_season_data(object):
                     elif "token_expired" in str(e):
                         self.yahoo_query._authenticate()
                     else:
-                        print(
-                            f"\n----ERROR yahoo_query.py: matchups_by_week, sleepng for 1 hour before retrying.\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n"
-                        )
+                        log_print(error=e, module_="yahoo_query.py", func="matchups_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time, sleep="1 hour before retrying")
                         time.sleep(3600)
                         try:
                             self.yahoo_query._authenticate()
                         except Exception as e:
-                            print(
-                                f"\n----ERROR yahoo_query.py: matchups_by_week, sleepng for 30 min before retrying.\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n"
-                            )
+                            log_print(error=e, module_="yahoo_query.py", func="matchups_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time, sleep="30 min before 2nd retry")
                             time.sleep(1800)
                             self.yahoo_query._authenticate()
 
@@ -917,7 +896,8 @@ class league_season_data(object):
             return matchups
 
         except Exception as e:
-            print(f"\n----ERROR yahoo_query.py: matchups_by_week.\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n")
+            log_print(error=e, module_="yahoo_query.py", func="matchups_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time)
+            # print(f"\n----ERROR yahoo_query.py: matchups_by_week.\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n")
 
     def teams_and_standings(self, first_time="no"):
         """
@@ -932,16 +912,12 @@ class league_season_data(object):
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    print(
-                        f"\n----ERROR yahoo_query.py: teams_and_standings, sleepng for 1 hour before retrying.\n----{self.game_id}--{self.league_id}\n----{e}\n"
-                    )
+                    log_print(error=e, module_="yahoo_query.py", func="teams_and_standigns", game_id=self.game_id, first_time=first_time, sleep="1 hour before retrying")
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
                     except Exception as e:
-                        print(
-                            f"\n----ERROR yahoo_query.py: teams_and_standings, sleepng for 30 min before retrying.\n----{self.game_id}--{self.league_id}\n----{e}\n"
-                        )
+                        log_print(error=e, module_="yahoo_query.py", func="teams_and_standings", game_id=self.game_id, first_time=first_time, sleep="30 min before 2nd retry")
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
                 response = self.yahoo_query.get_league_standings()
@@ -1013,7 +989,7 @@ class league_season_data(object):
             teams_standings["clinched_playoffs"].fillna(0, inplace=True)
 
             with open(TEAMS_FILE, "r") as file:
-                c_teams = yaml.load(file, Loader=yaml.FullLoader)
+                c_teams = yaml.load(file, Loader=yaml.SafeLoader)
 
             corrected_teams = pd.DataFrame()
 
@@ -1154,7 +1130,8 @@ class league_season_data(object):
             return teams_standings
         
         except Exception as e:
-            print(f"\n----ERROR yahoo_query.py: teams_and_standings\n----{self.game_id}--{self.league_id}\n----{e}\n")
+            log_print(error=e, module_="yahoo_query.py", func="teams_and_standings", game_id=self.game_id, first_time=first_time)
+            # print(f"\n----ERROR yahoo_query.py: teams_and_standings\n----{self.game_id}--{self.league_id}\n----{e}\n")
 
     def team_roster_by_week(self, first_time="no", nfl_week=None):
         """
@@ -1181,16 +1158,12 @@ class league_season_data(object):
                     elif "token_expired" in str(e):
                         self.yahoo_query._authenticate()
                     else:
-                        print(
-                            f"\n----ERROR yahoo_query.py: team_roster_by_week, sleepng for 1 hour before retrying.\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n"
-                        )
+                        log_print(error=e, module_="yahoo_query.py", func="team_roster_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time, sleep="1 hour before retrying")
                         time.sleep(3600)
                         try:
                             self.yahoo_query._authenticate()
                         except Exception as e:
-                            print(
-                                f"\n----ERROR yahoo_query.py: team_roster_by_week, sleepng for 30 min before retrying.\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n"
-                            )
+                            log_print(error=e, module_="yahoo_query.py", func="team_roster_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time, sleep="30 min before 2nd retry")
                             time.sleep(1800)
                             self.yahoo_query._authenticate()
 
@@ -1284,7 +1257,8 @@ class league_season_data(object):
             return team_week_rosters
 
         except Exception as e:
-            print(f"\n----ERROR yahoo_query.py: team_roster_by_week\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n")
+            log_print(error=e, module_="yahoo_query.py", func="team_roster_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time)
+            # print(f"\n----ERROR yahoo_query.py: team_roster_by_week\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n")
 
     def team_points_by_week(self, first_time="no", nfl_week=None):
         """
@@ -1308,16 +1282,12 @@ class league_season_data(object):
                     elif "token_expired" in str(e):
                         self.yahoo_query._authenticate()
                     else:
-                        print(
-                            f"\n----ERROR: team_points_by_week, sleepng for 1 hour before retrying.\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n"
-                        )
+                        log_print(error=e, module_="yahoo_query.py", func="team_points_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time, sleep="1 hour before retrying")
                         time.sleep(3600)
                         try:
                             self.yahoo_query._authenticate()
                         except Exception as e:
-                            print(
-                                f"\n----ERROR: team_points_by_week, sleepng for 30 min before retrying.\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n"
-                            )
+                            log_print(error=e, module_="yahoo_query.py", func="team_points_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time, sleep="30 min before 2nd retry")
                             time.sleep(1800)
                             self.yahoo_query._authenticate()
                     try:
@@ -1422,7 +1392,8 @@ class league_season_data(object):
             return team_points_weekly
 
         except Exception as e:
-            print(f"\n----ERROR yahoo_query.py: team_points_by_week\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n")
+            log_print(error=e, module_="yahoo_query.py", func="team_points_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time)
+            # print(f"\n----ERROR yahoo_query.py: team_points_by_week\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n")
 
     def all_game_keys(self):
         """
@@ -1465,7 +1436,8 @@ class league_season_data(object):
             return game_keys
         
         except Exception as e:
-            print(f"\n----ERROR yahoo_query.py: all_game_keys\n----{self.game_id}--{self.league_id}\n----{e}")
+            log_print(error=e, module_="yahoo_query.py", func="all_game_keys", game_id=self.game_id)
+            # print(f"\n----ERROR yahoo_query.py: all_game_keys\n----{self.game_id}--{self.league_id}\n----{e}")
 
     def all_nfl_weeks(self):
         """
@@ -1498,4 +1470,5 @@ class league_season_data(object):
             return weeks
         
         except Exception as e:
-            print(f"\n----ERROR yahoo_query.py: all_nfl_weeks\n----{self.game_id}--{self.league_id}\n----{e}")
+            log_print(error=e, module_="yahoo_query.py", func="all_nfl_weeks", game_id=self.game_id)
+            # print(f"\n----ERROR yahoo_query.py: all_nfl_weeks\n----{self.game_id}--{self.league_id}\n----{e}")

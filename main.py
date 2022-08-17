@@ -1,4 +1,3 @@
-import pandas as pd
 import numpy as np
 import yaml
 from time import sleep
@@ -11,7 +10,7 @@ PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
 
 try:
     with open(PATH) as file:
-        CREDS = yaml.load(file, Loader=yaml.FullLoader)
+        CREDS = yaml.load(file, Loader=yaml.SafeLoader)
 
 except Exception as error:
     print(error)
