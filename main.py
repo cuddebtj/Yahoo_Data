@@ -3,7 +3,7 @@ import yaml
 from time import sleep
 from pathlib import Path
 
-from scripts.utils import get_season, nfl_weeks_pull, game_keys_pull
+from scripts.utils import get_season, nfl_weeks_pull, game_keys_pull, log_print
 from scripts.yahoo_query import league_season_data
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
@@ -25,7 +25,15 @@ SEASON = get_season()
 try:
     LEAGUE_ID = GAME_KEYS[GAME_KEYS["season"] == SEASON]["league_ID"].values[0]
 except Exception as e:
-    print(e)
+    log_print(
+        error=e,
+        module_="main.py",
+        today=TODAY,
+        year=YEAR,
+        max_week=MAX_WEEK,
+        season=SEASON,
+        at_line="27",
+    )
 GAME_ID = GAME_KEYS[GAME_KEYS["season"] == SEASON]["game_id"].values[0]
 
 try:
@@ -34,7 +42,17 @@ try:
     ].values[0]
 
 except Exception as e:
-    print(e)
+    log_print(
+        error=e,
+        module_="main.py",
+        today=TODAY,
+        year=YEAR,
+        max_week=MAX_WEEK,
+        season=SEASON,
+        game_id=GAME_ID,
+        league_id=LEAGUE_ID,
+        at_line="44",
+    )
     NFL_WEEK = np.nan
 
 

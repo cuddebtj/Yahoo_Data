@@ -31,9 +31,11 @@ for today in dates:
     nfl_weeks_list = list(NFL_WEEKS["week"][NFL_WEEKS["game_id"] == GAME_ID])
     log_print(
         success="Start of scrape for new game_id",
+        module_="history_data_pull.py",
         game_id=GAME_ID,
         season=SEASON,
         today=today,
+        at_line="32",
     )
 
     try:
@@ -43,10 +45,12 @@ for today in dates:
     except Exception as e:
         log_print(
             error=e,
+            module_="history_data_pull.py",
             game_id=GAME_ID,
             season=SEASON,
             today=today,
             credentials="Credential File",
+            at_line="44",
         )
 
     CONSUMER_KEY = credentials["YFPY_CONSUMER_KEY"]
@@ -65,8 +69,8 @@ for today in dates:
     )
 
     if int(SEASON) == 2020:
-        # league.all_game_keys()
-        # league.all_nfl_weeks()
+        league.all_game_keys()
+        league.all_nfl_weeks()
         league.metadata(first_time="yes")
         league.set_roster_pos_stat_cat(first_time="yes")
         league.draft_results(first_time="yes")
