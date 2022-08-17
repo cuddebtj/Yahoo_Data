@@ -15,10 +15,9 @@ from scripts.tournament import Tournament
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
 
+
 def log_print(error=None, success=None, **kwargs):
-    """
-    
-    """
+    """ """
     LOG_PATH = list(Path().cwd().parent.glob("**/logg.txt"))[0]
     items = ""
     with open(LOG_PATH, "a") as file:
@@ -36,10 +35,9 @@ def log_print(error=None, success=None, **kwargs):
             success_str = f"----------------------------------------\nSuccessful:\n\t{success}\n{items}\tTimestamp: {time.time()}\n"
             file.write(success_str)
 
+
 def log_print_tourney(bracket=None, round_=None, final=None, **kwargs):
-    """
-    
-    """
+    """ """
     TOURNEY_PATH = list(Path().cwd().parent.glob("**/tournament_results.txt"))[0]
     items = ""
     with open(TOURNEY_PATH, "a") as file:
@@ -58,6 +56,7 @@ def log_print_tourney(bracket=None, round_=None, final=None, **kwargs):
             round_str = f"----------------------------------------\n{round_}:\n{items}"
             file.write(round_str)
 
+
 def get_season(date):
     """
     Calculate the season the NFL Fantasy Season is in
@@ -65,19 +64,36 @@ def get_season(date):
     """
     try:
         nfl_weeks_query = "SELECT * FROM dev.nfl_weeks"
-        nfl_weeks = DatabaseCursor(PATH, option_schema='dev').copy_data_from_postgres(nfl_weeks_query)
+        nfl_weeks = DatabaseCursor(PATH, option_schema="dev").copy_data_from_postgres(
+            nfl_weeks_query
+        )
         nfl_weeks["start"] = nfl_weeks["start"].astype("datetime64[D]")
         nfl_weeks["end"] = nfl_weeks["end"].astype("datetime64[D]")
-        game_ids = nfl_weeks["game_id"][(nfl_weeks["end"].astype('datetime64[D]') > date)]
+        game_ids = nfl_weeks["game_id"][
+            (nfl_weeks["end"].astype("datetime64[D]") > date)
+        ]
         game_id = game_ids.min()
         week_1 = nfl_weeks[(nfl_weeks["game_id"] == game_id) & (nfl_weeks["week"] == 1)]
         season = week_1["start"].values[0].astype("datetime64[Y]").astype(int) + 1970
-        log_print(module_="utils.py", func="get_season", date=date, season=season, game_id=game_id)
+        log_print(
+            module_="utils.py",
+            func="get_season",
+            date=date,
+            season=season,
+            game_id=game_id,
+        )
 
         return season
 
     except Exception as e:
-        log_print(error=e, module_="utils.py", func="get_season", date=date, season=season, game_id=game_id)
+        log_print(
+            error=e,
+            module_="utils.py",
+            func="get_season",
+            date=date,
+            season=season,
+            game_id=game_id,
+        )
         # print(f"\n----ERROR utils.py: get_season\n----{date}\n----{e}\n")
 
 
@@ -87,7 +103,7 @@ def nfl_weeks_pull():
     """
 
     try:
-        db_cursor = DatabaseCursor(PATH, option_schema='dev')
+        db_cursor = DatabaseCursor(PATH, option_schema="dev")
         nfl_weeks = db_cursor.copy_data_from_postgres("SELECT * FROM dev.nfl_weeks")
         nfl_weeks["end"] = pd.to_datetime(nfl_weeks["end"])
         nfl_weeks["start"] = pd.to_datetime(nfl_weeks["start"])
@@ -106,12 +122,17 @@ def game_keys_pull(first="yes"):
     try:
         if "YES" == str(first).upper():
             game_keys = pd.read_csv(PATH.parent / "assests" / "game_keys.csv")
-            log_print(module_="utils.py", func="game_keys_pull", first=first, path=str(PATH.parent / "assests" / "game_keys.csv"))
+            log_print(
+                module_="utils.py",
+                func="game_keys_pull",
+                first=first,
+                path=str(PATH.parent / "assests" / "game_keys.csv"),
+            )
 
             return game_keys
 
         elif "NO" == str(first).upper():
-            db_cursor = DatabaseCursor(PATH, option_schema='dev')
+            db_cursor = DatabaseCursor(PATH, option_schema="dev")
             game_keys = db_cursor.copy_data_from_postgres("SELECT * FROM dev.game_keys")
 
             return game_keys
@@ -127,16 +148,29 @@ def data_upload(df: pd.DataFrame, first_time, table_name, query, path, option_sc
         if str(first_time).upper() == "YES":
             df.drop_duplicates(ignore_index=True, inplace=True)
             df.sort_index(axis=1, inplace=True)
-            DatabaseCursor(path, option_schema=option_schema).copy_table_to_postgres_new(df, table_name, first_time="YES")
+            DatabaseCursor(
+                path, option_schema=option_schema
+            ).copy_table_to_postgres_new(df, table_name, first_time="YES")
 
         elif str(first_time).upper() == "NO":
             psql = DatabaseCursor(path).copy_data_from_postgres(query)
             df = pd.concat([psql, df])
             df.drop_duplicates(ignore_index=True, inplace=True)
-            DatabaseCursor(path, option_schema=option_schema).copy_table_to_postgres_new(df, table_name, first_time="NO")
+            DatabaseCursor(
+                path, option_schema=option_schema
+            ).copy_table_to_postgres_new(df, table_name, first_time="NO")
 
     except Exception as e:
-        log_print(error=e, module_="utils.py", func="data_upload", first_time=first_time, table_name=table_name, query=query, path=path, option_schema=option_schema)
+        log_print(
+            error=e,
+            module_="utils.py",
+            func="data_upload",
+            first_time=first_time,
+            table_name=table_name,
+            query=query,
+            path=path,
+            option_schema=option_schema,
+        )
         # print(f"\n----ERROR utils.py: data_upload\n----{table_name}\n----{e}\n")
 
 
@@ -153,19 +187,19 @@ def reg_season(game_id, nfl_week):
             f"SELECT * FROM raw.league_settings WHERE game_id = '{game_id}'"
         )
         matchups = (
-            DatabaseCursor(PATH, option_schema='raw')
+            DatabaseCursor(PATH, option_schema="raw")
             .copy_data_from_postgres(matchups_query)
             .drop_duplicates()
         )
 
         teams = (
-            DatabaseCursor(PATH, option_schema='raw')
+            DatabaseCursor(PATH, option_schema="raw")
             .copy_data_from_postgres(teams_query)
             .drop_duplicates()
         )
 
         settings = (
-            DatabaseCursor(PATH, option_schema='raw')
+            DatabaseCursor(PATH, option_schema="raw")
             .copy_data_from_postgres(settings_query)
             .drop_duplicates()
         )
@@ -213,7 +247,8 @@ def reg_season(game_id, nfl_week):
         if playoff_start_week > nfl_week:
             # logic to create regular season board - matchups each week with running rankings
             one_reg_season = matchups[
-                (matchups["game_id"] == game_id) & (matchups["week"] < playoff_start_week)
+                (matchups["game_id"] == game_id)
+                & (matchups["week"] < playoff_start_week)
             ]
             one_reg_season["win_loss"] = np.where(
                 one_reg_season["winner_team_key"] == one_reg_season["team_a_team_key"],
@@ -294,9 +329,9 @@ def reg_season(game_id, nfl_week):
                 .astype(int)
             )
 
-            one_reg_season["ttl_pro_pts_for_run"] = one_reg_season.groupby(["team_key"])[
-                "team_pro_pts"
-            ].cumsum()
+            one_reg_season["ttl_pro_pts_for_run"] = one_reg_season.groupby(
+                ["team_key"]
+            )["team_pro_pts"].cumsum()
             one_reg_season["pro_pts_for_rank_run"] = (
                 one_reg_season.groupby(["week"])["ttl_pro_pts_for_run"]
                 .rank(method="min", ascending=False)
@@ -312,9 +347,9 @@ def reg_season(game_id, nfl_week):
                 .astype(int)
             )
 
-            one_reg_season["ttl_pro_pts_agst_run"] = one_reg_season.groupby(["team_key"])[
-                "opp_pro_pts"
-            ].cumsum()
+            one_reg_season["ttl_pro_pts_agst_run"] = one_reg_season.groupby(
+                ["team_key"]
+            )["opp_pro_pts"].cumsum()
             one_reg_season["pro_pts_agst_rank_run"] = (
                 one_reg_season.groupby(["week"])["ttl_pro_pts_agst_run"]
                 .rank(method="max", ascending=True)
@@ -372,7 +407,7 @@ def reg_season(game_id, nfl_week):
                 ["week", "reg_season_rank_run"], ascending=[True, True], inplace=True
             )
 
-            DatabaseCursor(PATH, option_schema='dev').copy_table_to_postgres_new(
+            DatabaseCursor(PATH, option_schema="dev").copy_table_to_postgres_new(
                 df=one_reg_season,
                 table=f"reg_season_board_{str(game_id)}",
                 first_time="YES",
@@ -381,7 +416,14 @@ def reg_season(game_id, nfl_week):
             return one_reg_season
 
     except Exception as e:
-        log_print(error=e, module_="utils.py", func="reg_season", table=f"reg_season_board_{str(game_id)}", game_id=game_id, nfl_week=nfl_week)
+        log_print(
+            error=e,
+            module_="utils.py",
+            func="reg_season",
+            table=f"reg_season_board_{str(game_id)}",
+            game_id=game_id,
+            nfl_week=nfl_week,
+        )
         # print(f"\n----ERROR utils.py: reg_season\n----{game_id}--{nfl_week}\n----{e}\n")
 
 
@@ -394,20 +436,20 @@ def post_season(one_reg_season, game_id, nfl_week):
             f"SELECT * FROM raw.league_settings WHERE game_id = '{game_id}'"
         )
         settings = (
-            DatabaseCursor(PATH, option_schema='raw')
+            DatabaseCursor(PATH, option_schema="raw")
             .copy_data_from_postgres(settings_query)
             .drop_duplicates()
         )
         meta_query = f"SELECT game_id, league_id, end_week FROM raw.league_metadata WHERE game_id = '{game_id}'"
         metadata = (
-            DatabaseCursor(PATH, option_schema='raw')
+            DatabaseCursor(PATH, option_schema="raw")
             .copy_data_from_postgres(meta_query)
             .drop_duplicates()
         )
 
         teams_query = f"SELECT team_key, name, nickname, game_id FROM raw.league_teams WHERE game_id = '{game_id}'"
         teams = (
-            DatabaseCursor(PATH, option_schema='raw')
+            DatabaseCursor(PATH, option_schema="raw")
             .copy_data_from_postgres(teams_query)
             .drop_duplicates()
         )
@@ -416,7 +458,7 @@ def post_season(one_reg_season, game_id, nfl_week):
             f"SELECT * FROM raw.weekly_team_pts WHERE game_id = '{game_id}'"
         )
         weekly_points = (
-            DatabaseCursor(PATH, option_schema='raw')
+            DatabaseCursor(PATH, option_schema="raw")
             .copy_data_from_postgres(weekly_points_query)
             .drop_duplicates()
         )
@@ -429,9 +471,9 @@ def post_season(one_reg_season, game_id, nfl_week):
         ].values[0]
 
         if playoff_start_week <= nfl_week:
-            playoff_end_week = settings["end_week"][settings["game_id"] == game_id].values[
-                0
-            ]
+            playoff_end_week = settings["end_week"][
+                settings["game_id"] == game_id
+            ].values[0]
             playoff_weeks = range(playoff_start_week, playoff_end_week + 1)
             max_teams = settings["max_teams"][settings["game_id"] == game_id].values[0]
             num_playoff_teams = settings["num_playoff_teams"][
@@ -452,7 +494,13 @@ def post_season(one_reg_season, game_id, nfl_week):
             )
 
             reg_season_rank = one_reg_season[
-                ["game_id", "team_key", "team_name", "team_nickname", "reg_season_rank_run"]
+                [
+                    "game_id",
+                    "team_key",
+                    "team_name",
+                    "team_nickname",
+                    "reg_season_rank_run",
+                ]
             ].tail(max_teams)
 
             one_playoff_season = weekly_points[
@@ -604,10 +652,18 @@ def post_season(one_reg_season, game_id, nfl_week):
                         match.set_winner(right_comp)
                     elif right_score < left_score:
                         match.set_winner(left_comp)
-                    log_print_tourney(round_=week, right_comp=right_comp, right_score=right_score, left_comp=left_comp, left_score=left_score)
+                    log_print_tourney(
+                        round_=week,
+                        right_comp=right_comp,
+                        right_score=right_score,
+                        left_comp=left_comp,
+                        left_score=left_score,
+                    )
 
             if nfl_week == playoff_end_week:
-                log_print_tourney(bracket="Play Offs", final=playoff_bracket.get_final())
+                log_print_tourney(
+                    bracket="Play Offs", final=playoff_bracket.get_final()
+                )
                 for rk, tm in playoff_bracket.get_final().items():
                     one_playoff_season.loc[
                         (one_playoff_season["team_key"] == tm) & playoff_end_week_mask,
@@ -673,7 +729,13 @@ def post_season(one_reg_season, game_id, nfl_week):
                                 match.set_winner(left_comp)
                             elif right_score == left_score:
                                 match.set_winner(left_comp)
-                            log_print_tourney(round_=week, right_comp=right_comp, right_score=right_score, left_comp=left_comp, left_score=left_score)                    
+                            log_print_tourney(
+                                round_=week,
+                                right_comp=right_comp,
+                                right_score=right_score,
+                                left_comp=left_comp,
+                                left_score=left_score,
+                            )
 
                 else:
                     conso_bracket = Tournament(conso_teams)
@@ -733,13 +795,22 @@ def post_season(one_reg_season, game_id, nfl_week):
                                 match.set_winner(left_comp)
                             elif right_score == left_score:
                                 match.set_winner(left_comp)
-                            log_print_tourney(round_=week, right_comp=right_comp, right_score=right_score, left_comp=left_comp, left_score=left_score) 
+                            log_print_tourney(
+                                round_=week,
+                                right_comp=right_comp,
+                                right_score=right_score,
+                                left_comp=left_comp,
+                                left_score=left_score,
+                            )
 
                 if nfl_week == playoff_end_week:
-                    log_print_tourney(bracket="Consolation", final=conso_bracket.get_final())
+                    log_print_tourney(
+                        bracket="Consolation", final=conso_bracket.get_final()
+                    )
                     for rk, tm in conso_bracket.get_final().items():
                         one_playoff_season.loc[
-                            (one_playoff_season["team_key"] == tm) & playoff_end_week_mask,
+                            (one_playoff_season["team_key"] == tm)
+                            & playoff_end_week_mask,
                             "finish",
                         ] = int(rk) + len(playoff_teams)
 
@@ -802,7 +873,13 @@ def post_season(one_reg_season, game_id, nfl_week):
                                 match.set_winner(left_comp)
                             elif right_score == left_score:
                                 match.set_winner(left_comp)
-                            log_print_tourney(round_=week, right_comp=right_comp, right_score=right_score, left_comp=left_comp, left_score=left_score)
+                            log_print_tourney(
+                                round_=week,
+                                right_comp=right_comp,
+                                right_score=right_score,
+                                left_comp=left_comp,
+                                left_score=left_score,
+                            )
 
                 else:
                     toilet_bracket = Tournament(toilet_teams)
@@ -862,13 +939,22 @@ def post_season(one_reg_season, game_id, nfl_week):
                                 match.set_winner(left_comp)
                             elif right_score == left_score:
                                 match.set_winner(left_comp)
-                            log_print_tourney(round_=week, right_comp=right_comp, right_score=right_score, left_comp=left_comp, left_score=left_score)
+                            log_print_tourney(
+                                round_=week,
+                                right_comp=right_comp,
+                                right_score=right_score,
+                                left_comp=left_comp,
+                                left_score=left_score,
+                            )
 
                 if nfl_week == playoff_end_week:
-                    log_print_tourney(bracket="Toliet", final=toilet_bracket.get_final())
+                    log_print_tourney(
+                        bracket="Toliet", final=toilet_bracket.get_final()
+                    )
                     for rk, tm in toilet_bracket.get_final().items():
                         one_playoff_season.loc[
-                            (one_playoff_season["team_key"] == tm) & playoff_end_week_mask,
+                            (one_playoff_season["team_key"] == tm)
+                            & playoff_end_week_mask,
                             "finish",
                         ] = (
                             int(rk)
@@ -885,7 +971,7 @@ def post_season(one_reg_season, game_id, nfl_week):
 
             one_playoff_season.sort_values(["week", "finish"], inplace=True)
 
-            DatabaseCursor(PATH, option_schema='dev').copy_table_to_postgres_new(
+            DatabaseCursor(PATH, option_schema="dev").copy_table_to_postgres_new(
                 df=one_playoff_season,
                 table=f"playoff_board_{str(game_id)}",
                 first_time="YES",
@@ -894,5 +980,12 @@ def post_season(one_reg_season, game_id, nfl_week):
             return one_playoff_season
 
     except Exception as e:
-        log_print(error=e, module_="utils.py", func="post_season", table=f"playoff_board_{str(game_id)}", game_id=game_id, nfl_week=nfl_week)
+        log_print(
+            error=e,
+            module_="utils.py",
+            func="post_season",
+            table=f"playoff_board_{str(game_id)}",
+            game_id=game_id,
+            nfl_week=nfl_week,
+        )
         # print(f"\n----ERROR utils.py: post_season\n----{game_id}--{nfl_week}\n----{e}\n")

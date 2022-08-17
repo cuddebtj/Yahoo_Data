@@ -29,14 +29,25 @@ for today in dates:
     LEAGUE_ID = GAME_KEYS[GAME_KEYS["season"] == SEASON]["league_ID"].values[0]
     GAME_ID = GAME_KEYS[GAME_KEYS["season"] == SEASON]["game_id"].values[0]
     nfl_weeks_list = list(NFL_WEEKS["week"][NFL_WEEKS["game_id"] == GAME_ID])
-    log_print(success="Start of scrape for new game_id", game_id=GAME_ID, season=SEASON, today=today)
+    log_print(
+        success="Start of scrape for new game_id",
+        game_id=GAME_ID,
+        season=SEASON,
+        today=today,
+    )
 
     try:
         with open(PATH) as file:
             credentials = yaml.load(file, Loader=yaml.SafeLoader)
 
     except Exception as e:
-        log_print(error=e, game_id=GAME_ID, season=SEASON, today=today, credentials="Credential File")
+        log_print(
+            error=e,
+            game_id=GAME_ID,
+            season=SEASON,
+            today=today,
+            credentials="Credential File",
+        )
 
     CONSUMER_KEY = credentials["YFPY_CONSUMER_KEY"]
     CONSUMER_SECRET = credentials["YFPY_CONSUMER_SECRET"]
@@ -81,7 +92,7 @@ for today in dates:
         league.matchups_by_week(first_time="yes", nfl_week=1)
         for week in nfl_weeks_list[1:]:
             league.matchups_by_week(first_time="no", nfl_week=week)
-            
+
         for week in nfl_weeks_list:
             league.team_roster_by_week(first_time="no", nfl_week=week)
             league.team_points_by_week(first_time="no", nfl_week=week)

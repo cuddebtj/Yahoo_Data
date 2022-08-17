@@ -10,7 +10,6 @@ from scripts.utils import log_print
 
 
 class DatabaseCursor(object):
-
     def __init__(self, credential_file, **kwargs):
         """
         Import database credentials
@@ -20,15 +19,20 @@ class DatabaseCursor(object):
         """
 
         self.kwargs = kwargs
-        if 'option_schema' not in self.kwargs:
-            self.kwargs['option_schema'] = ''
+        if "option_schema" not in self.kwargs:
+            self.kwargs["option_schema"] = ""
 
         try:
             with open(credential_file) as file:
                 self.credentials = yaml.load(file, Loader=yaml.SafeLoader)
 
         except Exception as e:
-            log_print(error=e, module_="db_psql_model.py", func="__init__", cred_file="Credential File")
+            log_print(
+                error=e,
+                module_="db_psql_model.py",
+                func="__init__",
+                cred_file="Credential File",
+            )
             # print(f"\n----ERROR db_psql_model.py: credential file\n----{e}\n")
 
     def __enter__(self):
@@ -38,9 +42,9 @@ class DatabaseCursor(object):
 
         try:
             self.conn = psycopg2.connect(
-                dbname=self.credentials['psql_database'],
-                user=self.credentials['psql_username'],
-                password=self.credentials['psql_password'],
+                dbname=self.credentials["psql_database"],
+                user=self.credentials["psql_username"],
+                password=self.credentials["psql_password"],
                 options=f"-c search_path={self.kwargs['option_schema']}",
             )
             self.cur = self.conn.cursor()
@@ -48,7 +52,12 @@ class DatabaseCursor(object):
             return self.cur
 
         except (Exception, psycopg2.OperationalError) as e:
-            log_print(error=e, module_="db_psql_model.py", func="__enter__", connection="Connection Error")
+            log_print(
+                error=e,
+                module_="db_psql_model.py",
+                func="__enter__",
+                connection="Connection Error",
+            )
             # print(f"\n----ERROR db_psql_model.py: __enter__\n----{e}\n")
 
     def __exit__(self, exc_result):
@@ -105,12 +114,22 @@ class DatabaseCursor(object):
         try:
             cursor.execute(sql_query)
             self.__exit__(exc_result=True)
-            log_print(success="POSTGRESQL CREATE SCHEMA IF NOT EXISTS in MenOfMadison", module_="db_psql_model.py", func="create_schema", schema=schema)
+            log_print(
+                success="POSTGRESQL CREATE SCHEMA IF NOT EXISTS in MenOfMadison",
+                module_="db_psql_model.py",
+                func="create_schema",
+                schema=schema,
+            )
             # print(f"\n----{schema} schema created within MenOfMadison.\n")
 
         except (Exception, psycopg2.DatabaseError) as e:
             self.__exit__(exc_result=False)
-            log_print(error=e, module_="db_psql_model.py", func="get_tables_metadata", schema=schema)
+            log_print(
+                error=e,
+                module_="db_psql_model.py",
+                func="get_tables_metadata",
+                schema=schema,
+            )
             # print(f"\n----ERROR db_psql_model.py: create_schema\n----{schema}\n----{e}\n")
 
     def drop_schema(self, schema):
@@ -128,12 +147,19 @@ class DatabaseCursor(object):
         try:
             cursor.execute(sql_query)
             self.__exit__(exc_result=True)
-            log_print(success="POSTGRESQL DROP SCHEMA IF EXISTS in MenOfMadison", module_="db_psql_model.py", func="drop_schema", schema=schema)
+            log_print(
+                success="POSTGRESQL DROP SCHEMA IF EXISTS in MenOfMadison",
+                module_="db_psql_model.py",
+                func="drop_schema",
+                schema=schema,
+            )
             # print(f"\n----{schema} schema dropped within MenOfMadison.\n")
 
         except (Exception, psycopg2.DatabaseError) as e:
             self.__exit__(exc_result=False)
-            log_print(error=e, module_="db_psql_model.py", func="drop_schema", schema=schema)
+            log_print(
+                error=e, module_="db_psql_model.py", func="drop_schema", schema=schema
+            )
             # print(f"\n----ERROR db_psql_model.py: drop_schema\n----{schema}\n----{error}\n")
 
     def drop_table(self, schema, table):
@@ -152,12 +178,24 @@ class DatabaseCursor(object):
         try:
             cursor.execute(sql_query)
             self.__exit__(exc_result=True)
-            log_print(success="POSTGRESQL DROP TABLE IF NOT in MenOfMadison", module_="db_psql_model.py", func="drop_table", schema=schema, table=table)
+            log_print(
+                success="POSTGRESQL DROP TABLE IF NOT in MenOfMadison",
+                module_="db_psql_model.py",
+                func="drop_table",
+                schema=schema,
+                table=table,
+            )
             # print(f"\n----{table} table dropped within MenOfMadison {schema}\n")
 
         except (Exception, psycopg2.DatabaseError) as e:
             self.__exit__(exc_result=False)
-            log_print(error=e, module_="db_psql_model.py", func="drop_table", schema=schema, table=table)
+            log_print(
+                error=e,
+                module_="db_psql_model.py",
+                func="drop_table",
+                schema=schema,
+                table=table,
+            )
             # print(f"\n----ERROR db_psql_model.py: drop_table\n----{schema}.{table}\n----{error}\n")
 
     def copy_table_to_postgres_new(self, df, table, first_time="NO"):
@@ -182,14 +220,23 @@ class DatabaseCursor(object):
 
         try:
             if "YES" == str(first_time).upper():
-                if 'option_schema' not in self.kwargs:
+                if "option_schema" not in self.kwargs:
                     self.drop_table(schema=self.kwargs["option_schema"], table=table)
                 else:
-                    self.kwargs["option_schema"] = ''
+                    self.kwargs["option_schema"] = ""
                 cursor = self.__enter__()
-                create_sql = f'CREATE TABLE IF NOT EXISTS "{table}" ({", ".join(fields)})'
+                create_sql = (
+                    f'CREATE TABLE IF NOT EXISTS "{table}" ({", ".join(fields)})'
+                )
                 cursor.execute(create_sql)
-                log_print(success="CREATE TABLE IF NOT EXISTS in MenOfMadison", module_="db_psql_model.py", func="copy_table_to_postgres_new --> Create Table", first_time=first_time, schema=self.kwargs["option_schema"], table=table)
+                log_print(
+                    success="CREATE TABLE IF NOT EXISTS in MenOfMadison",
+                    module_="db_psql_model.py",
+                    func="copy_table_to_postgres_new --> Create Table",
+                    first_time=first_time,
+                    schema=self.kwargs["option_schema"],
+                    table=table,
+                )
                 self.__exit__(exc_result=True)
 
             cursor = self.__enter__()
@@ -200,12 +247,26 @@ class DatabaseCursor(object):
             )
             cursor.copy_expert(copy_to, buffer)
             self.__exit__(exc_result=True)
-            log_print(success="COPY EXPERT to MenOfMadison", module_="db_psql_model.py", func="copy_table_to_postgres_new", first_time=first_time, schema=self.kwargs["option_schema"], table=table)
+            log_print(
+                success="COPY EXPERT to MenOfMadison",
+                module_="db_psql_model.py",
+                func="copy_table_to_postgres_new",
+                first_time=first_time,
+                schema=self.kwargs["option_schema"],
+                table=table,
+            )
             # print(f"\n----Upload successful: {table}\n")
 
         except (Exception, psycopg2.DatabaseError) as e:
             self.__exit__(exc_result=False)
-            log_print(error=e, module_="db_psql_model.py", func="copy_table_to_postgres_new", first_time=first_time, schema=self.kwargs["option_schema"], table=table)
+            log_print(
+                error=e,
+                module_="db_psql_model.py",
+                func="copy_table_to_postgres_new",
+                first_time=first_time,
+                schema=self.kwargs["option_schema"],
+                table=table,
+            )
             # print(f"\n----ERROR db_psql_model.py: copy_table_to_postgres_new\n----{table}\n----{e}\n")
 
     def copy_data_from_postgres(self, query):
@@ -218,7 +279,9 @@ class DatabaseCursor(object):
         """
         cursor = self.__enter__()
 
-        sql_query = "COPY ({query}) TO STDOUT WITH (FORMAT CSV, HEADER TRUE)".format(query=query)
+        sql_query = "COPY ({query}) TO STDOUT WITH (FORMAT CSV, HEADER TRUE)".format(
+            query=query
+        )
         buffer = StringIO()
 
         try:
@@ -226,11 +289,21 @@ class DatabaseCursor(object):
             buffer.seek(0)
             df = pd.read_csv(buffer)
             self.__exit__(exc_result=True)
-            log_print(success="COPY QUERY FROM MenOfMadison", module_="db_psql_model.py", func="copy_data_from_postgres", query=query)
+            log_print(
+                success="COPY QUERY FROM MenOfMadison",
+                module_="db_psql_model.py",
+                func="copy_data_from_postgres",
+                query=query,
+            )
             # print(f"\n----Successfully pulled: {query}\n")
             return df
 
         except (Exception, psycopg2.DatabaseError) as e:
             self.__exit__(exc_result=False)
-            log_print(error=e, module_="db_psql_model.py", func="copy_data_from_postgres", query=query)
+            log_print(
+                error=e,
+                module_="db_psql_model.py",
+                func="copy_data_from_postgres",
+                query=query,
+            )
             # print(f"\n----ERROR db_psql_model.py: copy_data_from_postgres\n----{query}\n----{e}\n")

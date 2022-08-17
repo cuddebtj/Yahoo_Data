@@ -75,12 +75,26 @@ class league_season_data(object):
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    log_print(error=e, module_="yahoo_query.py", func="metadata", game_id=self.game_id, first_time=first_time, sleep="1 hour before retrying")
+                    log_print(
+                        error=e,
+                        module_="yahoo_query.py",
+                        func="metadata",
+                        game_id=self.game_id,
+                        first_time=first_time,
+                        sleep="1 hour before retrying",
+                    )
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
                     except Exception as e:
-                        log_print(error=e, module_="yahoo_query.py", func="metadata", game_id=self.game_id, first_time=first_time, sleep="30 min before 2nd retry")
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="metadata",
+                            game_id=self.game_id,
+                            first_time=first_time,
+                            sleep="30 min before 2nd retry",
+                        )
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
 
@@ -108,9 +122,13 @@ class league_season_data(object):
             league_metadata["name"] = league_metadata["name"].astype(str)
             league_metadata["num_teams"] = league_metadata["num_teams"].astype(int)
             league_metadata["season"] = league_metadata["season"].astype(int)
-            league_metadata["start_date"] = league_metadata["start_date"].astype("datetime64[D]")
+            league_metadata["start_date"] = league_metadata["start_date"].astype(
+                "datetime64[D]"
+            )
             league_metadata["start_week"] = league_metadata["start_week"].astype(int)
-            league_metadata["end_date"] = league_metadata["end_date"].astype("datetime64[D]")
+            league_metadata["end_date"] = league_metadata["end_date"].astype(
+                "datetime64[D]"
+            )
             league_metadata["end_week"] = league_metadata["end_week"].astype(int)
 
             query = (
@@ -124,7 +142,7 @@ class league_season_data(object):
                 ', "end_date"'
                 ', "end_week" '
                 "FROM raw.league_metadata "
-                "WHERE (game_id <> '"+str(self.game_id)+"') "
+                "WHERE (game_id <> '" + str(self.game_id) + "') "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "name"'
@@ -144,13 +162,19 @@ class league_season_data(object):
                 table_name="league_metadata",
                 query=query,
                 path=PATH,
-                option_schema='raw',
+                option_schema="raw",
             )
 
             return league_metadata
 
         except Exception as e:
-            log_print(error=e, module_="yahoo_query.py", func="metadata", game_id=self.game_id, first_time=first_time)
+            log_print(
+                error=e,
+                module_="yahoo_query.py",
+                func="metadata",
+                game_id=self.game_id,
+                first_time=first_time,
+            )
 
     def set_roster_pos_stat_cat(self, first_time="no"):
         """
@@ -165,12 +189,26 @@ class league_season_data(object):
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    log_print(error=e, module_="yahoo_query.py", func="set_roster_pos_stat_cat", game_id=self.game_id, first_time=first_time, sleep="1 hour before retrying")
+                    log_print(
+                        error=e,
+                        module_="yahoo_query.py",
+                        func="set_roster_pos_stat_cat",
+                        game_id=self.game_id,
+                        first_time=first_time,
+                        sleep="1 hour before retrying",
+                    )
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
                     except Exception as e:
-                        log_print(error=e, module_="yahoo_query.py", func="set_roster_pos_stat_cat", game_id=self.game_id, first_time=first_time, sleep="30 min before 2nd retry")
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="set_roster_pos_stat_cat",
+                            game_id=self.game_id,
+                            first_time=first_time,
+                            sleep="30 min before 2nd retry",
+                        )
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
 
@@ -204,13 +242,25 @@ class league_season_data(object):
 
             league_settings["game_id"] = league_settings["game_id"].astype(int)
             league_settings["league_id"] = league_settings["league_id"].astype(int)
-            league_settings["has_multiweek_championship"] = league_settings["has_multiweek_championship"].astype(int)
+            league_settings["has_multiweek_championship"] = league_settings[
+                "has_multiweek_championship"
+            ].astype(int)
             league_settings["max_teams"] = league_settings["max_teams"].astype(int)
-            league_settings["num_playoff_teams"] = league_settings["num_playoff_teams"].astype(int)
-            league_settings["has_playoff_consolation_games"] = league_settings["has_playoff_consolation_games"].astype(int)
-            league_settings["num_playoff_consolation_teams"] = league_settings["num_playoff_consolation_teams"].astype(int)
-            league_settings["playoff_start_week"] = league_settings["playoff_start_week"].astype(int)
-            league_settings["trade_end_date"] = league_settings["trade_end_date"].astype("datetime64[D]")
+            league_settings["num_playoff_teams"] = league_settings[
+                "num_playoff_teams"
+            ].astype(int)
+            league_settings["has_playoff_consolation_games"] = league_settings[
+                "has_playoff_consolation_games"
+            ].astype(int)
+            league_settings["num_playoff_consolation_teams"] = league_settings[
+                "num_playoff_consolation_teams"
+            ].astype(int)
+            league_settings["playoff_start_week"] = league_settings[
+                "playoff_start_week"
+            ].astype(int)
+            league_settings["trade_end_date"] = league_settings[
+                "trade_end_date"
+            ].astype("datetime64[D]")
 
             query_1 = (
                 'SELECT "game_id" '
@@ -223,7 +273,7 @@ class league_season_data(object):
                 ', "playoff_start_week" '
                 ', "trade_end_date" '
                 "FROM raw.league_settings "
-                "WHERE (game_id <> '"+str(self.game_id)+"') "
+                "WHERE (game_id <> '" + str(self.game_id) + "') "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "has_multiweek_championship"'
@@ -243,7 +293,7 @@ class league_season_data(object):
                 table_name="league_settings",
                 query=query_1,
                 path=PATH,
-                option_schema='raw',
+                option_schema="raw",
             )
 
             roster_positions = pd.DataFrame()
@@ -260,7 +310,9 @@ class league_season_data(object):
 
             roster_positions["game_id"] = roster_positions["game_id"].astype(int)
             roster_positions["league_id"] = roster_positions["league_id"].astype(int)
-            roster_positions["position_type"] = roster_positions["position_type"].astype(str)
+            roster_positions["position_type"] = roster_positions[
+                "position_type"
+            ].astype(str)
             roster_positions["position"] = roster_positions["position"].astype(str)
             roster_positions["count"] = roster_positions["count"].astype(int)
 
@@ -271,7 +323,7 @@ class league_season_data(object):
                 ', "position" '
                 ', "count" '
                 "FROM raw.roster_positions "
-                "WHERE (game_id <> '"+str(self.game_id)+"') "
+                "WHERE (game_id <> '" + str(self.game_id) + "') "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "position_type"'
@@ -287,7 +339,7 @@ class league_season_data(object):
                 table_name="roster_positions",
                 query=query_2,
                 path=PATH,
-                option_schema='raw',
+                option_schema="raw",
             )
 
             stat_categories = pd.DataFrame()
@@ -312,7 +364,9 @@ class league_season_data(object):
                     row["is_only_display_stat"] = 0
 
                 try:
-                    row.drop("stat_position_types.stat_position_type", axis=1, inplace=True)
+                    row.drop(
+                        "stat_position_types.stat_position_type", axis=1, inplace=True
+                    )
                 except:
                     pass
 
@@ -348,10 +402,18 @@ class league_season_data(object):
             stat_categories["league_id"] = stat_categories["league_id"].astype(int)
             stat_categories["stat_id"] = stat_categories["stat_id"].astype(int)
             stat_categories["name"] = stat_categories["name"].astype(str)
-            stat_categories["display_name"] = stat_categories["display_name"].astype(str)
-            stat_categories["is_only_display_stat"] = stat_categories["is_only_display_stat"].astype(int)
-            stat_categories["position_type"] = stat_categories["position_type"].astype(str)
-            stat_categories["stat_modifier"] = stat_categories["stat_modifier"].astype(float).round(decimals=2)
+            stat_categories["display_name"] = stat_categories["display_name"].astype(
+                str
+            )
+            stat_categories["is_only_display_stat"] = stat_categories[
+                "is_only_display_stat"
+            ].astype(int)
+            stat_categories["position_type"] = stat_categories["position_type"].astype(
+                str
+            )
+            stat_categories["stat_modifier"] = (
+                stat_categories["stat_modifier"].astype(float).round(decimals=2)
+            )
 
             query_3 = (
                 'SELECT "game_id" '
@@ -363,7 +425,7 @@ class league_season_data(object):
                 ', "position_type"'
                 ', "stat_modifier"'
                 "FROM raw.stat_categories "
-                "WHERE (game_id <> '"+str(self.game_id)+"') "
+                "WHERE (game_id <> '" + str(self.game_id) + "') "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "stat_id"'
@@ -382,19 +444,23 @@ class league_season_data(object):
                 table_name="stat_categories",
                 query=query_3,
                 path=PATH,
-                option_schema='raw',
+                option_schema="raw",
             )
 
             return league_settings, roster_positions, stat_categories
-        
+
         except Exception as e:
-            log_print(error=e, module_="yahoo_query.py", func="set_roster_pos_stat_cat", game_id=self.game_id, first_time=first_time)
+            log_print(
+                error=e,
+                module_="yahoo_query.py",
+                func="set_roster_pos_stat_cat",
+                game_id=self.game_id,
+                first_time=first_time,
+            )
             # print(f"\n----ERROR yahoo_query.py: set_roster_pos_stat_cat\n----{self.game_id}--{self.league_id}\n----{e}\n")
 
     def players_list(self, first_time="no"):
-        """
-        
-        """
+        """ """
         try:
             players = pd.DataFrame()
             try:
@@ -403,12 +469,26 @@ class league_season_data(object):
                 if "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    log_print(error=e, module_="yahoo_query.py", func="players_list", game_id=self.game_id, first_time=first_time, sleep="1 hour before retrying")
+                    log_print(
+                        error=e,
+                        module_="yahoo_query.py",
+                        func="players_list",
+                        game_id=self.game_id,
+                        first_time=first_time,
+                        sleep="1 hour before retrying",
+                    )
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
                     except Exception as e:
-                        log_print(error=e, module_="yahoo_query.py", func="players_list", game_id=self.game_id, first_time=first_time, sleep="30 min before 2nd retry")
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="players_list",
+                            game_id=self.game_id,
+                            first_time=first_time,
+                            sleep="30 min before 2nd retry",
+                        )
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
 
@@ -429,12 +509,26 @@ class league_season_data(object):
                     if "token_expired" in str(e):
                         self.yahoo_query._authenticate()
                     else:
-                        log_print(error=e, module_="yahoo_query.py", func="draft_results --> player draft analysis", game_id=self.game_id, first_time=first_time, sleep="1 hour before retrying")
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="draft_results --> player draft analysis",
+                            game_id=self.game_id,
+                            first_time=first_time,
+                            sleep="1 hour before retrying",
+                        )
                         time.sleep(3600)
                         try:
                             self.yahoo_query._authenticate()
                         except Exception as e:
-                            log_print(error=e, module_="yahoo_query.py", func="draft_results --> player draft analysis", game_id=self.game_id, first_time=first_time, sleep="30 min before 2nd retry")
+                            log_print(
+                                error=e,
+                                module_="yahoo_query.py",
+                                func="draft_results --> player draft analysis",
+                                game_id=self.game_id,
+                                first_time=first_time,
+                                sleep="30 min before 2nd retry",
+                            )
                             time.sleep(1800)
                             self.yahoo_query._authenticate()
 
@@ -518,12 +612,24 @@ class league_season_data(object):
             players["name.full"] = players["name.full"].astype(str)
             players["uniform_number"] = players["uniform_number"].astype(int)
             players["bye_weeks.week"] = players["bye_weeks.week"].astype(int)
-            players["draft_analysis.average_round"] = players["draft_analysis.average_round"].astype(float).round(decimals=2)
-            players["draft_analysis.average_pick"] =players["draft_analysis.average_pick"].astype(float).round(decimals=2)
-            players["draft_analysis.average_cost"] = players["draft_analysis.average_cost"].astype(float).round(decimals=2)
-            players["draft_analysis.percent_drafted"] = players["draft_analysis.percent_drafted"].astype(float).round(decimals=4)
+            players["draft_analysis.average_round"] = (
+                players["draft_analysis.average_round"].astype(float).round(decimals=2)
+            )
+            players["draft_analysis.average_pick"] = (
+                players["draft_analysis.average_pick"].astype(float).round(decimals=2)
+            )
+            players["draft_analysis.average_cost"] = (
+                players["draft_analysis.average_cost"].astype(float).round(decimals=2)
+            )
+            players["draft_analysis.percent_drafted"] = (
+                players["draft_analysis.percent_drafted"]
+                .astype(float)
+                .round(decimals=4)
+            )
             players["editorial_team_key"] = players["editorial_team_key"].astype(str)
-            players["editorial_team_full_name"] = players["editorial_team_full_name"].astype(str)
+            players["editorial_team_full_name"] = players[
+                "editorial_team_full_name"
+            ].astype(str)
             players["editorial_team_abbr"] = players["editorial_team_abbr"].astype(str)
 
             query = (
@@ -549,7 +655,7 @@ class league_season_data(object):
                 ',"editorial_team_full_name"'
                 ',"editorial_team_abbr" '
                 "FROM raw.player_list "
-                "WHERE (game_id <> '"+str(self.game_id)+"') "
+                "WHERE (game_id <> '" + str(self.game_id) + "') "
                 'GROUP BY "game_id"'
                 ',"league_id"'
                 ',"player_id"'
@@ -583,19 +689,23 @@ class league_season_data(object):
                 table_name="player_list",
                 query=query,
                 path=PATH,
-                option_schema='raw',
+                option_schema="raw",
             )
 
             return players
 
         except Exception as e:
-            log_print(error=e, module_="yahoo_query.py", func="players_list", game_id=self.game_id, first_time=first_time)
+            log_print(
+                error=e,
+                module_="yahoo_query.py",
+                func="players_list",
+                game_id=self.game_id,
+                first_time=first_time,
+            )
             # print(f"\n----ERROR yahoo_query.py: players_list.\n----{self.game_id}--{self.league_id}\n----{e}\n")
 
     def draft_results(self, first_time="no"):
-        """
-        
-        """
+        """ """
         try:
             try:
                 response = self.yahoo_query.get_league_draft_results()
@@ -605,12 +715,26 @@ class league_season_data(object):
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    log_print(error=e, module_="yahoo_query.py", func="draft_results", game_id=self.game_id, first_time=first_time, sleep="1 hour before retrying")
+                    log_print(
+                        error=e,
+                        module_="yahoo_query.py",
+                        func="draft_results",
+                        game_id=self.game_id,
+                        first_time=first_time,
+                        sleep="1 hour before retrying",
+                    )
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
                     except Exception as e:
-                        log_print(error=e, module_="yahoo_query.py", func="draft_results", game_id=self.game_id, first_time=first_time, sleep="30 min before 2nd retry")
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="draft_results",
+                            game_id=self.game_id,
+                            first_time=first_time,
+                            sleep="30 min before 2nd retry",
+                        )
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
 
@@ -643,7 +767,7 @@ class league_season_data(object):
                 ', "player_key"'
                 ', "team_key" '
                 "FROM raw.draft_results "
-                "WHERE (game_id <> '"+str(self.game_id)+"') "
+                "WHERE (game_id <> '" + str(self.game_id) + "') "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "round"'
@@ -661,22 +785,28 @@ class league_season_data(object):
                 table_name="draft_results",
                 query=query,
                 path=PATH,
-                option_schema='raw',
+                option_schema="raw",
             )
 
             return draft_results
 
         except Exception as e:
-            log_print(error=e, module_="yahoo_query.py", func="draft_results", game_id=self.game_id, first_time=first_time)
+            log_print(
+                error=e,
+                module_="yahoo_query.py",
+                func="draft_results",
+                game_id=self.game_id,
+                first_time=first_time,
+            )
             # print(f"\n----ERROR yahoo_query.py: draft_results.\n----{self.game_id}--{self.league_id}\n----{e}\n")
 
     def matchups_by_week(self, first_time="no", nfl_week=None):
-        """
-        
-        """
+        """ """
         try:
             if nfl_week == None:
-                print("\n----ERROR yahoo_query.py: matchups_by_week\n----Please include nfl_week in class creation\n")
+                print(
+                    "\n----ERROR yahoo_query.py: matchups_by_week\n----Please include nfl_week in class creation\n"
+                )
 
             else:
                 m = []
@@ -693,12 +823,28 @@ class league_season_data(object):
                     elif "token_expired" in str(e):
                         self.yahoo_query._authenticate()
                     else:
-                        log_print(error=e, module_="yahoo_query.py", func="matchups_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time, sleep="1 hour before retrying")
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="matchups_by_week",
+                            game_id=self.game_id,
+                            nfl_week=nfl_week,
+                            first_time=first_time,
+                            sleep="1 hour before retrying",
+                        )
                         time.sleep(3600)
                         try:
                             self.yahoo_query._authenticate()
                         except Exception as e:
-                            log_print(error=e, module_="yahoo_query.py", func="matchups_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time, sleep="30 min before 2nd retry")
+                            log_print(
+                                error=e,
+                                module_="yahoo_query.py",
+                                func="matchups_by_week",
+                                game_id=self.game_id,
+                                nfl_week=nfl_week,
+                                first_time=first_time,
+                                sleep="30 min before 2nd retry",
+                            )
                             time.sleep(1800)
                             self.yahoo_query._authenticate()
 
@@ -727,7 +873,9 @@ class league_season_data(object):
                     ]
                     try:
                         team_a = pd.json_normalize(
-                            complex_json_handler(r["matchup_grades"][0]["matchup_grade"])
+                            complex_json_handler(
+                                r["matchup_grades"][0]["matchup_grade"]
+                            )
                         )
                         team_a["points"] = complex_json_handler(r["teams"][0]["team"])[
                             "team_points"
@@ -741,7 +889,11 @@ class league_season_data(object):
                             complex_json_handler(r["teams"][0]["team"])
                         )
                         team_a = team_a[
-                            ["team_key", "team_points.total", "team_projected_points.total"]
+                            [
+                                "team_key",
+                                "team_points.total",
+                                "team_projected_points.total",
+                            ]
                         ]
                         team_a["grade"] = ""
                         team_a.rename(
@@ -756,7 +908,9 @@ class league_season_data(object):
 
                     try:
                         team_b = pd.json_normalize(
-                            complex_json_handler(r["matchup_grades"][1]["matchup_grade"])
+                            complex_json_handler(
+                                r["matchup_grades"][1]["matchup_grade"]
+                            )
                         )
                         team_b["points"] = complex_json_handler(r["teams"][1]["team"])[
                             "team_points"
@@ -770,7 +924,11 @@ class league_season_data(object):
                             complex_json_handler(r["teams"][1]["team"])
                         )
                         team_b = team_b[
-                            ["team_key", "team_points.total", "team_projected_points.total"]
+                            [
+                                "team_key",
+                                "team_points.total",
+                                "team_projected_points.total",
+                            ]
                         ]
                         team_b["grade"] = ""
                         team_b.rename(
@@ -830,11 +988,19 @@ class league_season_data(object):
             matchups["is_consolation"] = matchups["is_consolation"].astype(int)
             matchups["is_tied"] = matchups["is_tied"].astype(int)
             matchups["team_a_team_key"] = matchups["team_a_team_key"].astype(str)
-            matchups["team_a_points"] = matchups["team_a_points"].astype(float).round(decimals=2)
-            matchups["team_a_projected_points"] = matchups["team_a_projected_points"].astype(float).round(decimals=2)
+            matchups["team_a_points"] = (
+                matchups["team_a_points"].astype(float).round(decimals=2)
+            )
+            matchups["team_a_projected_points"] = (
+                matchups["team_a_projected_points"].astype(float).round(decimals=2)
+            )
             matchups["team_b_team_key"] = matchups["team_b_team_key"].astype(str)
-            matchups["team_b_points"] = matchups["team_b_points"].astype(float).round(decimals=2)
-            matchups["team_b_projected_points"] = matchups["team_b_projected_points"].astype(float).round(decimals=2)
+            matchups["team_b_points"] = (
+                matchups["team_b_points"].astype(float).round(decimals=2)
+            )
+            matchups["team_b_projected_points"] = (
+                matchups["team_b_projected_points"].astype(float).round(decimals=2)
+            )
             matchups["winner_team_key"] = matchups["winner_team_key"].astype(str)
             matchups["team_a_grade"] = matchups["team_a_grade"].astype(str)
             matchups["team_b_grade"] = matchups["team_b_grade"].astype(str)
@@ -858,7 +1024,11 @@ class league_season_data(object):
                 ', "team_a_grade"'
                 ', "team_b_grade"'
                 "FROM raw.weekly_matchups "
-                "WHERE (game_id <> '"+str(self.game_id)+"' AND week <> '"+str(nfl_week)+"') "
+                "WHERE (game_id <> '"
+                + str(self.game_id)
+                + "' AND week <> '"
+                + str(nfl_week)
+                + "') "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "week"'
@@ -888,7 +1058,7 @@ class league_season_data(object):
                 table_name=f"weekly_matchups",
                 query=query,
                 path=PATH,
-                option_schema='raw',
+                option_schema="raw",
             )
 
             print(self.game_id, nfl_week)
@@ -896,13 +1066,18 @@ class league_season_data(object):
             return matchups
 
         except Exception as e:
-            log_print(error=e, module_="yahoo_query.py", func="matchups_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time)
+            log_print(
+                error=e,
+                module_="yahoo_query.py",
+                func="matchups_by_week",
+                game_id=self.game_id,
+                nfl_week=nfl_week,
+                first_time=first_time,
+            )
             # print(f"\n----ERROR yahoo_query.py: matchups_by_week.\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n")
 
     def teams_and_standings(self, first_time="no"):
-        """
-        
-        """
+        """ """
         try:
             try:
                 response = self.yahoo_query.get_league_standings()
@@ -912,12 +1087,26 @@ class league_season_data(object):
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
                 else:
-                    log_print(error=e, module_="yahoo_query.py", func="teams_and_standigns", game_id=self.game_id, first_time=first_time, sleep="1 hour before retrying")
+                    log_print(
+                        error=e,
+                        module_="yahoo_query.py",
+                        func="teams_and_standigns",
+                        game_id=self.game_id,
+                        first_time=first_time,
+                        sleep="1 hour before retrying",
+                    )
                     time.sleep(3600)
                     try:
                         self.yahoo_query._authenticate()
                     except Exception as e:
-                        log_print(error=e, module_="yahoo_query.py", func="teams_and_standings", game_id=self.game_id, first_time=first_time, sleep="30 min before 2nd retry")
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="teams_and_standings",
+                            game_id=self.game_id,
+                            first_time=first_time,
+                            sleep="30 min before 2nd retry",
+                        )
                         time.sleep(1800)
                         self.yahoo_query._authenticate()
                 response = self.yahoo_query.get_league_standings()
@@ -997,7 +1186,9 @@ class league_season_data(object):
                 team = pd.DataFrame(team)
                 corrected_teams = pd.concat([corrected_teams, team])
 
-            correct_teams = pd.melt(corrected_teams, var_name="nickname", value_name="name")
+            correct_teams = pd.melt(
+                corrected_teams, var_name="nickname", value_name="name"
+            )
             correct_teams = correct_teams[~correct_teams["name"].isna()]
             teams_standings = teams_standings.merge(
                 correct_teams,
@@ -1018,7 +1209,9 @@ class league_season_data(object):
             )
 
             teams_standings = teams_standings[
-                teams_standings.columns.drop(list(teams_standings.filter(regex="_drop")))
+                teams_standings.columns.drop(
+                    list(teams_standings.filter(regex="_drop"))
+                )
             ]
 
             teams_standings.dropna(
@@ -1055,20 +1248,52 @@ class league_season_data(object):
             teams_standings["team_id"] = teams_standings["team_id"].astype(int)
             teams_standings["team_key"] = teams_standings["team_key"].astype(str)
             teams_standings["manager_id"] = teams_standings["manager_id"].astype(int)
-            teams_standings["clinched_playoffs"] = teams_standings["clinched_playoffs"].astype(int)
+            teams_standings["clinched_playoffs"] = teams_standings[
+                "clinched_playoffs"
+            ].astype(int)
             teams_standings["draft_grade"] = teams_standings["draft_grade"].astype(str)
-            teams_standings["faab_balance"] = teams_standings["faab_balance"].astype(int)
+            teams_standings["faab_balance"] = teams_standings["faab_balance"].astype(
+                int
+            )
             teams_standings["name"] = teams_standings["name"].astype(str)
-            teams_standings["number_of_moves"] = teams_standings["number_of_moves"].astype(int)
-            teams_standings["number_of_trades"] = teams_standings["number_of_trades"].astype(int)
-            teams_standings["team_standings.playoff_seed"] = teams_standings["team_standings.playoff_seed"].astype(int)
-            teams_standings["team_standings.rank"] = teams_standings["team_standings.rank"].astype(int)
-            teams_standings["team_standings.outcome_totals.wins"] = teams_standings["team_standings.outcome_totals.wins"].astype(float).round(decimals=2)
-            teams_standings["team_standings.outcome_totals.losses"] = teams_standings["team_standings.outcome_totals.losses"].astype(int)
-            teams_standings["team_standings.outcome_totals.ties"] = teams_standings["team_standings.outcome_totals.ties"].astype(int)
-            teams_standings["team_standings.outcome_totals.percentage"] = teams_standings["team_standings.outcome_totals.percentage"].astype(float).round(decimals=4)
-            teams_standings["team_standings.points_for"] = teams_standings["team_standings.points_for"].astype(float).round(decimals=2)
-            teams_standings["team_standings.points_against"] = teams_standings["team_standings.points_against"].astype(float).round(decimals=2)
+            teams_standings["number_of_moves"] = teams_standings[
+                "number_of_moves"
+            ].astype(int)
+            teams_standings["number_of_trades"] = teams_standings[
+                "number_of_trades"
+            ].astype(int)
+            teams_standings["team_standings.playoff_seed"] = teams_standings[
+                "team_standings.playoff_seed"
+            ].astype(int)
+            teams_standings["team_standings.rank"] = teams_standings[
+                "team_standings.rank"
+            ].astype(int)
+            teams_standings["team_standings.outcome_totals.wins"] = (
+                teams_standings["team_standings.outcome_totals.wins"]
+                .astype(float)
+                .round(decimals=2)
+            )
+            teams_standings["team_standings.outcome_totals.losses"] = teams_standings[
+                "team_standings.outcome_totals.losses"
+            ].astype(int)
+            teams_standings["team_standings.outcome_totals.ties"] = teams_standings[
+                "team_standings.outcome_totals.ties"
+            ].astype(int)
+            teams_standings["team_standings.outcome_totals.percentage"] = (
+                teams_standings["team_standings.outcome_totals.percentage"]
+                .astype(float)
+                .round(decimals=4)
+            )
+            teams_standings["team_standings.points_for"] = (
+                teams_standings["team_standings.points_for"]
+                .astype(float)
+                .round(decimals=2)
+            )
+            teams_standings["team_standings.points_against"] = (
+                teams_standings["team_standings.points_against"]
+                .astype(float)
+                .round(decimals=2)
+            )
 
             query = (
                 'SELECT "game_id"'
@@ -1092,7 +1317,7 @@ class league_season_data(object):
                 ',"team_standings.points_for"'
                 ',"team_standings.points_against" '
                 "FROM raw.league_teams "
-                "WHERE (game_id <> '"+str(self.game_id)+"') "
+                "WHERE (game_id <> '" + str(self.game_id) + "') "
                 'GROUP BY "game_id"'
                 ',"league_id"'
                 ',"team_id"'
@@ -1124,22 +1349,26 @@ class league_season_data(object):
                 table_name="league_teams",
                 query=query,
                 path=PATH,
-                option_schema='raw',
+                option_schema="raw",
             )
 
             return teams_standings
-        
+
         except Exception as e:
-            log_print(error=e, module_="yahoo_query.py", func="teams_and_standings", game_id=self.game_id, first_time=first_time)
+            log_print(
+                error=e,
+                module_="yahoo_query.py",
+                func="teams_and_standings",
+                game_id=self.game_id,
+                first_time=first_time,
+            )
             # print(f"\n----ERROR yahoo_query.py: teams_and_standings\n----{self.game_id}--{self.league_id}\n----{e}\n")
 
     def team_roster_by_week(self, first_time="no", nfl_week=None):
-        """
-        
-        """
+        """ """
         try:
             sql_query = f"SELECT max_teams FROM raw.league_settings WHERE game_id = '{self.game_id}'"
-            teams = DatabaseCursor(PATH, option_schema='raw').copy_data_from_postgres(
+            teams = DatabaseCursor(PATH, option_schema="raw").copy_data_from_postgres(
                 sql_query
             )
             teams = teams["max_teams"].values[0]
@@ -1158,12 +1387,28 @@ class league_season_data(object):
                     elif "token_expired" in str(e):
                         self.yahoo_query._authenticate()
                     else:
-                        log_print(error=e, module_="yahoo_query.py", func="team_roster_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time, sleep="1 hour before retrying")
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="team_roster_by_week",
+                            game_id=self.game_id,
+                            nfl_week=nfl_week,
+                            first_time=first_time,
+                            sleep="1 hour before retrying",
+                        )
                         time.sleep(3600)
                         try:
                             self.yahoo_query._authenticate()
                         except Exception as e:
-                            log_print(error=e, module_="yahoo_query.py", func="team_roster_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time, sleep="30 min before 2nd retry")
+                            log_print(
+                                error=e,
+                                module_="yahoo_query.py",
+                                func="team_roster_by_week",
+                                game_id=self.game_id,
+                                nfl_week=nfl_week,
+                                first_time=first_time,
+                                sleep="30 min before 2nd retry",
+                            )
                             time.sleep(1800)
                             self.yahoo_query._authenticate()
 
@@ -1206,12 +1451,22 @@ class league_season_data(object):
             team_week_rosters["league_id"] = team_week_rosters["league_id"].astype(int)
             team_week_rosters["week"] = team_week_rosters["week"].astype(int)
             team_week_rosters["team_id"] = team_week_rosters["team_id"].astype(int)
-            team_week_rosters["selected_position.position"] = team_week_rosters["selected_position.position"].astype(str)
+            team_week_rosters["selected_position.position"] = team_week_rosters[
+                "selected_position.position"
+            ].astype(str)
             team_week_rosters["player_id"] = team_week_rosters["player_id"].astype(int)
-            team_week_rosters["player_key"] = team_week_rosters["player_key"].astype(str)
-            team_week_rosters["display_position"] = team_week_rosters["display_position"].astype(str)
-            team_week_rosters["eligible_positions"] = team_week_rosters["eligible_positions"].astype(str)
-            team_week_rosters["position_type"] = team_week_rosters["position_type"].astype(str)
+            team_week_rosters["player_key"] = team_week_rosters["player_key"].astype(
+                str
+            )
+            team_week_rosters["display_position"] = team_week_rosters[
+                "display_position"
+            ].astype(str)
+            team_week_rosters["eligible_positions"] = team_week_rosters[
+                "eligible_positions"
+            ].astype(str)
+            team_week_rosters["position_type"] = team_week_rosters[
+                "position_type"
+            ].astype(str)
 
             query = (
                 'SELECT "game_id"'
@@ -1225,7 +1480,11 @@ class league_season_data(object):
                 ',"eligible_positions"'
                 ',"position_type" '
                 "FROM raw.weekly_team_roster "
-                "WHERE (game_id <> '"+str(self.game_id)+"' AND week <> '"+str(nfl_week)+"') "
+                "WHERE (game_id <> '"
+                + str(self.game_id)
+                + "' AND week <> '"
+                + str(nfl_week)
+                + "') "
                 'GROUP BY "game_id"'
                 ',"league_id"'
                 ',"week"'
@@ -1249,7 +1508,7 @@ class league_season_data(object):
                 table_name="weekly_team_roster",
                 query=query,
                 path=PATH,
-                option_schema='raw',
+                option_schema="raw",
             )
 
             print(self.game_id, nfl_week)
@@ -1257,16 +1516,21 @@ class league_season_data(object):
             return team_week_rosters
 
         except Exception as e:
-            log_print(error=e, module_="yahoo_query.py", func="team_roster_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time)
+            log_print(
+                error=e,
+                module_="yahoo_query.py",
+                func="team_roster_by_week",
+                game_id=self.game_id,
+                nfl_week=nfl_week,
+                first_time=first_time,
+            )
             # print(f"\n----ERROR yahoo_query.py: team_roster_by_week\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n")
 
     def team_points_by_week(self, first_time="no", nfl_week=None):
-        """
-        
-        """
+        """ """
         try:
             sql_query = f"SELECT max_teams FROM raw.league_settings WHERE game_id = '{self.game_id}'"
-            teams = DatabaseCursor(PATH, option_schema='raw').copy_data_from_postgres(
+            teams = DatabaseCursor(PATH, option_schema="raw").copy_data_from_postgres(
                 sql_query
             )
             teams = teams["max_teams"].values[0]
@@ -1274,7 +1538,9 @@ class league_season_data(object):
             team_points_weekly = pd.DataFrame()
             for team in range(1, teams + 1):
                 try:
-                    response = self.yahoo_query.get_team_stats_by_week(str(team), nfl_week)
+                    response = self.yahoo_query.get_team_stats_by_week(
+                        str(team), nfl_week
+                    )
 
                 except Exception as e:
                     if "Invalid week" in str(e):
@@ -1282,12 +1548,28 @@ class league_season_data(object):
                     elif "token_expired" in str(e):
                         self.yahoo_query._authenticate()
                     else:
-                        log_print(error=e, module_="yahoo_query.py", func="team_points_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time, sleep="1 hour before retrying")
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="team_points_by_week",
+                            game_id=self.game_id,
+                            nfl_week=nfl_week,
+                            first_time=first_time,
+                            sleep="1 hour before retrying",
+                        )
                         time.sleep(3600)
                         try:
                             self.yahoo_query._authenticate()
                         except Exception as e:
-                            log_print(error=e, module_="yahoo_query.py", func="team_points_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time, sleep="30 min before 2nd retry")
+                            log_print(
+                                error=e,
+                                module_="yahoo_query.py",
+                                func="team_points_by_week",
+                                game_id=self.game_id,
+                                nfl_week=nfl_week,
+                                first_time=first_time,
+                                sleep="30 min before 2nd retry",
+                            )
                             time.sleep(1800)
                             self.yahoo_query._authenticate()
                     try:
@@ -1348,12 +1630,18 @@ class league_season_data(object):
             ]
 
             team_points_weekly["game_id"] = team_points_weekly["game_id"].astype(int)
-            team_points_weekly["league_id"] = team_points_weekly["league_id"].astype(int)
+            team_points_weekly["league_id"] = team_points_weekly["league_id"].astype(
+                int
+            )
             team_points_weekly["team_id"] = team_points_weekly["team_id"].astype(int)
             team_points_weekly["team_key"] = team_points_weekly["team_key"].astype(str)
             team_points_weekly["week"] = team_points_weekly["week"].astype(int)
-            team_points_weekly["final_points"] = team_points_weekly["final_points"].astype(float).round(decimals=2)
-            team_points_weekly["projected_points"] = team_points_weekly["projected_points"].astype(float).round(decimals=2)
+            team_points_weekly["final_points"] = (
+                team_points_weekly["final_points"].astype(float).round(decimals=2)
+            )
+            team_points_weekly["projected_points"] = (
+                team_points_weekly["projected_points"].astype(float).round(decimals=2)
+            )
 
             query = (
                 'SELECT "game_id"'
@@ -1364,7 +1652,11 @@ class league_season_data(object):
                 ',"final_points"'
                 ',"projected_points" '
                 "FROM raw.weekly_team_pts "
-                "WHERE (game_id <> '"+str(self.game_id)+"' AND week <> '"+str(nfl_week)+"') "
+                "WHERE (game_id <> '"
+                + str(self.game_id)
+                + "' AND week <> '"
+                + str(nfl_week)
+                + "') "
                 'GROUP BY "game_id"'
                 ',"league_id"'
                 ',"team_id"'
@@ -1384,7 +1676,7 @@ class league_season_data(object):
                 table_name="weekly_team_pts",
                 query=query,
                 path=PATH,
-                option_schema='raw',
+                option_schema="raw",
             )
 
             print(self.game_id, nfl_week)
@@ -1392,13 +1684,18 @@ class league_season_data(object):
             return team_points_weekly
 
         except Exception as e:
-            log_print(error=e, module_="yahoo_query.py", func="team_points_by_week", game_id=self.game_id, nfl_week=nfl_week, first_time=first_time)
+            log_print(
+                error=e,
+                module_="yahoo_query.py",
+                func="team_points_by_week",
+                game_id=self.game_id,
+                nfl_week=nfl_week,
+                first_time=first_time,
+            )
             # print(f"\n----ERROR yahoo_query.py: team_points_by_week\n----{nfl_week}--{self.game_id}--{self.league_id}\n----{e}\n")
 
     def all_game_keys(self):
-        """
-        
-        """
+        """ """
         try:
             response = unpack_data(self.yahoo_query.get_all_yahoo_fantasy_game_keys())
             try:
@@ -1420,32 +1717,29 @@ class league_season_data(object):
                 right_on=["game_id", "season"],
             )
             game_keys = game_keys[
-                [
-                    "game_id",
-                    "league_ID",
-                    "season",
-                    "is_game_over",
-                    "is_offseason"
-                ]
+                ["game_id", "league_ID", "season", "is_game_over", "is_offseason"]
             ]
             game_keys.drop_duplicates(ignore_index=True, inplace=True)
-            DatabaseCursor(PATH, option_schema='dev').copy_table_to_postgres_new(
+            DatabaseCursor(PATH, option_schema="dev").copy_table_to_postgres_new(
                 game_keys, "game_keys", first_time="yes"
             )
 
             return game_keys
-        
+
         except Exception as e:
-            log_print(error=e, module_="yahoo_query.py", func="all_game_keys", game_id=self.game_id)
+            log_print(
+                error=e,
+                module_="yahoo_query.py",
+                func="all_game_keys",
+                game_id=self.game_id,
+            )
             # print(f"\n----ERROR yahoo_query.py: all_game_keys\n----{self.game_id}--{self.league_id}\n----{e}")
 
     def all_nfl_weeks(self):
-        """
-        
-        """
+        """ """
         try:
             game_keys = DatabaseCursor(
-                PATH, option_schema='dev'
+                PATH, option_schema="dev"
             ).copy_data_from_postgres("SELECT game_id FROM dev.game_keys")
             game_id = list(game_keys["game_id"])
             weeks = pd.DataFrame()
@@ -1463,12 +1757,17 @@ class league_season_data(object):
             weeks["end"] = weeks["end"].astype("datetime64[D]")
             weeks.drop_duplicates(ignore_index=True, inplace=True)
 
-            DatabaseCursor(PATH, option_schema='dev').copy_table_to_postgres_new(
+            DatabaseCursor(PATH, option_schema="dev").copy_table_to_postgres_new(
                 weeks, "nfl_weeks", first_time="yes"
             )
 
             return weeks
-        
+
         except Exception as e:
-            log_print(error=e, module_="yahoo_query.py", func="all_nfl_weeks", game_id=self.game_id)
+            log_print(
+                error=e,
+                module_="yahoo_query.py",
+                func="all_nfl_weeks",
+                game_id=self.game_id,
+            )
             # print(f"\n----ERROR yahoo_query.py: all_nfl_weeks\n----{self.game_id}--{self.league_id}\n----{e}")
