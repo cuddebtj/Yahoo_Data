@@ -331,7 +331,7 @@ class league_season_data(object):
                 ', "position" '
                 ', "count" '
                 'ORDER BY "game_id"'
-                ', "league_id:'
+                ', "league_id"'
             )
 
             data_upload(
@@ -1062,7 +1062,7 @@ class league_season_data(object):
                 option_schema="raw",
             )
 
-            print(self.game_id, nfl_week)
+            # print(self.game_id, nfl_week)
 
             return matchups
 
@@ -1512,7 +1512,7 @@ class league_season_data(object):
                 option_schema="raw",
             )
 
-            print(self.game_id, nfl_week)
+            # print(self.game_id, nfl_week)
 
             return team_week_rosters
 
@@ -1680,7 +1680,7 @@ class league_season_data(object):
                 option_schema="raw",
             )
 
-            print(self.game_id, nfl_week)
+            # print(self.game_id, nfl_week)
 
             return team_points_weekly
 

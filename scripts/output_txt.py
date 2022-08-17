@@ -10,14 +10,14 @@ def log_print(error=None, success=None, **kwargs):
             if kwargs:
                 for k, v in kwargs.items():
                     items += f"\t\t{list(kwargs.keys()).index(k)})\t {k}: {v}\n"
-            error_str = f"----------------------------------------\nERROR:\n\t{error}\n{items}\tTimestamp: {time.ctime(time.time())}\n"
+            error_str = f"********************************************************************************\nERROR:\n\t{error}\n{items}\tTimestamp: {time.ctime(time.time())}\n"
             file.write(error_str)
 
         else:
             if kwargs:
                 for k, v in kwargs.items():
                     items += f"\t\t{list(kwargs.keys()).index(k)})\t {k}: {v}\n"
-            success_str = f"----------------------------------------\nSuccessful:\n\t{success}\n{items}\tTimestamp: {time.ctime(time.time())}\n"
+            success_str = f"--------------------------------------------------------------------------------\nSuccessful:\n\t{success}\n{items}\tTimestamp: {time.ctime(time.time())}\n"
             file.write(success_str)
 
 

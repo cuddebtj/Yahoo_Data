@@ -131,3 +131,7 @@ private.yaml
 
 # Pyre type checker
 .pyre/
+
+# Unneeded Files
+tournament_results.txt
+logg.txt
