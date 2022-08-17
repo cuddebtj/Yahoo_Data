@@ -11,7 +11,8 @@ from yfpy.utils import complex_json_handler, unpack_data
 from yfpy import get_logger
 
 from scripts.db_psql_model import DatabaseCursor
-from scripts.utils import data_upload, log_print
+from scripts.utils import data_upload
+from scripts.output_txt import log_print
 
 # from db_psql_model import DatabaseCursor
 # from utils import data_upload, log_print

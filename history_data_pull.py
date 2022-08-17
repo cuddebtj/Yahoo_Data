@@ -3,7 +3,8 @@ import yaml
 from pathlib import Path
 from time import sleep
 
-from scripts.utils import nfl_weeks_pull, game_keys_pull, get_season, log_print
+from scripts.utils import nfl_weeks_pull, game_keys_pull, get_season
+from scripts.output_txt import log_print
 from scripts.yahoo_query import league_season_data
 
 dates = [
