@@ -15,7 +15,8 @@ from scripts.utils import data_upload
 from scripts.output_txt import log_print
 
 # from db_psql_model import DatabaseCursor
-# from utils import data_upload, log_print
+# from utils import data_upload
+# from output_txt import log_print
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
 TEAMS_FILE = list(Path().cwd().parent.glob("**/teams.yaml"))[0]
@@ -1169,7 +1170,7 @@ class league_season_data(object):
                 teams_standings.drop(columns="draft_position", inplace=True)
 
             if "draft_grade" not in teams_standings.columns:
-                teams_standings["draft_grade"] = ""
+                teams_standings["draft_grade"] = "Z"
 
             if "faab_balance" not in teams_standings.columns:
                 teams_standings["faab_balance"] = 0
@@ -1713,16 +1714,22 @@ class league_season_data(object):
             game_keys = game_keys[game_keys["season"] >= 2012]
             game_keys = game_keys.merge(
                 league_keys,
-                how="outer",
+                how="left",
                 left_on=["game_id", "season"],
                 right_on=["game_id", "season"],
             )
             game_keys = game_keys[
-                ["game_id", "league_ID", "season", "is_game_over", "is_offseason"]
+                ["game_id", "league_id", "season", "is_game_over", "is_offseason"]
             ]
             game_keys.drop_duplicates(ignore_index=True, inplace=True)
-            DatabaseCursor(PATH, option_schema="dev").copy_table_to_postgres_new(
-                game_keys, "game_keys", first_time="yes"
+
+            data_upload(
+                df=game_keys,
+                first_time='yes',
+                table_name="game_keys",
+                path=PATH,
+                option_schema="dev",
+                query=None,
             )
 
             return game_keys
@@ -1737,7 +1744,9 @@ class league_season_data(object):
             # print(f"\n----ERROR yahoo_query.py: all_game_keys\n----{self.game_id}--{self.league_id}\n----{e}")
 
     def all_nfl_weeks(self):
-        """ """
+        """ 
+        
+        """
         try:
             game_keys = DatabaseCursor(
                 PATH, option_schema="dev"
@@ -1745,7 +1754,7 @@ class league_season_data(object):
             game_id = list(game_keys["game_id"])
             weeks = pd.DataFrame()
             for g in game_id:
-                response = self.yahoo_query.get_game_weeks_by_game_id(g)
+                response = self.yahoo_query.get_game_weeks_by_game_id(str(g))
                 for r in response:
                     row = pd.json_normalize(complex_json_handler(r["game_week"]))
                     row["game_id"] = g
@@ -1758,8 +1767,13 @@ class league_season_data(object):
             weeks["end"] = weeks["end"].astype("datetime64[D]")
             weeks.drop_duplicates(ignore_index=True, inplace=True)
 
-            DatabaseCursor(PATH, option_schema="dev").copy_table_to_postgres_new(
-                weeks, "nfl_weeks", first_time="yes"
+            data_upload(
+                df=weeks,
+                first_time='yes',
+                table_name="nfl_weeks",
+                path=PATH,
+                option_schema="dev",
+                query=None,
             )
 
             return weeks

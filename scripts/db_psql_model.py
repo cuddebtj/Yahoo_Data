@@ -7,6 +7,7 @@ from psycopg2.extensions import AsIs
 from io import StringIO
 
 from scripts.output_txt import log_print
+# from output_txt import log_print
 
 
 class DatabaseCursor(object):
@@ -179,11 +180,12 @@ class DatabaseCursor(object):
             cursor.execute(sql_query)
             self.__exit__(exc_result=True)
             log_print(
-                success="POSTGRESQL DROP TABLE IF NOT in MenOfMadison",
+                success="POSTGRESQL DROP TABLE IF EXISTS in MenOfMadison",
                 module_="db_psql_model.py",
                 func="drop_table",
                 schema=schema,
                 table=table,
+                query=sql_query
             )
             # print(f"\n----{table} table dropped within MenOfMadison {schema}\n")
 
@@ -220,7 +222,7 @@ class DatabaseCursor(object):
 
         try:
             if "YES" == str(first_time).upper():
-                if "option_schema" not in self.kwargs:
+                if "option_schema" in self.kwargs:
                     self.drop_table(schema=self.kwargs["option_schema"], table=table)
                 cursor = self.__enter__()
                 create_sql = (
@@ -234,12 +236,13 @@ class DatabaseCursor(object):
                     first_time=first_time,
                     schema=self.kwargs["option_schema"],
                     table=table,
+                    query=create_sql,
                 )
                 self.__exit__(exc_result=True)
-
+                
             cursor = self.__enter__()
             copy_to = sql.SQL(
-                "COPY {table} FROM STDIN WITH (FORMAT CSV, HEADER FALSE);"
+                "COPY {table} FROM STDIN WITH (FORMAT CSV, HEADER TRUE);"
             ).format(
                 table=sql.Identifier(table),
             )
@@ -252,6 +255,7 @@ class DatabaseCursor(object):
                 first_time=first_time,
                 schema=self.kwargs["option_schema"],
                 table=table,
+                query=copy_to,
             )
             # print(f"\n----Upload successful: {table}\n")
 
@@ -264,6 +268,8 @@ class DatabaseCursor(object):
                 first_time=first_time,
                 schema=self.kwargs["option_schema"],
                 table=table,
+                copy_query=copy_to,
+                create_query=create_sql,
             )
             # print(f"\n----ERROR db_psql_model.py: copy_table_to_postgres_new\n----{table}\n----{e}\n")
 
@@ -291,7 +297,7 @@ class DatabaseCursor(object):
                 success="COPY QUERY FROM MenOfMadison",
                 module_="db_psql_model.py",
                 func="copy_data_from_postgres",
-                query=query,
+                query=sql_query,
             )
             # print(f"\n----Successfully pulled: {query}\n")
             return df
@@ -302,6 +308,6 @@ class DatabaseCursor(object):
                 error=e,
                 module_="db_psql_model.py",
                 func="copy_data_from_postgres",
-                query=query,
+                query=sql_query,
             )
             # print(f"\n----ERROR db_psql_model.py: copy_data_from_postgres\n----{query}\n----{e}\n")

@@ -4,7 +4,6 @@ import math
 import itertools
 from pathlib import Path
 from datetime import datetime as dt
-import time
 
 from scripts.db_psql_model import DatabaseCursor
 from scripts.tournament import Tournament
@@ -12,6 +11,7 @@ from scripts.output_txt import log_print, log_print_tourney
 
 # from db_psql_model import DatabaseCursor
 # from tournament import Tournament
+# from output_txt import log_print, log_print_tourney
 
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
@@ -102,12 +102,10 @@ def game_keys_pull(first="yes"):
         # print(f"\n----ERROR utils.py: game_keys_pull\n----{e}\n")
 
 
-def data_upload(df: pd.DataFrame, first_time, table_name, query, path, option_schema):
+def data_upload(df: pd.DataFrame, first_time, table_name, path, option_schema, query):
 
     try:
         if str(first_time).upper() == "YES":
-            df.drop_duplicates(ignore_index=True, inplace=True)
-            df.sort_index(axis=1, inplace=True)
             DatabaseCursor(
                 path, option_schema=option_schema
             ).copy_table_to_postgres_new(df, table_name, first_time="YES")
@@ -115,7 +113,6 @@ def data_upload(df: pd.DataFrame, first_time, table_name, query, path, option_sc
         elif str(first_time).upper() == "NO":
             psql = DatabaseCursor(path).copy_data_from_postgres(query)
             df = pd.concat([psql, df])
-            df.drop_duplicates(ignore_index=True, inplace=True)
             DatabaseCursor(
                 path, option_schema=option_schema
             ).copy_table_to_postgres_new(df, table_name, first_time="NO")

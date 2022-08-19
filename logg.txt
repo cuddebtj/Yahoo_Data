@@ -1,0 +1,52 @@
+----------------------------------------
+ERROR:
+	Cannot convert non-finite values (NA or inf) to integer
+		0)	 module_: yahoo_query.py
+		1)	 func: teams_and_standings
+		2)	 game_id: 273
+		3)	 first_time: no
+	Timestamp: Wed Aug 17 04:55:37 2022
+
+
+
+
+--------------------------------------------------------------------------------
+Successful:
+	COPY QUERY FROM MenOfMadison
+		0)	 module_: db_psql_model.py
+		1)	 func: copy_data_from_postgres
+		2)	 query: COPY (SELECT * FROM dev.nfl_weeks) TO STDOUT WITH (FORMAT CSV, HEADER TRUE)
+	Timestamp: Thu Aug 18 21:01:54 2022
+--------------------------------------------------------------------------------
+Successful:
+	None
+		0)	 module_: utils.py
+		1)	 func: game_keys_pull
+		2)	 first: yes
+		3)	 path: /home/cuddebtj/Documents/Python/Yahoo_Data/assests/game_keys.csv
+	Timestamp: Thu Aug 18 21:01:54 2022
+--------------------------------------------------------------------------------
+Successful:
+	COPY QUERY FROM MenOfMadison
+		0)	 module_: db_psql_model.py
+		1)	 func: copy_data_from_postgres
+		2)	 query: COPY (SELECT * FROM dev.nfl_weeks) TO STDOUT WITH (FORMAT CSV, HEADER TRUE)
+	Timestamp: Thu Aug 18 21:01:55 2022
+--------------------------------------------------------------------------------
+Successful:
+	None
+		0)	 module_: utils.py
+		1)	 func: get_season
+		2)	 date: 2020-09-28
+		3)	 season: 2020
+		4)	 game_id: 399
+	Timestamp: Thu Aug 18 21:01:55 2022
+--------------------------------------------------------------------------------
+Successful:
+	Start of scrape for new game_id
+		0)	 module_: history_data_pull.py
+		1)	 game_id: 399
+		2)	 season: 2020
+		3)	 today: 2020-09-28
+		4)	 at_line: 32
+	Timestamp: Thu Aug 18 21:01:55 2022
