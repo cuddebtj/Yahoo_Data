@@ -76,6 +76,16 @@ class league_season_data(object):
                     return
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
+                elif "Network is unreachable" in str(e):
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="metadata",
+                            game_id=self.game_id,
+                            first_time=first_time,
+                            sleep="15 min before retrying",
+                        )
+                        time.sleep(900)
                 else:
                     log_print(
                         error=e,
@@ -190,6 +200,16 @@ class league_season_data(object):
                     return
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
+                elif "Network is unreachable" in str(e):
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="set_roster_pos_stat_cat",
+                            game_id=self.game_id,
+                            first_time=first_time,
+                            sleep="15 min before retrying",
+                        )
+                        time.sleep(900)
                 else:
                     log_print(
                         error=e,
@@ -470,6 +490,16 @@ class league_season_data(object):
             except Exception as e:
                 if "token_expired" in str(e):
                     self.yahoo_query._authenticate()
+                elif "Network is unreachable" in str(e):
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="players_list",
+                            game_id=self.game_id,
+                            first_time=first_time,
+                            sleep="15 min before retrying",
+                        )
+                        time.sleep(900)
                 else:
                     log_print(
                         error=e,
@@ -716,6 +746,16 @@ class league_season_data(object):
                     return
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
+                elif "Network is unreachable" in str(e):
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="draft_results",
+                            game_id=self.game_id,
+                            first_time=first_time,
+                            sleep="15 min before retrying",
+                        )
+                        time.sleep(900)
                 else:
                     log_print(
                         error=e,
@@ -824,6 +864,17 @@ class league_season_data(object):
                         return
                     elif "token_expired" in str(e):
                         self.yahoo_query._authenticate()
+                    elif "Network is unreachable" in str(e):
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="matchups_by_week",
+                            game_id=self.game_id,
+                            nfl_week=nfl_week,
+                            first_time=first_time,
+                            sleep="15 min before retrying",
+                        )
+                        time.sleep(900)
                     else:
                         log_print(
                             error=e,
@@ -1088,6 +1139,16 @@ class league_season_data(object):
                     return
                 elif "token_expired" in str(e):
                     self.yahoo_query._authenticate()
+                elif "Network is unreachable" in str(e):
+                    log_print(
+                        error=e,
+                        module_="yahoo_query.py",
+                        func="team_and_standings",
+                        game_id=self.game_id,
+                        first_time=first_time,
+                        sleep="15 min before retrying",
+                        )
+                    time.sleep(900)
                 else:
                     log_print(
                         error=e,
@@ -1388,6 +1449,17 @@ class league_season_data(object):
                         return
                     elif "token_expired" in str(e):
                         self.yahoo_query._authenticate()
+                    elif "Network is unreachable" in str(e):
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="team_roster_by_week",
+                            game_id=self.game_id,
+                            nfl_week=nfl_week,
+                            first_time=first_time,
+                            sleep="15 min before retrying",
+                        )
+                        time.sleep(900)
                     else:
                         log_print(
                             error=e,
@@ -1549,6 +1621,17 @@ class league_season_data(object):
                         return
                     elif "token_expired" in str(e):
                         self.yahoo_query._authenticate()
+                    elif "Network is unreachable" in str(e):
+                        log_print(
+                            error=e,
+                            module_="yahoo_query.py",
+                            func="team_points_by_week",
+                            game_id=self.game_id,
+                            nfl_week=nfl_week,
+                            first_time=first_time,
+                            sleep="15 min before retrying",
+                        )
+                        time.sleep(900)
                     else:
                         log_print(
                             error=e,

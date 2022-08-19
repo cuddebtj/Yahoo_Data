@@ -76,47 +76,46 @@ for today in dates:
         league.all_nfl_weeks()
         break
 
+    league = league_season_data(
+        auth_dir=PATH.parent,
+        league_id=LEAGUE_ID,
+        game_id=GAME_ID,
+        game_code="nfl",
+        offline=False,
+        all_output_as_json=False,
+        consumer_key=CONSUMER_KEY,
+        consumer_secret=CONSUMER_SECRET,
+        browser_callback=True,
+    )
+
+    if int(SEASON) == 2020:
+        league.metadata(first_time="yes")
+        league.set_roster_pos_stat_cat(first_time="yes")
+        league.draft_results(first_time="yes")
+        league.teams_and_standings(first_time="yes")
+        # league.players_list(first_time="yes")
+
+        league.matchups_by_week(first_time="yes", nfl_week=1)
+        league.team_roster_by_week(first_time="yes", nfl_week=1)
+        league.team_points_by_week(first_time="yes", nfl_week=1)
+        for week in nfl_weeks_list[1:]:
+            league.matchups_by_week(first_time="no", nfl_week=week)
+            league.team_roster_by_week(first_time="no", nfl_week=week)
+            league.team_points_by_week(first_time="no", nfl_week=week)
+            sleep(60)
+
     else:
-        league = league_season_data(
-            auth_dir=PATH.parent,
-            league_id=LEAGUE_ID,
-            game_id=GAME_ID,
-            game_code="nfl",
-            offline=False,
-            all_output_as_json=False,
-            consumer_key=CONSUMER_KEY,
-            consumer_secret=CONSUMER_SECRET,
-            browser_callback=True,
-        )
+        league.metadata(first_time="no")
+        league.set_roster_pos_stat_cat(first_time="no")
+        league.draft_results(first_time="no")
+        league.teams_and_standings(first_time="no")
+        # league.players_list(first_time="no")
 
-        if int(SEASON) == 2020:
-            league.metadata(first_time="yes")
-            league.set_roster_pos_stat_cat(first_time="yes")
-            league.draft_results(first_time="yes")
-            league.teams_and_standings(first_time="yes")
-            # league.players_list(first_time="yes")
+        league.matchups_by_week(first_time="yes", nfl_week=1)
+        for week in nfl_weeks_list[1:]:
+            league.matchups_by_week(first_time="no", nfl_week=week)
 
-            league.matchups_by_week(first_time="yes", nfl_week=1)
-            league.team_roster_by_week(first_time="yes", nfl_week=1)
-            league.team_points_by_week(first_time="yes", nfl_week=1)
-            for week in nfl_weeks_list[1:]:
-                league.matchups_by_week(first_time="no", nfl_week=week)
-                league.team_roster_by_week(first_time="no", nfl_week=week)
-                league.team_points_by_week(first_time="no", nfl_week=week)
-                sleep(60)
-
-        else:
-            league.metadata(first_time="no")
-            league.set_roster_pos_stat_cat(first_time="no")
-            league.draft_results(first_time="no")
-            league.teams_and_standings(first_time="no")
-            # league.players_list(first_time="no")
-
-            league.matchups_by_week(first_time="yes", nfl_week=1)
-            for week in nfl_weeks_list[1:]:
-                league.matchups_by_week(first_time="no", nfl_week=week)
-
-            for week in nfl_weeks_list:
-                league.team_roster_by_week(first_time="no", nfl_week=week)
-                league.team_points_by_week(first_time="no", nfl_week=week)
-                sleep(60)
+        for week in nfl_weeks_list:
+            league.team_roster_by_week(first_time="no", nfl_week=week)
+            league.team_points_by_week(first_time="no", nfl_week=week)
+            sleep(60)
