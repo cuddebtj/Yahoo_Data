@@ -113,6 +113,7 @@ def data_upload(df: pd.DataFrame, first_time, table_name, path, option_schema, q
         elif str(first_time).upper() == "NO":
             psql = DatabaseCursor(path).copy_data_from_postgres(query)
             df = pd.concat([psql, df])
+            df.drop_duplicates(ignore_index=True, inplace=True)
             DatabaseCursor(
                 path, option_schema=option_schema
             ).copy_table_to_postgres_new(df, table_name, first_time="NO")

@@ -154,7 +154,7 @@ class league_season_data(object):
                 ', "end_date"'
                 ', "end_week" '
                 "FROM raw.league_metadata "
-                "WHERE (game_id <> '" + str(self.game_id) + "') "
+                "WHERE game_id <> '" +self.game_id+ "' "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "name"'
@@ -295,7 +295,7 @@ class league_season_data(object):
                 ', "playoff_start_week" '
                 ', "trade_end_date" '
                 "FROM raw.league_settings "
-                "WHERE (game_id <> '" + str(self.game_id) + "') "
+                "WHERE game_id <> '" +self.game_id+ "' "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "has_multiweek_championship"'
@@ -345,7 +345,7 @@ class league_season_data(object):
                 ', "position" '
                 ', "count" '
                 "FROM raw.roster_positions "
-                "WHERE (game_id <> '" + str(self.game_id) + "') "
+                "WHERE game_id <> '" +self.game_id+ "' "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "position_type"'
@@ -447,7 +447,7 @@ class league_season_data(object):
                 ', "position_type"'
                 ', "stat_modifier"'
                 "FROM raw.stat_categories "
-                "WHERE (game_id <> '" + str(self.game_id) + "') "
+                "WHERE game_id <> '" +self.game_id+ "' "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "stat_id"'
@@ -687,7 +687,7 @@ class league_season_data(object):
                 ',"editorial_team_full_name"'
                 ',"editorial_team_abbr" '
                 "FROM raw.player_list "
-                "WHERE (game_id <> '" + str(self.game_id) + "') "
+                "WHERE game_id <> '" +self.game_id+ "' "
                 'GROUP BY "game_id"'
                 ',"league_id"'
                 ',"player_id"'
@@ -809,7 +809,7 @@ class league_season_data(object):
                 ', "player_key"'
                 ', "team_key" '
                 "FROM raw.draft_results "
-                "WHERE (game_id <> '" + str(self.game_id) + "') "
+                "WHERE game_id <> '" +self.game_id+ "' "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "round"'
@@ -1077,11 +1077,11 @@ class league_season_data(object):
                 ', "team_a_grade"'
                 ', "team_b_grade"'
                 "FROM raw.weekly_matchups "
-                "WHERE (game_id <> '"
+                "WHERE game_id <> '"
                 + str(self.game_id)
                 + "' AND week <> '"
                 + str(nfl_week)
-                + "') "
+                + "' "
                 'GROUP BY "game_id"'
                 ', "league_id"'
                 ', "week"'
@@ -1380,7 +1380,7 @@ class league_season_data(object):
                 ',"team_standings.points_for"'
                 ',"team_standings.points_against" '
                 "FROM raw.league_teams "
-                "WHERE (game_id <> '" + str(self.game_id) + "') "
+                "WHERE game_id <> '" +self.game_id+ "' "
                 'GROUP BY "game_id"'
                 ',"league_id"'
                 ',"team_id"'
@@ -1554,11 +1554,11 @@ class league_season_data(object):
                 ',"eligible_positions"'
                 ',"position_type" '
                 "FROM raw.weekly_team_roster "
-                "WHERE (game_id <> '"
+                "WHERE game_id <> '"
                 + str(self.game_id)
                 + "' AND week <> '"
                 + str(nfl_week)
-                + "') "
+                + "' "
                 'GROUP BY "game_id"'
                 ',"league_id"'
                 ',"week"'
@@ -1737,11 +1737,11 @@ class league_season_data(object):
                 ',"final_points"'
                 ',"projected_points" '
                 "FROM raw.weekly_team_pts "
-                "WHERE (game_id <> '"
+                "WHERE game_id <> '"
                 + str(self.game_id)
                 + "' AND week <> '"
                 + str(nfl_week)
-                + "') "
+                + "' "
                 'GROUP BY "game_id"'
                 ',"league_id"'
                 ',"team_id"'
