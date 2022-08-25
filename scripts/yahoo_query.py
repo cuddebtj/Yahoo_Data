@@ -129,19 +129,19 @@ class league_season_data(object):
                 ]
             ]
 
-            league_metadata["game_id"] = league_metadata["game_id"].astype(int)
-            league_metadata["league_id"] = league_metadata["league_id"].astype(int)
-            league_metadata["name"] = league_metadata["name"].astype(str)
-            league_metadata["num_teams"] = league_metadata["num_teams"].astype(int)
-            league_metadata["season"] = league_metadata["season"].astype(int)
+            # league_metadata["game_id"] = league_metadata["game_id"].astype(int)
+            # league_metadata["league_id"] = league_metadata["league_id"].astype(int)
+            # league_metadata["name"] = league_metadata["name"].astype(str)
+            # league_metadata["num_teams"] = league_metadata["num_teams"].astype(int)
+            # league_metadata["season"] = league_metadata["season"].astype(int)
             league_metadata["start_date"] = league_metadata["start_date"].astype(
                 "datetime64[D]"
             )
-            league_metadata["start_week"] = league_metadata["start_week"].astype(int)
+            # league_metadata["start_week"] = league_metadata["start_week"].astype(int)
             league_metadata["end_date"] = league_metadata["end_date"].astype(
                 "datetime64[D]"
             )
-            league_metadata["end_week"] = league_metadata["end_week"].astype(int)
+            # league_metadata["end_week"] = league_metadata["end_week"].astype(int)
 
             query = (
                 'SELECT "game_id"'
@@ -262,24 +262,24 @@ class league_season_data(object):
                 ]
             ]
 
-            league_settings["game_id"] = league_settings["game_id"].astype(int)
-            league_settings["league_id"] = league_settings["league_id"].astype(int)
-            league_settings["has_multiweek_championship"] = league_settings[
-                "has_multiweek_championship"
-            ].astype(int)
-            league_settings["max_teams"] = league_settings["max_teams"].astype(int)
-            league_settings["num_playoff_teams"] = league_settings[
-                "num_playoff_teams"
-            ].astype(int)
-            league_settings["has_playoff_consolation_games"] = league_settings[
-                "has_playoff_consolation_games"
-            ].astype(int)
-            league_settings["num_playoff_consolation_teams"] = league_settings[
-                "num_playoff_consolation_teams"
-            ].astype(int)
-            league_settings["playoff_start_week"] = league_settings[
-                "playoff_start_week"
-            ].astype(int)
+            # league_settings["game_id"] = league_settings["game_id"].astype(int)
+            # league_settings["league_id"] = league_settings["league_id"].astype(int)
+            # league_settings["has_multiweek_championship"] = league_settings[
+            #     "has_multiweek_championship"
+            # ].astype(int)
+            # league_settings["max_teams"] = league_settings["max_teams"].astype(int)
+            # league_settings["num_playoff_teams"] = league_settings[
+            #     "num_playoff_teams"
+            # ].astype(int)
+            # league_settings["has_playoff_consolation_games"] = league_settings[
+            #     "has_playoff_consolation_games"
+            # ].astype(int)
+            # league_settings["num_playoff_consolation_teams"] = league_settings[
+            #     "num_playoff_consolation_teams"
+            # ].astype(int)
+            # league_settings["playoff_start_week"] = league_settings[
+            #     "playoff_start_week"
+            # ].astype(int)
             league_settings["trade_end_date"] = league_settings[
                 "trade_end_date"
             ].astype("datetime64[D]")
@@ -330,13 +330,13 @@ class league_season_data(object):
                 ["game_id", "league_id", "position_type", "position", "count"]
             ]
 
-            roster_positions["game_id"] = roster_positions["game_id"].astype(int)
-            roster_positions["league_id"] = roster_positions["league_id"].astype(int)
-            roster_positions["position_type"] = roster_positions[
-                "position_type"
-            ].astype(str)
-            roster_positions["position"] = roster_positions["position"].astype(str)
-            roster_positions["count"] = roster_positions["count"].astype(int)
+            # roster_positions["game_id"] = roster_positions["game_id"].astype(int)
+            # roster_positions["league_id"] = roster_positions["league_id"].astype(int)
+            # roster_positions["position_type"] = roster_positions[
+            #     "position_type"
+            # ].astype(str)
+            # roster_positions["position"] = roster_positions["position"].astype(str)
+            # roster_positions["count"] = roster_positions["count"].astype(int)
 
             query_2 = (
                 'SELECT "game_id"'
@@ -420,19 +420,19 @@ class league_season_data(object):
                 ]
             ]
 
-            stat_categories["game_id"] = stat_categories["game_id"].astype(int)
-            stat_categories["league_id"] = stat_categories["league_id"].astype(int)
-            stat_categories["stat_id"] = stat_categories["stat_id"].astype(int)
-            stat_categories["name"] = stat_categories["name"].astype(str)
-            stat_categories["display_name"] = stat_categories["display_name"].astype(
-                str
-            )
-            stat_categories["is_only_display_stat"] = stat_categories[
-                "is_only_display_stat"
-            ].astype(int)
-            stat_categories["position_type"] = stat_categories["position_type"].astype(
-                str
-            )
+            # stat_categories["game_id"] = stat_categories["game_id"].astype(int)
+            # stat_categories["league_id"] = stat_categories["league_id"].astype(int)
+            # stat_categories["stat_id"] = stat_categories["stat_id"].astype(int)
+            # stat_categories["name"] = stat_categories["name"].astype(str)
+            # stat_categories["display_name"] = stat_categories["display_name"].astype(
+            #     str
+            # )
+            # stat_categories["is_only_display_stat"] = stat_categories[
+            #     "is_only_display_stat"
+            # ].astype(int)
+            # stat_categories["position_type"] = stat_categories["position_type"].astype(
+            #     str
+            # )
             stat_categories["stat_modifier"] = (
                 stat_categories["stat_modifier"].astype(float).round(decimals=2)
             )
@@ -630,20 +630,20 @@ class league_season_data(object):
                 ]
             ]
 
-            players["game_id"] = players["game_id"].astype(int)
-            players["league_id"] = players["league_id"].astype(int)
-            players["player_id"] = players["player_id"].astype(int)
-            players["player_key"] = players["player_key"].astype(str)
-            players["position_type"] = players["position_type"].astype(str)
-            players["display_position"] = players["display_position"].astype(str)
-            players["eligible_positions"] = players["eligible_positions"].astype(str)
-            players["name.ascii_first"] = players["name.ascii_first"].astype(str)
-            players["name.ascii_last"] = players["name.ascii_last"].astype(str)
-            players["name.first"] = players["name.first"].astype(str)
-            players["name.last"] = players["name.last"].astype(str)
-            players["name.full"] = players["name.full"].astype(str)
-            players["uniform_number"] = players["uniform_number"].astype(int)
-            players["bye_weeks.week"] = players["bye_weeks.week"].astype(int)
+            # players["game_id"] = players["game_id"].astype(int)
+            # players["league_id"] = players["league_id"].astype(int)
+            # players["player_id"] = players["player_id"].astype(int)
+            # players["player_key"] = players["player_key"].astype(str)
+            # players["position_type"] = players["position_type"].astype(str)
+            # players["display_position"] = players["display_position"].astype(str)
+            # players["eligible_positions"] = players["eligible_positions"].astype(str)
+            # players["name.ascii_first"] = players["name.ascii_first"].astype(str)
+            # players["name.ascii_last"] = players["name.ascii_last"].astype(str)
+            # players["name.first"] = players["name.first"].astype(str)
+            # players["name.last"] = players["name.last"].astype(str)
+            # players["name.full"] = players["name.full"].astype(str)
+            # players["uniform_number"] = players["uniform_number"].astype(int)
+            # players["bye_weeks.week"] = players["bye_weeks.week"].astype(int)
             players["draft_analysis.average_round"] = (
                 players["draft_analysis.average_round"].astype(float).round(decimals=2)
             )
@@ -658,11 +658,11 @@ class league_season_data(object):
                 .astype(float)
                 .round(decimals=4)
             )
-            players["editorial_team_key"] = players["editorial_team_key"].astype(str)
-            players["editorial_team_full_name"] = players[
-                "editorial_team_full_name"
-            ].astype(str)
-            players["editorial_team_abbr"] = players["editorial_team_abbr"].astype(str)
+            # players["editorial_team_key"] = players["editorial_team_key"].astype(str)
+            # players["editorial_team_full_name"] = players[
+            #     "editorial_team_full_name"
+            # ].astype(str)
+            # players["editorial_team_abbr"] = players["editorial_team_abbr"].astype(str)
 
             query = (
                 'SELECT "game_id"'
@@ -794,12 +794,12 @@ class league_season_data(object):
                 ["game_id", "league_id", "round", "pick", "player_key", "team_key"]
             ]
 
-            draft_results["game_id"] = draft_results["game_id"].astype(int)
-            draft_results["league_id"] = draft_results["league_id"].astype(int)
-            draft_results["round"] = draft_results["round"].astype(int)
-            draft_results["pick"] = draft_results["pick"].astype(int)
-            draft_results["player_key"] = draft_results["player_key"].astype(str)
-            draft_results["team_key"] = draft_results["team_key"].astype(str)
+            # draft_results["game_id"] = draft_results["game_id"].astype(int)
+            # draft_results["league_id"] = draft_results["league_id"].astype(int)
+            # draft_results["round"] = draft_results["round"].astype(int)
+            # draft_results["pick"] = draft_results["pick"].astype(int)
+            # draft_results["player_key"] = draft_results["player_key"].astype(str)
+            # draft_results["team_key"] = draft_results["team_key"].astype(str)
 
             query = (
                 'SELECT "game_id"'
@@ -1032,31 +1032,31 @@ class league_season_data(object):
                 ]
             ]
 
-            matchups["game_id"] = matchups["game_id"].astype(int)
-            matchups["league_id"] = matchups["league_id"].astype(int)
-            matchups["week"] = matchups["week"].astype(int)
-            matchups["week_start"] = matchups["week_start"].astype("datetime64[D]")
-            matchups["week_end"] = matchups["week_end"].astype("datetime64[D]")
-            matchups["is_playoffs"] = matchups["is_playoffs"].astype(int)
-            matchups["is_consolation"] = matchups["is_consolation"].astype(int)
-            matchups["is_tied"] = matchups["is_tied"].astype(int)
-            matchups["team_a_team_key"] = matchups["team_a_team_key"].astype(str)
+            # matchups["game_id"] = matchups["game_id"].astype(int)
+            # matchups["league_id"] = matchups["league_id"].astype(int)
+            # matchups["week"] = matchups["week"].astype(int)
+            # matchups["week_start"] = matchups["week_start"].astype("datetime64[D]")
+            # matchups["week_end"] = matchups["week_end"].astype("datetime64[D]")
+            # matchups["is_playoffs"] = matchups["is_playoffs"].astype(int)
+            # matchups["is_consolation"] = matchups["is_consolation"].astype(int)
+            # matchups["is_tied"] = matchups["is_tied"].astype(int)
+            # matchups["team_a_team_key"] = matchups["team_a_team_key"].astype(str)
             matchups["team_a_points"] = (
                 matchups["team_a_points"].astype(float).round(decimals=2)
             )
             matchups["team_a_projected_points"] = (
                 matchups["team_a_projected_points"].astype(float).round(decimals=2)
             )
-            matchups["team_b_team_key"] = matchups["team_b_team_key"].astype(str)
+            # matchups["team_b_team_key"] = matchups["team_b_team_key"].astype(str)
             matchups["team_b_points"] = (
                 matchups["team_b_points"].astype(float).round(decimals=2)
             )
             matchups["team_b_projected_points"] = (
                 matchups["team_b_projected_points"].astype(float).round(decimals=2)
             )
-            matchups["winner_team_key"] = matchups["winner_team_key"].astype(str)
-            matchups["team_a_grade"] = matchups["team_a_grade"].astype(str)
-            matchups["team_b_grade"] = matchups["team_b_grade"].astype(str)
+            # matchups["winner_team_key"] = matchups["winner_team_key"].astype(str)
+            # matchups["team_a_grade"] = matchups["team_a_grade"].astype(str)
+            # matchups["team_b_grade"] = matchups["team_b_grade"].astype(str)
 
             query = (
                 'SELECT "game_id"'
@@ -1306,57 +1306,25 @@ class league_season_data(object):
                 ]
             ]
 
-            teams_standings["game_id"] = teams_standings["game_id"].astype(int)
-            teams_standings["league_id"] = teams_standings["league_id"].astype(int)
-            teams_standings["team_id"] = teams_standings["team_id"].astype(int)
-            teams_standings["team_key"] = teams_standings["team_key"].astype(str)
-            teams_standings["manager_id"] = teams_standings["manager_id"].astype(int)
-            teams_standings["clinched_playoffs"] = teams_standings[
-                "clinched_playoffs"
-            ].astype(int)
-            teams_standings["draft_grade"] = teams_standings["draft_grade"].astype(str)
-            teams_standings["faab_balance"] = teams_standings["faab_balance"].astype(
-                int
-            )
-            teams_standings["name"] = teams_standings["name"].astype(str)
-            teams_standings["number_of_moves"] = teams_standings[
-                "number_of_moves"
-            ].astype(int)
-            teams_standings["number_of_trades"] = teams_standings[
-                "number_of_trades"
-            ].astype(int)
-            teams_standings["team_standings.playoff_seed"] = teams_standings[
-                "team_standings.playoff_seed"
-            ].astype(int)
-            teams_standings["team_standings.rank"] = teams_standings[
-                "team_standings.rank"
-            ].astype(int)
-            teams_standings["team_standings.outcome_totals.wins"] = (
-                teams_standings["team_standings.outcome_totals.wins"]
-                .astype(float)
-                .round(decimals=2)
-            )
-            teams_standings["team_standings.outcome_totals.losses"] = teams_standings[
-                "team_standings.outcome_totals.losses"
-            ].astype(int)
-            teams_standings["team_standings.outcome_totals.ties"] = teams_standings[
-                "team_standings.outcome_totals.ties"
-            ].astype(int)
-            teams_standings["team_standings.outcome_totals.percentage"] = (
-                teams_standings["team_standings.outcome_totals.percentage"]
-                .astype(float)
-                .round(decimals=4)
-            )
-            teams_standings["team_standings.points_for"] = (
-                teams_standings["team_standings.points_for"]
-                .astype(float)
-                .round(decimals=2)
-            )
-            teams_standings["team_standings.points_against"] = (
-                teams_standings["team_standings.points_against"]
-                .astype(float)
-                .round(decimals=2)
-            )
+            # teams_standings["game_id"] = teams_standings["game_id"].astype(int)
+            # teams_standings["league_id"] = teams_standings["league_id"].astype(int)
+            # teams_standings["team_id"] = teams_standings["team_id"].astype(int)
+            # teams_standings["team_key"] = teams_standings["team_key"].astype(str)
+            # teams_standings["manager_id"] = teams_standings["manager_id"].astype(int)
+            # teams_standings["clinched_playoffs"] = teams_standings["clinched_playoffs"].astype(str)
+            # teams_standings["draft_grade"] = teams_standings["draft_grade"].astype(str)
+            # teams_standings["faab_balance"] = teams_standings["faab_balance"].astype(int)
+            # teams_standings["name"] = teams_standings["name"].astype(str)
+            # teams_standings["number_of_moves"] = teams_standings["number_of_moves"].astype(int)
+            # teams_standings["number_of_trades"] = teams_standings["number_of_trades"].astype(int)
+            # teams_standings["team_standings.playoff_seed"] = teams_standings["team_standings.playoff_seed"].astype(int)
+            # teams_standings["team_standings.rank"] = teams_standings["team_standings.rank"].astype(int)
+            # teams_standings["team_standings.outcome_totals.wins"] = teams_standings["team_standings.outcome_totals.wins"].astype(int)
+            # teams_standings["team_standings.outcome_totals.losses"] = teams_standings["team_standings.outcome_totals.losses"].astype(int)
+            # teams_standings["team_standings.outcome_totals.ties"] = teams_standings["team_standings.outcome_totals.ties"].astype(int)
+            teams_standings["team_standings.outcome_totals.percentage"] = (teams_standings["team_standings.outcome_totals.percentage"].astype(float).round(decimals=4))
+            teams_standings["team_standings.points_for"] = (teams_standings["team_standings.points_for"].astype(float).round(decimals=2))
+            teams_standings["team_standings.points_against"] = (teams_standings["team_standings.points_against"].astype(float).round(decimals=2))
 
             query = (
                 'SELECT "game_id"'
@@ -1521,26 +1489,26 @@ class league_season_data(object):
                 ]
             ]
 
-            team_week_rosters["game_id"] = team_week_rosters["game_id"].astype(int)
-            team_week_rosters["league_id"] = team_week_rosters["league_id"].astype(int)
-            team_week_rosters["week"] = team_week_rosters["week"].astype(int)
-            team_week_rosters["team_id"] = team_week_rosters["team_id"].astype(int)
-            team_week_rosters["selected_position.position"] = team_week_rosters[
-                "selected_position.position"
-            ].astype(str)
-            team_week_rosters["player_id"] = team_week_rosters["player_id"].astype(int)
-            team_week_rosters["player_key"] = team_week_rosters["player_key"].astype(
-                str
-            )
-            team_week_rosters["display_position"] = team_week_rosters[
-                "display_position"
-            ].astype(str)
-            team_week_rosters["eligible_positions"] = team_week_rosters[
-                "eligible_positions"
-            ].astype(str)
-            team_week_rosters["position_type"] = team_week_rosters[
-                "position_type"
-            ].astype(str)
+            # team_week_rosters["game_id"] = team_week_rosters["game_id"].astype(int)
+            # team_week_rosters["league_id"] = team_week_rosters["league_id"].astype(int)
+            # team_week_rosters["week"] = team_week_rosters["week"].astype(int)
+            # team_week_rosters["team_id"] = team_week_rosters["team_id"].astype(int)
+            # team_week_rosters["selected_position.position"] = team_week_rosters[
+            #     "selected_position.position"
+            # ].astype(str)
+            # team_week_rosters["player_id"] = team_week_rosters["player_id"].astype(int)
+            # team_week_rosters["player_key"] = team_week_rosters["player_key"].astype(
+            #     str
+            # )
+            # team_week_rosters["display_position"] = team_week_rosters[
+            #     "display_position"
+            # ].astype(str)
+            # team_week_rosters["eligible_positions"] = team_week_rosters[
+            #     "eligible_positions"
+            # ].astype(str)
+            # team_week_rosters["position_type"] = team_week_rosters[
+            #     "position_type"
+            # ].astype(str)
 
             query = (
                 'SELECT "game_id"'
@@ -1714,13 +1682,13 @@ class league_season_data(object):
                 ]
             ]
 
-            team_points_weekly["game_id"] = team_points_weekly["game_id"].astype(int)
-            team_points_weekly["league_id"] = team_points_weekly["league_id"].astype(
-                int
-            )
-            team_points_weekly["team_id"] = team_points_weekly["team_id"].astype(int)
-            team_points_weekly["team_key"] = team_points_weekly["team_key"].astype(str)
-            team_points_weekly["week"] = team_points_weekly["week"].astype(int)
+            # team_points_weekly["game_id"] = team_points_weekly["game_id"].astype(int)
+            # team_points_weekly["league_id"] = team_points_weekly["league_id"].astype(
+            #     int
+            # )
+            # team_points_weekly["team_id"] = team_points_weekly["team_id"].astype(int)
+            # team_points_weekly["team_key"] = team_points_weekly["team_key"].astype(str)
+            # team_points_weekly["week"] = team_points_weekly["week"].astype(int)
             team_points_weekly["final_points"] = (
                 team_points_weekly["final_points"].astype(float).round(decimals=2)
             )

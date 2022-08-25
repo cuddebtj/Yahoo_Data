@@ -72,7 +72,6 @@ for today in dates:
             browser_callback=True,
         )
         game_keys = league.all_game_keys()
-        print(game_keys)
         league.all_nfl_weeks()
         break
 
