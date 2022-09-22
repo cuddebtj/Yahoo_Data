@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "yahoo-data"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "yahoo_data"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+yfpy = "^8.0.9"
+pandas = "^1.5.0"
+psycopg2 = "^2.9.3"
+PyYAML = "^6.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "black"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

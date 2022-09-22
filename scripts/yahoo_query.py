@@ -10,13 +10,13 @@ from yfpy import YahooFantasySportsQuery
 from yfpy.utils import complex_json_handler, unpack_data
 from yfpy import get_logger
 
-from scripts.db_psql_model import DatabaseCursor
-from scripts.utils import data_upload
-from scripts.output_txt import log_print
+# from scripts.db_psql_model import DatabaseCursor
+# from scripts.utils import data_upload
+# from scripts.output_txt import log_print
 
-# from db_psql_model import DatabaseCursor
-# from utils import data_upload
-# from output_txt import log_print
+from db_psql_model import DatabaseCursor
+from utils import data_upload
+from output_txt import log_print
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]
 TEAMS_FILE = list(Path().cwd().parent.glob("**/teams.yaml"))[0]

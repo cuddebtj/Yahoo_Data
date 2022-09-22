@@ -5,13 +5,13 @@ import itertools
 from pathlib import Path
 from datetime import datetime as dt
 
-from scripts.db_psql_model import DatabaseCursor
-from scripts.tournament import Tournament
-from scripts.output_txt import log_print, log_print_tourney
+# from scripts.db_psql_model import DatabaseCursor
+# from scripts.tournament import Tournament
+# from scripts.output_txt import log_print, log_print_tourney
 
-# from db_psql_model import DatabaseCursor
-# from tournament import Tournament
-# from output_txt import log_print, log_print_tourney
+from db_psql_model import DatabaseCursor
+from tournament import Tournament
+from output_txt import log_print, log_print_tourney
 
 
 PATH = list(Path().cwd().parent.glob("**/private.yaml"))[0]

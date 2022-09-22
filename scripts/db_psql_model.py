@@ -6,8 +6,8 @@ from psycopg2.extras import RealDictCursor
 from psycopg2.extensions import AsIs
 from io import StringIO
 
-from scripts.output_txt import log_print
-# from output_txt import log_print
+# from scripts.output_txt import log_print
+from output_txt import log_print
 
 
 class DatabaseCursor(object):
