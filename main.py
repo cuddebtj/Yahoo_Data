@@ -39,7 +39,7 @@ try:
 except Exception as e:
     log_print(
         error=e,
-        module_="main.py",
+        module_="main.py"
         today='Unknown',
         year='Unknown',
         max_week='Unknown',
